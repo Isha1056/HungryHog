@@ -13,8 +13,8 @@ $(document).ready(function () {
     console.log(email, password);
 
     var senddata = {
-      USER_EMAIL: "abc@gmail.com",
-      USER_PASSWORD: "Pass@123",
+      USER_EMAIL: email,
+      USER_PASSWORD: password,
     };
 
     $.ajax({
