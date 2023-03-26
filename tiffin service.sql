@@ -49,9 +49,27 @@ CREATE TABLE Meals (
 	PRIMARY KEY (Meal_ID)
 );
 
+
+UPDATE Meals
+SET Meal_Timings = '11:00-16:00'
+where Meal_ID='2010';
+
+UPDATE Meals
+SET Meal_Timings = '08:00-11:00'
+where Meal_ID='2011';
+
+
 INSERT INTO Meals VALUES (2010, 'Lunch', '1:00-3:00');
 INSERT INTO Meals VALUES (2011, 'Breakfast', '8:00-11:00');
 INSERT INTO Meals VALUES (2012, 'Dinner', '20:00-23:00');
+
+
+-- new ones
+INSERT INTO Meals VALUES (2013, 'Mid-Night', '00:00-5:00');
+INSERT INTO Meals VALUES (2014, 'Early Morning', '05:00-08:00');
+INSERT INTO Meals VALUES (2014, 'Evening', '16:00-20:00');
+INSERT INTO Meals VALUES (2015, 'All Day', '00:00-23:59');
+
 select * from Meals;
 
 CREATE TABLE Kitchen (
@@ -184,6 +202,13 @@ INSERT INTO SNACK VALUES ('SNK0005', 'Fried Veg Momos', '50', 3005, 2010, load_f
 INSERT INTO SNACK VALUES ('SNK0006', 'Veg Sprign roll', '60', 3006, 2011, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_vegroll.jpg"));
 INSERT INTO SNACK VALUES ('SNK0007', 'Golgappa', '50',3005, 2010, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_gol.jpg"));
 
+-- new ones
+INSERT INTO SNACK VALUES ('SNK0008', 'Noodels', '100',3005, 2015, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_chommeen.jpg"));
+INSERT INTO SNACK VALUES ('SNK0009', 'Khimchi', '140',3005, 2015, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_chommeen.jpg"));
+INSERT INTO SNACK VALUES ('SNK00010', 'Boba Tea', '100',3005, 2015, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_chommeen.jpg"));
+INSERT INTO SNACK VALUES ('SNK00011', 'Pizaa', '400',3005, 2015, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_chommeen.jpg"));
+
+
 SELECT * FROM SNACK;
 
 select SNACK.SNACK_ID, SNACK.SNACK_NAME, SNACK.SNACK_PRICE, SNACK.Kitchen_ID, Kitchen.Kitchen_Name, SNACK.Meal_ID, 
@@ -192,8 +217,22 @@ FROM SNACK
 LEFT JOIN Kitchen
 ON SNACK.Kitchen_ID = Kitchen.Kitchen_ID
 LEFT JOIN Meals
-ON SNACK.Meal_ID = Meals.Meal_ID
+ON SNACK.Meal_ID = Meals.Meal_ID;
 
+CREATE TABLE ORDER_SUMMURY (
+    PRODUCT_ID varchar(255) NOT NULL,
+    PRODUCT_NAME varchar(255),
+    PRODUCT_PRICE varchar(255),
+    PRODUCT_LOGO BLOB,
+    Kitchen_ID numeric Not Null,
+    SCHDULE_TIME varchar(255),
+    TOTAL_AMOUNT numeric,
+    QUANTITY numeric,
+	Meal_ID numeric Not Null,
+	PRIMARY KEY (PRODUCT_ID),
+    FOREIGN KEY (Kitchen_ID) REFERENCES Kitchen(Kitchen_ID),
+    FOREIGN KEY (Meal_ID) REFERENCES Meals(Meal_ID)
+);
 
 
 

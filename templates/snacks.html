@@ -222,179 +222,39 @@
     <div class="container">
     <div class="row">
     	<!-- BEGIN PRODUCTS -->
+        {% if snacks|length > 1 %}
+        {% for i in snack %}
   		<div class="col-md-3 col-sm-6">
     		<span class="thumbnail">
-      			<img src="../static/images/snacks_vegmomo.jpg" alt="...">
-      			<h4 style="text-align:center; padding:10px 0;">VEG MOMOS</h4>
+      			<img src="{{ url_for('static', filename=i.SNACK_LOGO_FILE) }}" alt="...">
+      			<h4 style="text-align:center; padding:10px 0;">{{ i.SNACK_NAME }}</h4>
       			
       			<!--<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>-->
                 <div class="row">
       				<div class="col-md-12 col-sm-12">
-      					<p class="price" style="color:#F00; text-align:center;font-size:18px;">Rs 45 (Per 10 peice)</p>
+      					<p class="price" style="color:#F00; text-align:center;font-size:18px;">{{ i.SNACK_PRICE }}</p>
       				</div>
       				      				
       			</div>
       			<hr class="line">
       			<div class="row">
       				<div class="col-md-6 col-sm-6 col-xs-12">
-      					<button class="btn btn-danger center-block" style="margin-top:10px;"> Add To Cart</button>
+      					<button id="{{ i.SNACK_ID }}" class="btn btn-danger center-block" style="margin-top:10px;"> Add To Cart</button>
       				</div>
       				<div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:10px;">
-      					<button class="btn btn-success center-block" >Order Now</button>
+      					<button id="{{ i.SNACK_ID }}" class="btn btn-success center-block" >Order Now</button>
       				</div>
       				
       			</div>
     		</span>
   		</div>
-  		<div class="col-md-3 col-sm-6">
-    		<span class="thumbnail">
-      			<img src="../static/images/snacks_nonvegmomo.jpg" alt="...">
-      			<h4 style="text-align:center; padding:10px 0;">Chicken Momos</h4>
-      			
-      			<!--<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>-->
-                <div class="row">
-      				<div class="col-md-12 col-sm-12">
-      					<p class="price" style="color:#F00; text-align:center;font-size:18px;">Rs 55 (Per 10 peice)</p>
-      				</div>
-      				      				
-      			</div>
-      			<hr class="line">
-      			<div class="row">
-      				<div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:10px;">
-      					<button class="btn btn-danger center-block"> Add To Cart</button>
-      				</div>
-      				<div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:10px;">
-      					<button class="btn btn-success center-block" >Order Now</button>
-      				</div>
-      				
-      			</div>
-    		</span>
-  		</div>
-  		<div class="col-md-3 col-sm-6">
-    		<span class="thumbnail">
-      			<img src="../static/images/snacks_fryvegmomo.jpg" alt="...">
-      			<h4 style="text-align:center; padding:10px 0;">Fried Veg Momos</h4>
-      			
-      			<!--<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>-->
-                <div class="row">
-      				<div class="col-md-12 col-sm-12">
-      					<p class="price" style="color:#F00; text-align:center;font-size:18px;">Rs 50 (Per 10 peice)</p>
-      				</div>
-      				      				
-      			</div>
-      			<hr class="line">
-      			<div class="row">
-      				<div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:10px;">
-      					<button class="btn btn-danger center-block"> Add To Cart</button>
-      				</div>
-      				<div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:10px;">
-      					<button class="btn btn-success center-block" >Order Now</button>
-      				</div>
-      				
-      			</div>
-    		</span>
-  		</div>
-  		<div class="col-md-3 col-sm-6">
-    		<span class="thumbnail">
-      			<img src="../static/images/snacks_frynonvegmomo.jpg" alt="...">
-      			<h4 style="text-align:center; padding:10px 0;">Fried Chicken Momos</h4>
-      			
-      			<!--<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>-->
-                <div class="row">
-      				<div class="col-md-12 col-sm-12">
-      					<p class="price" style="color:#F00; text-align:center;font-size:18px;">Rs 60 (Per 10 peice)</p>
-      				</div>
-      				      				
-      			</div>
-      			<hr class="line">
-      			<div class="row">
-      				<div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:10px;">
-      					<button class="btn btn-danger center-block"> Add To Cart</button>
-      				</div>
-      				<div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:10px;">
-      					<button class="btn btn-success center-block" >Order Now</button>
-      				</div>
-      				
-      			</div>
-    		</span>
-  		</div>
-        
+    	
+        {% endfor %}
+        {% else %}
         <div class="col-md-3 col-sm-6">
-    		<span class="thumbnail">
-      			<img src="../static/images/snacks_chommeen.jpg" alt="...">
-      			<h4 style="text-align:center; padding:10px 0;">Veg Chawmin</h4>
-      			
-      			<!--<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>-->
-                <div class="row">
-      				<div class="col-md-12 col-sm-12">
-      					<p class="price" style="color:#F00; text-align:center;font-size:18px;">Rs 65</p>
-      				</div>
-      				      				
-      			</div>
-      			<hr class="line">
-      			<div class="row">
-      				<div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:10px;">
-      					<button class="btn btn-danger center-block"> Add To Cart</button>
-      				</div>
-      				<div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:10px;">
-      					<button class="btn btn-success center-block" >Order Now</button>
-      				</div>
-      				
-      			</div>
-    		</span>
-  		</div>
-        
-        <div class="col-md-3 col-sm-6">
-    		<span class="thumbnail">
-      			<img src="../static/images/snacks_gol.jpg" alt="...">
-      			<h4 style="text-align:center; padding:10px 0;">Golgappa</h4>
-      			
-      			<!--<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>-->
-                <div class="row">
-      				<div class="col-md-12 col-sm-12">
-      					<p class="price" style="color:#F00; text-align:center;font-size:18px;">Rs 50 (per 10 piece)</p>
-      				</div>
-      				      				
-      			</div>
-      			<hr class="line">
-      			<div class="row">
-      				<div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:10px;">
-      					<button class="btn btn-danger center-block"> Add To Cart</button>
-      				</div>
-      				<div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:10px;">
-      					<button class="btn btn-success center-block" >Order Now</button>
-      				</div>
-      				
-      			</div>
-    		</span>
-  		</div>
-        
-        
-        <div class="col-md-3 col-sm-6">
-    		<span class="thumbnail">
-      			<img src="../static/images/snacks_vegroll.jpg" alt="...">
-      			<h4 style="text-align:center; padding:10px 0;">Veg Sprign roll</h4>
-      			
-      			<!--<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>-->
-                <div class="row">
-      				<div class="col-md-12 col-sm-12">
-      					<p class="price" style="color:#F00; text-align:center;font-size:18px;">Rs 60 </p>
-      				</div>
-      				      				
-      			</div>
-      			<hr class="line">
-      			<div class="row">
-      				<div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:10px;">
-      					<button class="btn btn-danger center-block"> Add To Cart</button>
-      				</div>
-      				<div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:10px;">
-      					<button class="btn btn-success center-block" >Order Now</button>
-      				</div>
-      				
-      			</div>
-    		</span>
-  		</div>
-        
+            No menu items available right now...
+        </div>
+        {% endif %}
   		<!-- END PRODUCTS -->
 	</div>
     

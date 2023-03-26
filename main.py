@@ -3,7 +3,8 @@ from flask import Flask, jsonify, request, render_template
 from io import BytesIO
 from PIL import Image
 import matplotlib.pyplot as plt
- 
+import time
+
 import base64
 from io import StringIO
 import PIL.Image
@@ -37,6 +38,7 @@ conn = mysql.connector.connect(
 @app.route('/')
 def indexPage():
     if conn:
+        
         return render_template('index.html')
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
@@ -105,15 +107,39 @@ def snacksPage():
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
-@app.route('/snacks/<string:RestaurantID>')
-def snacksPageDynamic(RestaurantID):
+@app.route('/snacks/<string:Kitchen_ID>')
+def snacksPageDynamic(Kitchen_ID):
     if conn:
         mycursor = conn.cursor()
-        mycursor.execute("SELECT * FROM SNACKS")
+        mycursor.execute("select SNACK.SNACK_ID, SNACK.SNACK_NAME, SNACK.SNACK_PRICE, SNACK.Kitchen_ID, Kitchen.Kitchen_Name, SNACK.Meal_ID, SNACK.SNACK_LOGO, Meals.Meal_Type, Meals.Meal_Timings FROM SNACK  LEFT JOIN Kitchen ON SNACK.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON SNACK.Meal_ID = Meals.Meal_ID WHERE Kitchen.Kitchen_ID='"+Kitchen_ID+"'")
         myresult = mycursor.fetchall()
-        print(myresult)
+        #print(myresult)
         l = []
-        return render_template('snacks.html')
+        for i in range(len(myresult)):
+            print(myresult[i][8])
+            snack = {
+                "SNACK_ID" : myresult[i][0],
+                "SNACK_NAME" : myresult[i][1],
+                "SNACK_PRICE": myresult[i][2],
+                "Kitchen_ID": myresult[i][3],
+                "Kitchen_Name": myresult[i][4],
+                "Meal_ID": myresult[i][5],
+                "SNACK_LOGO": myresult[i][6],
+                "Meal_Type" : myresult[i][7],
+                "Meal_Timings": myresult[i][8]
+            }
+
+            start_time,end_time = snack["Meal_Timings"].split("-")
+            start_time=time.strptime(start_time, "%H:%M")
+            end_time=time.strptime(end_time, "%H:%M")
+            current_time=time.strptime(time.strftime("%H:%M",time.localtime()), "%H:%M")
+            
+            if start_time<=current_time and current_time<=end_time:
+                getSnacks(snack["SNACK_ID"], snack["SNACK_LOGO"])
+                snack["SNACK_LOGO_FILE"] = snack["SNACK_ID"]+".jpg"
+                print(snack["SNACK_ID"])
+                l.append(snack)
+        return render_template('snacks.html', snack=snack)
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
@@ -167,12 +193,31 @@ def getUsers():
         Users = myresult
         return jsonify(Users = Users)
      
+'''
+@app.route('/getSnacks',methods = ['GET'])
+def getSnacks():
+  if request.method == 'GET':
+     if conn:
+        mycursor = conn.cursor()
+        mycursor.execute("SELECT * FROM SNACK")
+        myresult = mycursor.fetchall()
+        image_data = myresult[0][3]
+        # Convert image data to image object
+        image = Image.open(BytesIO(image_data))
+
+        # Display image using matplotlib
+        plt.imshow(image)
+        plt.show()
+        return jsonify(myresult=myresult)
+'''
 
 # @app.route('/getSnacks',methods = ['GET'])
 def getSnacks(image_name, image_data):
     try:
-        image = Image.open(BytesIO(image_data))
-        plt.savefig('./static/images/' + image_name+'.jpg')
+        with open('./static/images/'+image_name+'.jpg', 'wb') as file:
+            file.write(image_data)
+        # image = Image.open(BytesIO(image_data))
+        # plt.savefig('./static/images/' + image_name+'.jpg')
     except Exception as e:
         print('Error: '+ str(e))
 
