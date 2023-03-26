@@ -84,6 +84,34 @@ def snacksPage():
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
+@app.route('/admin_home')
+def admin_homePage():
+    if conn:
+        return render_template('admin_home.html')
+    else:
+        return jsonify(StatusCode = '0', Message="Connection Failed!")
+
+@app.route('/admin_users')
+def admin_usersPage():
+    if conn:
+        return render_template('admin_users.html')
+    else:
+        return jsonify(StatusCode = '0', Message="Connection Failed!")
+
+@app.route('/admin_kitchens')
+def admin_kitchensPage():
+    if conn:
+        return render_template('admin_kitchens.html')
+    else:
+        return jsonify(StatusCode = '0', Message="Connection Failed!")
+
+@app.route('/admin_delivery_partners')
+def admin_delivery_partnersPage():
+    if conn:
+        return render_template('admin_delivery_partner.html')
+    else:
+        return jsonify(StatusCode = '0', Message="Connection Failed!")
+
 # *********************************************#
 
 # APIs routes

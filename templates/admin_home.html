@@ -47,7 +47,7 @@
             	<div class="outer-container clearfix">
                     <!--Logo Box-->
                     <div class="logo-box">
-                        <div class="logo"><a href="{{url_for('admin_home')}}"><img src="../static/images/HungryHogLogo.png" alt="HungryHog"></a></div>
+                        <div class="logo"><a href="{{url_for('snacksPage')}}"><img src="../static/images/HungryHogLogo.png" alt="HungryHog"></a></div>
                     </div>
                     
                     <!--Nav Outer-->
@@ -65,10 +65,10 @@
                             
                             <div class="navbar-collapse collapse clearfix">
                                 <ul class="navigation clearfix">
-                                    <li><a href="admin_home">Home</a></li>
-                                    <li><a href="{{url_for('admin_Users')}}">Users</a></li>
-                                     <li><a href="{{url_for('admin_kitchen')}}">Kitchens</a></li>
-                                    <li><a href="{{url_for('admin_delivery_partners')}}">Delivery Partners</a></li>
+                                    <li><a href="{{url_for('admin_homePage')}}">Home</a></li>
+                                    <li><a href="{{url_for('admin_usersPage')}}">Users</a></li>
+                                     <li><a href="{{url_for('admin_kitchensPage')}}">Kitchens</a></li>
+                                    <li><a href="{{url_for('admin_delivery_partnersPage')}}">Delivery Partners</a></li>
 
 
                                  </ul>
@@ -105,17 +105,17 @@
         
             <!-- .logo -->
             <div class="logo text-center">
-                <a href="{{url_for('admin_home')}}"><img src="../static/images/logo-2.png" alt="Artica"></a>			
+                <a href="{{url_for('admin_homePage')}}"><img src="../static/images/logo-2.png" alt="Artica"></a>			
             </div><!-- /.logo -->
             
             <!-- .Side-menu -->
             <div class="side-menu">
             	<!-- .navigation -->
                 <ul class="navigation clearfix">
-                    <li><a href="admin_home">Home</a></li>
-                    <li><a href="{{url_for('admin_users')}}">Users</a></li>
-                        <li><a href="{{url_for('admin_kitchen')}}">Kitchens</a></li>
-                    <li><a href="{{url_for('admin_delivery_partners')}}">Delivery Partners</a></li>
+                    <li><a href="{{url_for('admin_homePage')}}">Home</a></li>
+                    <li><a href="{{url_for('admin_usersPage')}}">Users</a></li>
+                    <li><a href="{{url_for('admin_kitchensPage')}}">Kitchens</a></li>
+                    <li><a href="{{url_for('admin_delivery_partnersPage')}}">Delivery Partners</a></li>
 
 
                  </ul>
