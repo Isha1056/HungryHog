@@ -25,6 +25,13 @@ $(document).ready(function () {
       data: JSON.stringify(senddata),
       success: function (response) {
         console.log(response);
+        if (response.StatusCode == 1){
+          localStorage.setItem('UserID', response.UserRecord.USER_ID);
+          window.open("http://127.0.0.1:5000/ordernow", "_self");
+        }
+        else{
+          alert(response.ErrorMessage)
+        }
       },
       error: function (xhr, status, error) {
         console.log(xhr, status, error);

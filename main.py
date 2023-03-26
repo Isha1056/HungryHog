@@ -1,5 +1,10 @@
 import mysql.connector
 from flask import Flask, jsonify, request, render_template
+import sys
+from PIL import Image
+import base64
+from io import StringIO
+import PIL.Image
  
 
 app = Flask(__name__)
@@ -134,6 +139,17 @@ def getUsers():
         Users = myresult
         return jsonify(Users = Users)
 
+@app.route('/getSnacks',methods = ['GET'])
+def getSnacks():
+  if request.method == 'GET':
+     if conn:
+        mycursor = conn.cursor()
+        mycursor.execute("SELECT * FROM SNACK")
+        myresult = mycursor.fetchall()
+        print(myresult)
+        image = base64.b64decode(myresult[0])
+        return jsonify(myresult,image)
+
 @app.route('/UsersAuthentication',methods = ['POST'])
 def UsersAuthentication():
     if request.method == 'POST':
@@ -228,6 +244,8 @@ def showMyLunchBoxOrders():
                 return jsonify(StatusCode = '1', Total = RecordCount, LunchBoxOrdersList=LunchBoxOrdersList)
         except Exception as e:
             return str(e)
+
+
 
 if __name__ == '__main__':
   
