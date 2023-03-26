@@ -137,21 +137,13 @@ def getUsers():
         Users = myresult
         return jsonify(Users = Users)
 
-@app.route('/getSnacks',methods = ['GET'])
-def getSnacks():
-  if request.method == 'GET':
-     if conn:
-        mycursor = conn.cursor()
-        mycursor.execute("SELECT * FROM SNACK")
-        myresult = mycursor.fetchall()
-        image_data = myresult[0][3]
-        # Convert image data to image object
+# @app.route('/getSnacks',methods = ['GET'])
+def getSnacks(image_name, image_data):
+    try:
         image = Image.open(BytesIO(image_data))
-
-        # Display image using matplotlib
-        plt.imshow(image)
-        plt.show()
-        return jsonify(myresult=myresult)
+        plt.savefig('./static/images/' + image_name+'.jpg')
+    except Exception as e:
+        print('Error: '+ str(e))
 
 @app.route('/UsersAuthentication',methods = ['POST'])
 def UsersAuthentication():
