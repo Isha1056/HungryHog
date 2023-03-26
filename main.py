@@ -5,7 +5,6 @@ from PIL import Image
 import base64
 from io import StringIO
 import PIL.Image
- 
 
 app = Flask(__name__)
 # Creating connection object
