@@ -87,6 +87,19 @@ def snacksPage():
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
+@app.route('/snacks/<string:RestaurantID>')
+def snacksPageDynamic(RestaurantID):
+    if conn:
+        mycursor = conn.cursor()
+        mycursor.execute("SELECT * FROM SNACKS")
+        myresult = mycursor.fetchall()
+        print(myresult)
+        l = []
+        return render_template('snacks.html')
+    else:
+        return jsonify(StatusCode = '0', Message="Connection Failed!")
+
+
 @app.route('/admin_home')
 def admin_homePage():
     if conn:
@@ -116,7 +129,6 @@ def admin_delivery_partnersPage():
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
 # *********************************************#
-
 # APIs routes
 # *********************************************#
 @app.route('/CheckServer')
@@ -136,6 +148,7 @@ def getUsers():
         print(myresult)
         Users = myresult
         return jsonify(Users = Users)
+     
 
 # @app.route('/getSnacks',methods = ['GET'])
 def getSnacks(image_name, image_data):
