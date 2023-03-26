@@ -2,10 +2,8 @@ import mysql.connector
 from flask import Flask, jsonify, request, render_template
 from io import BytesIO
 from PIL import Image
-<<<<<<< Updated upstream
 import matplotlib.pyplot as plt
  
-=======
 import base64
 from io import StringIO
 import PIL.Image
@@ -24,7 +22,6 @@ DATA = {
     }
 }
 print(client.order.create(data=DATA))
->>>>>>> Stashed changes
 
 app = Flask(__name__)
 # Creating connection object
