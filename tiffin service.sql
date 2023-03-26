@@ -162,6 +162,39 @@ Where Lunch_Box_Order.User_ID='1011'
 SHOW TABLES;
 
 
+CREATE TABLE SNACK (
+    SNACK_ID varchar(255) NOT NULL,
+    SNACK_NAME varchar(255),
+    SNACK_PRICE varchar(255),
+    Kitchen_ID numeric Not Null,
+	Meal_ID numeric Not Null,
+    SNACK_LOGO BLOB,
+	PRIMARY KEY (SNACK_ID),
+    FOREIGN KEY (Kitchen_ID) REFERENCES Kitchen(Kitchen_ID),
+    FOREIGN KEY (Meal_ID) REFERENCES Meals(Meal_ID)
+);
+
+DELETE FROM SNACK WHERE SNACK_ID='SNK0004';
+
+INSERT INTO SNACK VALUES ('SNK0001', 'VEG MOMOS', '45', 3001, 2012, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_vegmomo.jpg"));
+INSERT INTO SNACK VALUES ('SNK0002', 'Fried Chicken Momos', '60', 3002, 2010, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_frynonvegmomo.jpg"));
+INSERT INTO SNACK VALUES ('SNK0003', 'Veg Chawmin', '65', 3003, 2012, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_chommeen.jpg"));
+INSERT INTO SNACK VALUES ('SNK0004', 'Chicken Momos', '55', 3004, 2010, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_nonvegmomo.jpg"));
+INSERT INTO SNACK VALUES ('SNK0005', 'Fried Veg Momos', '50', 3005, 2010, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_vegmomo.jpg"));
+INSERT INTO SNACK VALUES ('SNK0006', 'Veg Sprign roll', '60', 3006, 2011, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_vegroll.jpg"));
+INSERT INTO SNACK VALUES ('SNK0007', 'Golgappa', '50',3005, 2010, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_gol.jpg"));
+
+SELECT * FROM SNACK;
+
+select SNACK.SNACK_ID, SNACK.SNACK_NAME, SNACK.SNACK_PRICE, SNACK.Kitchen_ID, Kitchen.Kitchen_Name, SNACK.Meal_ID, 
+SNACK.SNACK_LOGO, Meals.Meal_Type, Meals.Meal_Timings
+FROM SNACK
+LEFT JOIN Kitchen
+ON SNACK.Kitchen_ID = Kitchen.Kitchen_ID
+LEFT JOIN Meals
+ON SNACK.Meal_ID = Meals.Meal_ID
+
+
 
 
 

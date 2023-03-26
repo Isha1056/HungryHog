@@ -1,10 +1,8 @@
 import mysql.connector
 from flask import Flask, jsonify, request, render_template
-import sys
+from io import BytesIO
 from PIL import Image
-import base64
-from io import StringIO
-import PIL.Image
+import matplotlib.pyplot as plt
  
 
 app = Flask(__name__)
@@ -146,9 +144,14 @@ def getSnacks():
         mycursor = conn.cursor()
         mycursor.execute("SELECT * FROM SNACK")
         myresult = mycursor.fetchall()
-        print(myresult)
-        image = base64.b64decode(myresult[0])
-        return jsonify(myresult,image)
+        image_data = myresult[0][3]
+        # Convert image data to image object
+        image = Image.open(BytesIO(image_data))
+
+        # Display image using matplotlib
+        plt.imshow(image)
+        plt.show()
+        return jsonify(myresult=myresult)
 
 @app.route('/UsersAuthentication',methods = ['POST'])
 def UsersAuthentication():
