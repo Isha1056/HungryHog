@@ -2,8 +2,29 @@ import mysql.connector
 from flask import Flask, jsonify, request, render_template
 from io import BytesIO
 from PIL import Image
+<<<<<<< Updated upstream
 import matplotlib.pyplot as plt
  
+=======
+import base64
+from io import StringIO
+import PIL.Image
+import razorpay
+
+
+client = razorpay.Client(auth=("rzp_test_JGsIexMIOVh3bW", "kpvTVMIBppTJGlKtMmnzwcVd"))
+
+DATA = {
+    "amount": 100,
+    "currency": "INR",
+    "receipt": "receipt#1",
+    "notes": {
+        "key1": "value3",
+        "key2": "value2"
+    }
+}
+print(client.order.create(data=DATA))
+>>>>>>> Stashed changes
 
 app = Flask(__name__)
 # Creating connection object
