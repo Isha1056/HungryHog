@@ -37,40 +37,38 @@ function remove_tr(This) {
 $(function() {
     $.ajax({
         type: "GET",
-        url: "{{url_for('getKitchens')}}",
+        url: "http://127.0.0.1:5000/Shoping_cart",
         contentType: "application/json",
         success: function (result, status, xhr) {
             // console.log(result);
-            sampleData = result.get_kitchens;
-            var tabledata = result.get_kitchens;
+            sampleData = result.ShoppingCartList;
+            var tabledata = result.ShoppingCartList;
             // console.log(tabledata);
             var tablerow = '';
             tablerow += `<table class="table table-striped table-bordered table-hover" style id="dataTable" data-toggle="table" data-search="true" data-side-pagination="server" data-pagination="true">
             <thead>
                 <tr>
-                <th data-field="PRODUCT_ID">Kitchen_ID</th>
-                <th data-field="Kitchen_Name">Kitchen_Name</th>
-                <th data-field="Kitchen_Type">Kitchen_Type</th>
-                <th data-field="Kitchen_open_time">Kitchen_open_time</th>
-                <th data-field="Kitchen_Close_time">Kitchen_Close_time</th>
-                <th data-field="Kitchen_Number">Kitchen_Number</th>
-                <th data-field="Meal_ID">Meal_ID</th>
-                <th data-field="Popularity">Popularity</th>
-                <th data-field="Kitchen_Address">Kitchen_Address</th>
+                <th data-field="PRODUCT_NAME">PRODUCT</th>
+                <th data-field="PRODUCT_LOGO">PRODUCT_LOGO</th>
+                <th data-field="PRODUCT_PRICE">PRICE</th>
+                <th data-field="QUANTITY">QUANTITY</th>
+                <th data-field="SCHEDULE_TIME">SCHEDULE</th>
+                <th data-field="Kitchen_Name">KITCHEN</th>
+                <th data-field="TOTAL_AMOUNT">TOTAL_AMOUNT</th>
+                <th data-field="Meal_Type">Meal Type</th>
                 </tr>
             </thead><tbody>`
             $.each(tabledata, function (key, value) {
                 console.log("key: " + key);
                 tablerow += '<tr class="' + key + '" id="rownum' + key + '">';
-                tablerow += '<td>' + value.Kitchen_ID + '</td>';
+                tablerow += '<td>' + value.PRODUCT_NAME + '</td>';
+                tablerow += '<td>' + value.PRODUCT_LOGO + '</td>';
+                tablerow += '<td>' + value.PRODUCT_PRICE + '</td>';
+                tablerow += '<td>' + value.QUANTITY + '</td>';
+                tablerow += '<td>' + value.SCHEDULE_TIME + '</td>';
                 tablerow += '<td>' + value.Kitchen_Name + '</td>';
-                tablerow += '<td>' + value.Kitchen_Type + '</td>';
-                tablerow += '<td>' + value.Kitchen_open_time + '</td>';
-                tablerow += '<td>' + value.Kitchen_Close_time + '</td>';
-                tablerow += '<td>' + value.Kitchen_Number + '</td>';
-                tablerow += '<td>' + value.Meal_ID + '</td>';
-                tablerow += '<td>' + value.Popularity + '</td>';
-                tablerow += '<td>' + value.Kitchen_Address + '</td>';
+                tablerow += '<td>' + value.TOTAL_AMOUNT + '</td>';
+                tablerow += '<td>' + value.Meal_Type + '</td>';
 
             });
             $('.card-body1').append(tablerow);
