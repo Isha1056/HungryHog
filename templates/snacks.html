@@ -227,7 +227,7 @@
   		<div class="col-md-3 col-sm-6">
     		<span class="thumbnail">
       			<img src="{{ url_for('static', filename='/images/'+i.SNACK_LOGO_FILE) }}" alt="...">
-      			<h4 style="text-align:center; padding:10px 0;">{{ i.SNACK_NAME }}</h4>
+      			<h4 id="{{ i.Kitchen_ID }}" style="text-align:center; padding:10px 0;">{{ i.SNACK_NAME }}</h4>
       			
       			<!--<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>-->
                   <div class="row">
@@ -242,10 +242,10 @@
       			<hr class="line">
       			<div class="row">
       				<div class="col-md-6 col-sm-6 col-xs-12">
-      					<button id="{{ i.SNACK_ID }}" class="btn btn-danger center-block" style="margin-top:10px;"> Add To Cart</button>
+      					<button id="{{ i.SNACK_ID }}" class="btn btn-danger center-block order-button" style="margin-top:10px;"> Add To Cart</button>
       				</div>
       				<div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:10px;">
-      					<button id="{{ i.SNACK_ID }}" class="btn btn-success center-block" >Order Now</button>
+      					<button id="{{ i.SNACK_ID }}" class="btn btn-success center-block order-button" >Order Now</button>
       				</div>
       				
       			</div>

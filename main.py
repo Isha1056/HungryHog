@@ -4,6 +4,7 @@ from io import BytesIO
 from PIL import Image
 import matplotlib.pyplot as plt
 import time
+from datetime import datetime
 
 import base64
 from io import StringIO
@@ -354,40 +355,59 @@ def showMyLunchBoxOrders():
             return str(e)
 
 
-@app.route('/Shoping_cart',methods = ['GET'])
+@app.route('/Shoping_cart',methods = ['GET', 'POST'])
 def Shoping_cart():
     # if request.method == 'POST':
     #     req = request.get_json()
     #     print(req)
-        try:
-            if conn:
-                mycursor = conn.cursor()
-                mycursor.execute("Select ORDER_SUMMURY.PRODUCT_ID, ORDER_SUMMURY.PRODUCT_NAME, ORDER_SUMMURY.QUANTITY, ORDER_SUMMURY.PRODUCT_PRICE, ORDER_SUMMURY.PRODUCT_LOGO, ORDER_SUMMURY.Kitchen_ID, ORDER_SUMMURY.SCHEDULE_TIME, ORDER_SUMMURY.TOTAL_AMOUNT, ORDER_SUMMURY.Meal_ID, Meals.Meal_Timings, Meals.Meal_Type, Kitchen.Kitchen_Name FROM ORDER_SUMMURY LEFT JOIN Kitchen ON ORDER_SUMMURY.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON ORDER_SUMMURY.Meal_ID = Meals.Meal_ID;")
-                myresult = mycursor.fetchall()
-                print(myresult)
-                ShoppingCartList = []
-                RecordCount = len(myresult)
-                for i in range(len(myresult)):
-                    ShoppingCartRecord = {
-                        "PRODUCT_ID" : myresult[i][0],
-                        "PRODUCT_NAME" : myresult[i][1],
-                        "QUANTITY": myresult[i][2],
-                        "PRODUCT_PRICE": myresult[i][3],
-                        "PRODUCT_LOGO": myresult[i][4],
-                        "Kitchen_ID": myresult[i][5],
-                        "SCHEDULE_TIME": myresult[i][6],
-                        "TOTAL_AMOUNT": myresult[i][7],
-                        "Meal_ID": myresult[i][8],
-                        "Meal_Timings": myresult[i][9],
-                        "Meal_Type": myresult[i][10],
-                        "Kitchen_Name" : myresult[i][11]
-                    }
-                    getSnacks(ShoppingCartRecord["PRODUCT_ID"], ShoppingCartRecord["PRODUCT_LOGO"])
-                    ShoppingCartRecord["PRODUCT_LOGO"] = ShoppingCartRecord["PRODUCT_ID"]+".jpg"
-                    ShoppingCartList.append(ShoppingCartRecord)
-                return jsonify(StatusCode = '1', Total = RecordCount, ShoppingCartList=ShoppingCartList)
-        except Exception as e:
-            return str(e)
+        if request.method == 'GET':
+            try:
+                if conn:
+                    mycursor = conn.cursor()
+                    mycursor.execute("Select ORDER_SUMMURY.PRODUCT_ID, ORDER_SUMMURY.PRODUCT_NAME, ORDER_SUMMURY.QUANTITY, ORDER_SUMMURY.PRODUCT_PRICE, ORDER_SUMMURY.PRODUCT_LOGO, ORDER_SUMMURY.Kitchen_ID, ORDER_SUMMURY.SCHEDULE_TIME, ORDER_SUMMURY.TOTAL_AMOUNT, ORDER_SUMMURY.Meal_ID, Meals.Meal_Timings, Meals.Meal_Type, Kitchen.Kitchen_Name FROM ORDER_SUMMURY LEFT JOIN Kitchen ON ORDER_SUMMURY.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON ORDER_SUMMURY.Meal_ID = Meals.Meal_ID;")
+                    myresult = mycursor.fetchall()
+                    print(myresult)
+                    ShoppingCartList = []
+                    RecordCount = len(myresult)
+                    for i in range(len(myresult)):
+                        ShoppingCartRecord = {
+                            "PRODUCT_ID" : myresult[i][0],
+                            "PRODUCT_NAME" : myresult[i][1],
+                            "QUANTITY": myresult[i][2],
+                            "PRODUCT_PRICE": myresult[i][3],
+                            "PRODUCT_LOGO": myresult[i][4],
+                            "Kitchen_ID": myresult[i][5],
+                            "SCHEDULE_TIME": myresult[i][6],
+                            "TOTAL_AMOUNT": myresult[i][7],
+                            "Meal_ID": myresult[i][8],
+                            "Meal_Timings": myresult[i][9],
+                            "Meal_Type": myresult[i][10],
+                            "Kitchen_Name" : myresult[i][11]
+                        }
+                        getSnacks(ShoppingCartRecord["PRODUCT_ID"], ShoppingCartRecord["PRODUCT_LOGO"])
+                        ShoppingCartRecord["PRODUCT_LOGO"] = ShoppingCartRecord["PRODUCT_ID"]+".jpg"
+                        ShoppingCartList.append(ShoppingCartRecord)
+                    return jsonify(StatusCode = '1', Total = RecordCount, ShoppingCartList=ShoppingCartList)
+            except Exception as e:
+                return str(e)
+        
+        
+        if request.method == 'POST':
+            try:
+                if conn:
+                    request_json = request.get_json()
+                    snack_id = request_json.get("SNACK_ID")
+                    #print(snack_id)
+                    mycursor = conn.cursor()
+                    sql = "INSERT INTO ORDER_SUMMURY SELECT SNACK_ID, SNACK_NAME, SNACK_PRICE, SNACK_LOGO, Kitchen_ID, '%s', SNACK_PRICE, 1, Meal_ID FROM SNACK WHERE SNACK_ID='%s'"
+                    val = (datetime.now.strftime("%m/%d/%Y, %H:%M:%S"), snack_id)
+                    mycursor.execute(sql, val)
+                    conn.commit()
+                    return jsonify(StatusCode = '1', Total = mycursor.rowcount)
+            except Exception as e:
+                return str(e)
+
+
 
 
 if __name__ == '__main__':

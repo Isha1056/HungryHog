@@ -1,0 +1,20 @@
+$(document).ready(function(){
+    $(".order-button").click(function(){
+        var id = $(this).attr('id');
+        console.log(id);
+        var json = {
+            "SNACK_ID":id
+        }
+        $.ajax({
+            type: 'post',
+            url: 'http://127.0.0.1:5000/Shoping_cart',
+            data: JSON.stringify(json),
+            contentType: "application/json; charset=utf-8",
+            traditional: true,
+            success: function (data) {
+                alert("Meal added successfully!")
+            }
+        });
+    });
+  });
+  
