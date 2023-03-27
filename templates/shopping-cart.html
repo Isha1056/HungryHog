@@ -230,9 +230,9 @@
             <div class="auto-container">
 
                 <!--Cart Outer-->
-                <div class="cart-outer">
-                    <div class="table-outer">
-                        <table class="cart-table">
+                <div class="cart-outer" id="cart-outer">
+                    <div class="table-outer" id="table-outer">
+                        <!-- <table class="cart-table">
                             <thead class="cart-header">
                                 <tr>
                                     <th class="prod-column" colspan="2">PRODUCT</th>
@@ -308,7 +308,56 @@
                                 </tr>
 
                             </tbody>
+                        </table> -->
+
+                        <table class="_table">
+                            <thead>
+                                <tr>
+                                    <th class="prod-column" colspan="2">PRODUCT</th>
+                                    <th class="price">PRICE</th>
+                                    <th>QUANTITY</th>
+                                    <th>KITCHEN</th>
+                                    <th>SCHEDULE</th>
+                                    <th>TOTAL</th>
+                                    <th width="50px">
+                                        <div class="action_container">
+                                            <button class="success" onclick="create_tr('table_body')">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="table_body">
+                                <tr>
+                                    <td colspan="2" class="prod-column">
+                                        <div class="column-box">
+                                            <figure class="prod-thumb"><a href="#"><img
+                                                        src="../static/images/resource/products/prod-thumb-1.jpg"
+                                                        alt=""></a></figure>
+                                            <h4 class="prod-title">Caffee Americano</h4>
+                                        </div>
+                                    </td>
+                                    <td class="price">Rs. 550.00</td>
+                                    <td class="qty">
+                                        <div class="quantity-spinner"><button type="button" class="minus"><span
+                                                    class="fa fa-minus"></span></button><input type="text"
+                                                name="product" value="1" class="prod_qty" /><button type="button"
+                                                class="plus"><span class="fa fa-plus"></span></button></div>
+                                    </td>
+                                    <td class="kitchenname">Urban Kitchen</td>
+                                    <td><input type="datetime-local" name="datetime"/></td>
+                                    <td>
+                                        <div class="action_container">
+                                            <button class="danger" onclick="remove_tr(this)">
+                                                <i class="fa fa-close"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
+
                     </div>
 
                 </div>
@@ -330,7 +379,7 @@
                             <div class="check-address clearfix">
                                 <h4>Your order will be delivered to the following Address</h4>
                                 <div class="form-group clearfix" id="DeliveryAddress">
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -557,6 +606,7 @@
     <script src="../static/js/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="../static/js/script.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="../static/js/ordersummary.js"></script>
     <script>
         var username = localStorage.getItem("UserName");
         var useremail = localStorage.getItem("UserEmail");
@@ -571,7 +621,7 @@
             "name": "HungryHog", //your business name
             "description": "Test Transaction",
             "image": "../static/images/HungryHogLogo.png",
-            "order_id": "order_LWJjnZv1IJaCdl", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "order_id": "order_LWJxNMeOukImPH", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
             "handler": function (response) {
                 alert(response.razorpay_payment_id);
                 alert(response.razorpay_order_id);
