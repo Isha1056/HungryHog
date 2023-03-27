@@ -213,7 +213,7 @@
       <section class="page-title" style="background-image:url(../static/images/background/10.jpg);">	
     	<div class="auto-container">
     		<h3>Hand-Crafted Dishes Sourced</h3>
-        	<h2>Snacks</h2>
+        	<h2>{{kitchen_name}}</h2>
         </div>
     </section>
     <!--End Main Slider-->
@@ -222,17 +222,20 @@
     <div class="container">
     <div class="row">
     	<!-- BEGIN PRODUCTS -->
-        {% if snacks|length > 1 %}
+        {% if snack|length > 0 %}
         {% for i in snack %}
   		<div class="col-md-3 col-sm-6">
     		<span class="thumbnail">
-      			<img src="{{ url_for('static', filename=i.SNACK_LOGO_FILE) }}" alt="...">
+      			<img src="{{ url_for('static', filename='/images/'+i.SNACK_LOGO_FILE) }}" alt="...">
       			<h4 style="text-align:center; padding:10px 0;">{{ i.SNACK_NAME }}</h4>
       			
       			<!--<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>-->
-                <div class="row">
+                  <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <p class="price" style="color:#F00; text-align:center;font-size:18px;">Timings: {{ i.Meal_Timings }}</p>
+                    </div>
       				<div class="col-md-12 col-sm-12">
-      					<p class="price" style="color:#F00; text-align:center;font-size:18px;">{{ i.SNACK_PRICE }}</p>
+      					<p class="price" style="color:#F00; text-align:center;font-size:18px;">Price: {{ i.SNACK_PRICE }}</p>
       				</div>
       				      				
       			</div>
@@ -250,9 +253,70 @@
   		</div>
     	
         {% endfor %}
+        {% elif kitchens|length > 0 %}
+        <div class="auto-container">
+        	<!--sec title one-->
+            <div class="sec-title-one">
+                <h2>Top Kitchens in your Area</h2>
+                <h4>We Create Delicous Memory</h4>
+            </div>
+        
+        	<div class="row clearfix">
+            	<!--Opening Column-->
+            	<div class="opening-column col-md-4 col-sm-12 col-xs-12">
+                	<div class="inner-box wow slideInLeft" data-wow-delay="0ms" data-wow-duration="1500ms">
+                    	<div class="title-box">Opening Hours</div>
+                        <ul>
+                        	<li>Monday — Friday<br>9:00 am - 23:00 pm</li>
+                            <li>We Deliver 24 hours a day<br>All days a week!</li>
+                            <li></li>
+                            <li><img src="../static/images/pig_waiter_img.png" alt="" style="max-width: 30%;"/></li>
+                        </ul>
+                    </div>
+                </div>
+
+                
+                <!--Dishes Column-->
+                <div class="dishes-column col-md-8 col-sm-12 col-xs-12">
+                	<div class="inner-box">
+                    
+                    	{% for i in kitchens %}
+                    	<div class="special-dish">
+                        	<div class="inner-content">
+                                <div class="row clearfix">
+                                
+                                    <!--Image Column-->
+                                    <div class="image-column col-md-4 col-sm-4 col-xs-12 pull-left">
+                                        <div class="inner">
+                                            <figure class="image-box">
+                                                <img src="https://picsum.photos/300/300" alt="" />
+                                                <!--Overlay Box-->
+                                                <div class="overlay-box">
+                                                    <div class="price">Order Now</div>
+                                                </div>
+                                            </figure>
+                                        </div>
+                                    </div>
+                                
+                                    <!--Content Column-->
+                                    <div class="content-column col-md-8 col-sm-8 col-xs-12 pull-right">
+                                        <h3>{{ i.Kitchen_Name }}</h3>
+                                        <div class="text"></div>
+                                        <a class="read-more theme-btn" href="{{url_for('snacksPageDynamic', Kitchen_ID=i.Kitchen_ID)}}">View Menu</a>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+            </div>
+        </div>
         {% else %}
         <div class="col-md-3 col-sm-6">
-            No menu items available right now...
+            Nothing to show here right now...
         </div>
         {% endif %}
   		<!-- END PRODUCTS -->

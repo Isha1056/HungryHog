@@ -38,8 +38,25 @@ conn = mysql.connector.connect(
 @app.route('/')
 def indexPage():
     if conn:
-        
-        return render_template('index.html')
+        mycursor = conn.cursor()
+        mycursor.execute("select * from Kitchen order by Kitchen_Ratings desc")
+        myresult = mycursor.fetchall()
+        l=[]
+        for i in range(min(5, len(myresult))):
+            kitchen = {
+                "Kitchen_ID" : myresult[i][0],
+                "Kitchen_Name" : myresult[i][1],
+                "Kitchen_Type": myresult[i][2],
+                "Kitchen_open_time": myresult[i][3],
+                "Kitchen_Close_time": myresult[i][4],
+                "Kitchen_Address": myresult[i][5],
+                "Kitchen_Ratings" : myresult[i][6],
+                "Kitchen_Number": myresult[i][7],
+                "Popularity": myresult[i][8],
+                "Meal_ID": myresult[i][9],
+            }
+            l.append(kitchen)
+        return render_template('index.html', kitchens=l)
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
@@ -103,7 +120,25 @@ def sign_inPage():
 @app.route('/snacks')
 def snacksPage():
     if conn:
-        return render_template('snacks.html')
+        mycursor = conn.cursor()
+        mycursor.execute("select * from Kitchen order by Kitchen_Ratings desc")
+        myresult = mycursor.fetchall()
+        l=[]
+        for i in range(len(myresult)):
+            kitchen = {
+                "Kitchen_ID" : myresult[i][0],
+                "Kitchen_Name" : myresult[i][1],
+                "Kitchen_Type": myresult[i][2],
+                "Kitchen_open_time": myresult[i][3],
+                "Kitchen_Close_time": myresult[i][4],
+                "Kitchen_Address": myresult[i][5],
+                "Kitchen_Ratings" : myresult[i][6],
+                "Kitchen_Number": myresult[i][7],
+                "Popularity": myresult[i][8],
+                "Meal_ID": myresult[i][9],
+            }
+            l.append(kitchen)
+        return render_template('snacks.html', kitchens=l, kitchen_name="Snacks", snack=[])
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
@@ -115,6 +150,7 @@ def snacksPageDynamic(Kitchen_ID):
         myresult = mycursor.fetchall()
         #print(myresult)
         l = []
+        kitchen_name=""
         for i in range(len(myresult)):
             print(myresult[i][8])
             snack = {
@@ -124,22 +160,23 @@ def snacksPageDynamic(Kitchen_ID):
                 "Kitchen_ID": myresult[i][3],
                 "Kitchen_Name": myresult[i][4],
                 "Meal_ID": myresult[i][5],
-                "SNACK_LOGO": myresult[i][6],
                 "Meal_Type" : myresult[i][7],
                 "Meal_Timings": myresult[i][8]
             }
 
-            start_time,end_time = snack["Meal_Timings"].split("-")
-            start_time=time.strptime(start_time, "%H:%M")
-            end_time=time.strptime(end_time, "%H:%M")
-            current_time=time.strptime(time.strftime("%H:%M",time.localtime()), "%H:%M")
+            #start_time,end_time = snack["Meal_Timings"].split("-")
+            #start_time=time.strptime(start_time, "%H:%M")
+            #end_time=time.strptime(end_time, "%H:%M")
+            #current_time=time.strptime(time.strftime("%H:%M",time.localtime()), "%H:%M")
             
-            if start_time<=current_time and current_time<=end_time:
-                getSnacks(snack["SNACK_ID"], snack["SNACK_LOGO"])
-                snack["SNACK_LOGO_FILE"] = snack["SNACK_ID"]+".jpg"
-                print(snack["SNACK_ID"])
-                l.append(snack)
-        return render_template('snacks.html', snack=snack)
+            #if start_time<=current_time and current_time<=end_time:
+            getSnacks(snack["SNACK_ID"], myresult[i][6])
+            snack["SNACK_LOGO_FILE"] = snack["SNACK_ID"]+".jpg"
+            print(snack["SNACK_ID"])
+            l.append(snack)
+            kitchen_name=myresult[i][4]
+        print(l)
+        return render_template('snacks.html', snack=l, kitchen_name=kitchen_name, kitchens=[])
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 

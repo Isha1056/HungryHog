@@ -730,8 +730,8 @@
                     	<div class="title-box">Opening Hours</div>
                         <ul>
                         	<li>Monday — Friday<br>9:00 am - 23:00 pm</li>
-                            <li>Saturday<br>10:00 am - 22:00 pm</li>
-                            <li>Sunday<br>10:00 am - 21:00 pm</li>
+                            <li>We Deliver 24 hours a day<br>All days a week!</li>
+                            <li></li>
                             <li><img src="../static/images/pig_waiter_img.png" alt="" style="max-width: 30%;"/></li>
                         </ul>
                     </div>
@@ -742,7 +742,7 @@
                 <div class="dishes-column col-md-8 col-sm-12 col-xs-12">
                 	<div class="inner-box">
                     
-                    	
+                    	{% for i in kitchens %}
                     	<div class="special-dish">
                         	<div class="inner-content">
                                 <div class="row clearfix">
@@ -751,7 +751,7 @@
                                     <div class="image-column col-md-4 col-sm-4 col-xs-12 pull-left">
                                         <div class="inner">
                                             <figure class="image-box">
-                                                <img src="../static/images/snacks_chommeen.jpg" alt="" />
+                                                <img src="https://picsum.photos/300/300" alt="" />
                                                 <!--Overlay Box-->
                                                 <div class="overlay-box">
                                                     <div class="price">Order Now</div>
@@ -762,47 +762,17 @@
                                 
                                     <!--Content Column-->
                                     <div class="content-column col-md-8 col-sm-8 col-xs-12 pull-right">
-                                        <h3>ChinaTown cloud Kitchen</h3>
+                                        <h3>{{ i.Kitchen_Name }}</h3>
                                         <div class="text"></div>
-                                        <a class="read-more theme-btn" href="{{url_for('snacksPage')}}">View Menu</a>
+                                        <a class="read-more theme-btn" href="{{url_for('snacksPageDynamic', Kitchen_ID=i.Kitchen_ID)}}">View Menu</a>
                                     </div>
                                     
                                 </div>
                             </div>
                         </div>
+                        {% endfor %}
                         
-                        <div class="special-dish">
-                        	<div class="inner-content">
-                                <div class="row clearfix">
-                                
-                                    <!--Image Column-->
-                                    <div class="image-column col-md-4 col-sm-4 col-xs-12 pull-left">
-                                        <div class="inner">
-                                            <figure class="image-box">
-                                                <img src="../static/images/snacks_vegroll.jpg" alt="" />
-                                                <!--Overlay Box-->
-                                                <div class="overlay-box">
-                                                    <div class="price">Order Now</div>
-                                                </div>
-                                            </figure>
-                                        </div>
-                                    </div>
-                                
-                                    <!--Content Column-->
-                                    <div class="content-column col-md-8 col-sm-8 col-xs-12 pull-right">
-                                        <h3>IndieKitchen</h3>
-                                        <div class="text"></div>
-                                        <a class="read-more theme-btn" href="{{url_for('snacksPage')}}">View Menu</a>
-                                    </div>
-                                    
-                                    
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        
-                        
-                       <a href="snacks.html" title="Order Snacks" class="btn btn-danger">View More Kitchens</a> 
+                       <a href="{{url_for('snacksPage')}}" title="Order Snacks" class="btn btn-danger">View More Kitchens</a> 
                         
                     </div>
                 </div>
