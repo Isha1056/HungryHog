@@ -346,7 +346,7 @@
                                                 class="plus"><span class="fa fa-plus"></span></button></div>
                                     </td>
                                     <td class="kitchenname">Urban Kitchen</td>
-                                    <td><input type="datetime-local" name="datetime"/></td>
+                                    <td><input type="datetime-local" name="datetime" /></td>
                                     <td>
                                         <div class="action_container">
                                             <button class="danger" onclick="remove_tr(this)">
@@ -430,8 +430,9 @@
                             <!--Check Btns-->
                             <div class="check-btns">
                                 <a href="#" class="theme-btn btn-style-two update-btn">update cart</a>
-                                <a href="#popUp" class="theme-btn btn-style-three proceed-btn">Proceed to Checkout</a>
-                                <button id="rzp-button1" class="theme-btn btn-style-three proceed-btn">Pay</button>
+                                <!-- <a href="#popUp" class="theme-btn btn-style-three proceed-btn">Proceed to Checkout</a> -->
+                                <button id="rzp-button1" class="theme-btn btn-style-three proceed-btn">Proceed for
+                                    payment</button>
                             </div>
                             <aside id="popUp" class="popup">
                                 <div class="popUpContainer">
@@ -645,6 +646,38 @@
             $(".articleSpace").append(resp);
         });
         document.getElementById('rzp-button1').onclick = function (e) {
+            USERNAME = "rzp_test_JGsIexMIOVh3bW";
+            PASSWORD = "kpvTVMIBppTJGlKtMmnzwcVd";
+            var senddata = {
+                "amount": 100,
+                "currency": "INR",
+                "receipt": "receipt#1",
+            }
+            console.log("sending")
+            $.ajax({
+                url: "https://api.razorpay.com/v1/orders",
+                method: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                headers: {
+                    "Authorization": "Basic " + btoa(USERNAME + ":" + PASSWORD)
+                },
+                data: JSON.stringify(senddata),
+                success: function (response) {
+                    console.log(response);
+                    if (response) {
+                        console.log(response);
+                        let order = response.id;
+                    }
+                    else {
+                        console.log(response.ErrorMessage);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr, status, error);
+                },
+            });
+
             rzp1.open();
             e.preventDefault();
         }
