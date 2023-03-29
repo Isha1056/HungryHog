@@ -10,9 +10,14 @@ import base64
 from io import StringIO
 import PIL.Image
 import razorpay
+from flask_cors import CORS
+app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
-client = razorpay.Client(auth=("rzp_test_JGsIexMIOVh3bW", "kpvTVMIBppTJGlKtMmnzwcVd"))
+
+# client = razorpay.Client(auth=("rzp_test_JGsIexMIOVh3bW", "kpvTVMIBppTJGlKtMmnzwcVd"))
 
 # DATA = {
 #     "amount": 100,
@@ -25,7 +30,6 @@ client = razorpay.Client(auth=("rzp_test_JGsIexMIOVh3bW", "kpvTVMIBppTJGlKtMmnzw
 # }
 # print(client.order.create(data=DATA))
 
-app = Flask(__name__)
 # Creating connection object
 conn = mysql.connector.connect(
     host = "localhost",

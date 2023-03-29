@@ -615,36 +615,6 @@
         var useraddress = localStorage.getItem("UserAddress");
         console.log(useraddress);
         $("#DeliveryAddress").append(useraddress);
-        var options = {
-            "key": "rzp_test_JGsIexMIOVh3bW", // Enter the Key ID generated from the Dashboard
-            "amount": "500", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-            "currency": "INR",
-            "name": "HungryHog", //your business name
-            "description": "Test Transaction",
-            "image": "../static/images/HungryHogLogo.png",
-            "order_id": "order_LWJxNMeOukImPH", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-            "handler": function (response) {
-                alert(response.razorpay_payment_id);
-                alert(response.razorpay_order_id);
-                alert(response.razorpay_signature)
-            },
-            "prefill": {
-                "name": username, //your customer's name
-                "email": useremail,
-                "contact": usermobile
-            },
-            "notes": {
-                "address": "HungryHog Tiffin Services"
-            },
-            "theme": {
-                "color": "#dc3f6f"
-            }
-        };
-        var rzp1 = new Razorpay(options);
-        rzp1.on('payment.failed', function (response) {
-            var resp = `<p>Payment Transaction Failed! Please retry again after some time.</p>`;
-            $(".articleSpace").append(resp);
-        });
         document.getElementById('rzp-button1').onclick = function (e) {
             USERNAME = "rzp_test_JGsIexMIOVh3bW";
             PASSWORD = "kpvTVMIBppTJGlKtMmnzwcVd";
@@ -654,20 +624,27 @@
                 "receipt": "receipt#1",
             }
             console.log("sending")
+            var order; // declare order variable
             $.ajax({
                 url: "https://api.razorpay.com/v1/orders",
-                method: "POST",
-                dataType: "json",
+                method: "GET",
+                dataType: 'jsonp',
+                cors: true,
+                secure: true,
                 contentType: "application/json",
                 headers: {
+                    'Access-Control-Allow-Origin': '*',
                     "Authorization": "Basic " + btoa(USERNAME + ":" + PASSWORD)
                 },
                 data: JSON.stringify(senddata),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader ("Authorization", "Basic " + btoa(USERNAME + ":" + PASSWORD));
+                },
                 success: function (response) {
                     console.log(response);
                     if (response) {
                         console.log(response);
-                        let order = response.id;
+                        order = response.id; // assign value to order variable
                     }
                     else {
                         console.log(response.ErrorMessage);
@@ -678,9 +655,41 @@
                 },
             });
 
+            var options = {
+                "key": "rzp_test_JGsIexMIOVh3bW", // Enter the Key ID generated from the Dashboard
+                "amount": "500", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                "currency": "INR",
+                "name": "HungryHog", //your business name
+                "description": "Test Transaction",
+                "image": "../static/images/HungryHogLogo.png",
+                "order_id": order, // use order variable here
+                "handler": function (response) {
+                    alert(response.razorpay_payment_id);
+                    alert(response.razorpay_order_id);
+                    alert(response.razorpay_signature)
+                },
+                "prefill": {
+                    "name": username, //your customer's name
+                    "email": useremail,
+                    "contact": usermobile
+                },
+                "notes": {
+                    "address": "HungryHog Tiffin Services"
+                },
+                "theme": {
+                    "color": "#dc3f6f"
+                }
+            };
+            var rzp1 = new Razorpay(options);
             rzp1.open();
             e.preventDefault();
+
+            rzp1.on('payment.failed', function (response) {
+                var resp = `<p>Payment Transaction Failed! Please retry again after some time.</p>`;
+                $(".articleSpace").append(resp);
+            });
         }
+
     </script>
 
 
