@@ -15,6 +15,8 @@ from flask_cors import CORS
 from authlib.integrations.flask_client import OAuth
 import os
 
+from itertools import groupby
+
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -240,7 +242,7 @@ def galleryPage():
 def GetOrderNowData():
     if conn:
         mycursor = conn.cursor()
-        mycursor.execute("Select ORDER_SUMMARY.PRODUCT_ID, ORDER_SUMMARY.PRODUCT_NAME, ORDER_SUMMARY.QUANTITY, ORDER_SUMMARY.PRODUCT_PRICE, ORDER_SUMMARY.PRODUCT_LOGO, ORDER_SUMMARY.Kitchen_ID, ORDER_SUMMARY.SCHEDULE_TIME, ORDER_SUMMARY.TOTAL_AMOUNT, ORDER_SUMMARY.Meal_ID, ORDER_SUMMARY.USER_EMAIL, ORDER_SUMMARY.IS_COMPLETE, Meals.Meal_Timings, Meals.Meal_Type, Kitchen.Kitchen_Name FROM ORDER_SUMMARY LEFT JOIN Kitchen ON ORDER_SUMMARY.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON ORDER_SUMMARY.Meal_ID = Meals.Meal_ID WHERE ORDER_SUMMARY.USER_EMAIL='"+session['USER_EMAIL']+"' AND ORDER_SUMMARY.IS_COMPLETE=0;")
+        mycursor.execute("Select ORDER_SUMMARY.PRODUCT_ID, ORDER_SUMMARY.PRODUCT_NAME, ORDER_SUMMARY.QUANTITY, ORDER_SUMMARY.PRODUCT_PRICE, ORDER_SUMMARY.PRODUCT_LOGO, ORDER_SUMMARY.Kitchen_ID, ORDER_SUMMARY.SCHEDULE_TIME, ORDER_SUMMARY.TOTAL_AMOUNT, ORDER_SUMMARY.Meal_ID, ORDER_SUMMARY.USER_EMAIL, ORDER_SUMMARY.IS_COMPLETE, Meals.Meal_Timings, Meals.Meal_Type, Kitchen.Kitchen_Name FROM ORDER_SUMMARY LEFT JOIN Kitchen ON ORDER_SUMMARY.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON ORDER_SUMMARY.Meal_ID = Meals.Meal_ID WHERE ORDER_SUMMARY.USER_EMAIL='"+session['USER_EMAIL']+"' AND ORDER_SUMMARY.IS_COMPLETE=1;")
         myresult = mycursor.fetchall()
         print(myresult)
         GetOrderNowList = []
@@ -267,11 +269,20 @@ def GetOrderNowData():
             GetOrderNowList.append(GetOrderNowRecord)
         return GetOrderNowList
 
+
+
 @app.route('/ordernow')
 def ordernowPage():
     if conn and "USER_EMAIL" in session:
         data = GetOrderNowData()
-        return render_template('ordernow.html', session=session, data=data)
+        print(data)
+        grouped_data = []
+        for key, group in groupby(data, lambda x: x['SCHEDULE_TIME']):
+            grouped_data.append(list(group))
+        print(len(grouped_data))
+        print('grouped_data:'+ str(grouped_data))
+        return render_template('ordernow.html', session=session, data=grouped_data)
+        
     elif conn:
         return redirect('/sign_in')
     else:
