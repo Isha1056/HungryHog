@@ -236,10 +236,42 @@ def galleryPage():
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
+
+def GetOrderNowData():
+    if conn:
+        mycursor = conn.cursor()
+        mycursor.execute("Select ORDER_SUMMARY.PRODUCT_ID, ORDER_SUMMARY.PRODUCT_NAME, ORDER_SUMMARY.QUANTITY, ORDER_SUMMARY.PRODUCT_PRICE, ORDER_SUMMARY.PRODUCT_LOGO, ORDER_SUMMARY.Kitchen_ID, ORDER_SUMMARY.SCHEDULE_TIME, ORDER_SUMMARY.TOTAL_AMOUNT, ORDER_SUMMARY.Meal_ID, ORDER_SUMMARY.USER_EMAIL, ORDER_SUMMARY.IS_COMPLETE, Meals.Meal_Timings, Meals.Meal_Type, Kitchen.Kitchen_Name FROM ORDER_SUMMARY LEFT JOIN Kitchen ON ORDER_SUMMARY.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON ORDER_SUMMARY.Meal_ID = Meals.Meal_ID WHERE ORDER_SUMMARY.USER_EMAIL='"+session['USER_EMAIL']+"' AND ORDER_SUMMARY.IS_COMPLETE=0;")
+        myresult = mycursor.fetchall()
+        print(myresult)
+        GetOrderNowList = []
+        RecordCount = len(myresult)
+        for i in range(len(myresult)):
+            GetOrderNowRecord = {
+                    "PRODUCT_ID" : myresult[i][0],
+                    "PRODUCT_NAME" : myresult[i][1],
+                    "QUANTITY": myresult[i][2],
+                    "PRODUCT_PRICE": myresult[i][3],
+                    "PRODUCT_LOGO": myresult[i][4],
+                    "Kitchen_ID": myresult[i][5],
+                    "SCHEDULE_TIME": myresult[i][6],
+                    "TOTAL_AMOUNT": myresult[i][7],
+                    "Meal_ID": myresult[i][8],
+                    "USER_EMAIL": myresult[i][9],
+                    "IS_COMPLETE": myresult[i][10],
+                    "Meal_Timings": myresult[i][11],
+                    "Meal_Type": myresult[i][12],
+                    "Kitchen_Name" : myresult[i][13]
+                }
+            getSnacks(GetOrderNowRecord["PRODUCT_ID"], GetOrderNowRecord["PRODUCT_LOGO"])
+            GetOrderNowRecord["PRODUCT_LOGO"] = GetOrderNowRecord["PRODUCT_ID"]+".jpg"
+            GetOrderNowList.append(GetOrderNowRecord)
+        return GetOrderNowList
+
 @app.route('/ordernow')
 def ordernowPage():
     if conn and "USER_EMAIL" in session:
-        return render_template('ordernow.html', session=session)
+        data = GetOrderNowData()
+        return render_template('ordernow.html', session=session, data=data)
     elif conn:
         return redirect('/sign_in')
     else:
