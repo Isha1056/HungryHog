@@ -597,7 +597,8 @@ def Shoping_cart():
                             "IS_COMPLETE": myresult[i][10],
                             "Meal_Timings": myresult[i][11],
                             "Meal_Type": myresult[i][12],
-                            "Kitchen_Name" : myresult[i][13]
+                            "Kitchen_Name" : myresult[i][13],
+                            "PAYMENT_ID": myresult[i][14]
                         }
                         getSnacks(ShoppingCartRecord["PRODUCT_ID"], ShoppingCartRecord["PRODUCT_LOGO"])
                         ShoppingCartRecord["PRODUCT_LOGO"] = ShoppingCartRecord["PRODUCT_ID"]+".jpg"
@@ -622,6 +623,24 @@ def Shoping_cart():
                     return jsonify(StatusCode = '1', Total = mycursor.rowcount)
             except Exception as e:
                 return str(e)
+            
+        if request.method == 'PUT':
+            try:
+                if conn:
+                    request_json = request.get_json()
+                    mycursor = conn.cursor()
+                    sql = "UPDATE ORDER_SUMMARY SET QUANTITY = %s, TOTAL_AMOUNT = %s, SCHEDULE_TIME = %s, PAYMENT_ID = %s, IS_COMPLETE = %s WHERE PRODUCT_ID = %s"
+                    val = (request_json['QUANTITY'], request_json['TOTAL_AMOUNT'], request_json['SCHEDULE_TIME'], request_json['PAYMENT_ID'], request_json['IS_COMPLETE'],  request_json['PRODUCT_ID'])
+                    mycursor.execute(sql, val)
+                    conn.commit()
+                    return jsonify({'success': True}), 200
+            except:
+                conn.rollback()
+                return jsonify({'success': False}), 400
+            finally:
+                mycursor.close()
+            
+
 
 @app.route('/deleteCartRow',methods = ['POST'])
 def deleteCartRow():
