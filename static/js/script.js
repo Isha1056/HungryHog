@@ -429,14 +429,19 @@
 	
 	//Quantity Spinner
 	if($('.quantity-spinner').length){
-		 $('.quantity-spinner .plus').on('click', function() {
+		$("body").on("click", ".quantity-spinner .plus", function () {
 			var val = $(this).prev('.prod_qty').val();
 			$(this).prev('.prod_qty').val((val*1)+1);
+			
+			price = $(this).closest('tr').find('.price').text();
+			$(this).closest('tr').find('.total').text(calculateTotal(price, parseInt((val*1)+1)));
 		});
-		$('.quantity-spinner .minus').on('click', function(){
+		$("body").on("click", ".quantity-spinner .minus", function () {
 			var val = $(this).next('.prod_qty').val();
 			if (val != 1 ){
 			$(this).next('.prod_qty').val((val*1)-1);
+			price = $(this).closest('tr').find('.price').text();
+			$(this).closest('tr').find('.total').text(calculateTotal(price, parseInt((val*1)-1)));
 			}
 		});
 	}

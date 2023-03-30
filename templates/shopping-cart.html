@@ -229,6 +229,107 @@
         <section class="cart-section">
             <div class="auto-container">
 
+                <form id="">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img src="../static/images/product.jpg" class="img-responsive thumbnail" />
+                        </div>
+                        <div class="col-md-8">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h5 class="panel-title"><i class="fa fa-map-marker"></i> Delivery Details</h5>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="name">Full Name</label>
+                                                <input type="text" placeholder="Full Name"
+                                                    class="form-control input-sm required" name="name" />
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="email">Email</label>
+                                                <input type="email" placeholder="Email Address"
+                                                    class="form-control input-sm required" name="email" />
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="mobile">Mobile</label>
+                                                <div class="input-group input-group-sm">
+                                                    <span class="input-group-addon">+91</span>
+                                                    <input type="text" class="form-control input-sm required"
+                                                        placeholder="Mobile Number" name="mobile" maxlength="10"
+                                                        min="10" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="address">House Address</label>
+                                                <input type="text" placeholder="Street address"
+                                                    class="form-control input-sm required" name="address" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="">State:</label>
+                                                <input type="text" placeholder="state"
+                                                    class="form-control input-sm required" name="state" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+
+                                                <label for="">City:</label>
+                                                <input type="text" placeholder="city"
+                                                    class="form-control input-sm required" name="city" />
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="pincode">Pincode</label>
+                                                <input type="text" placeholder="Pincode"
+                                                    class="form-control input-sm required" name="pincode" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <div class="form-group form-group-sm">
+                                        <label for="menu">Meal Prefrences</label>
+                                        <select name="menulist" class="form-control required" id="menulist">
+                                            <option value="" disabled selected>Your Meal Preference</option>
+                                            <option value="3">VEG</option>
+                                            <option value="2">NON-VEG</option>
+                                            <option value="1">VEG/NON-VEG(ALTERNATE)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-2">
+                                    <div class="form-group form-group-sm">
+                                        <label for="subscription">Subscription period</label>
+                                        <select name="subscription" id="subscription" class="form-control required">
+                                        </select>
+                                        <input type="hidden" value="" id="subscription_text" name="subscription_text" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
                 <!--Cart Outer-->
                 <div class="cart-outer" id="cart-outer">
                     <div class="table-outer" id="table-outer">
@@ -258,18 +359,18 @@
                                     <td colspan="2" class="prod-column">
                                         <div class="column-box">
                                             <figure class="prod-thumb"><a href="#"><img
-                                                        src="{{ url_for('static', filename='/images/'+i.PRODUCT_LOGO) }}" width="150" 
-                                                        height="150" alt="{{i.PRODUCT_LOGO}}"
-                                                         ></a></figure>
-                                            <h4 class="prod-title">{{i.PRODUCT_NAME}}</h4>
+                                                        src="{{ url_for('static', filename='/images/'+i.PRODUCT_LOGO) }}"
+                                                        width="150" height="150" alt="{{i.PRODUCT_LOGO}}">
+                                                    <h4 class="prod-title">{{i.PRODUCT_NAME}}</h4>
                                         </div>
                                     </td>
                                     <td class="price">{{i.PRODUCT_PRICE}}</td>
                                     <td class="qty">
                                         <div class="quantity-spinner"><button type="button" class="minus"><span
                                                     class="fa fa-minus"></span></button><input type="text"
-                                                name="product" value="1" class="prod_qty" /><button type="button"
-                                                class="plus"><span class="fa fa-plus"></span></button></div>
+                                                name="product" value="{{i.QUANTITY}}" id="prod_qty"
+                                                class="prod_qty" /><button type="button" class="plus"><span
+                                                    class="fa fa-plus"></span></button></div>
                                     </td>
                                     <td class="kitchenname">{{i.Kitchen_Name}}</td>
                                     <td class="total">{{i.PRODUCT_PRICE}}</td>
@@ -287,8 +388,15 @@
                         {% else %}
                         <h3>Snort! your shopping cart is empty. Please select meals to add in your tiffin</h3>
                         {% endif %}
+                        <div class="OrderSchedule" style="margin: 20px;float: right;">
+                            <h4>Select a date for your meal delivery</h4>
+                            <input type="date" class="ScheduleCartOrder" id="ScheduleCartOrder" name="ScheduleCartOrder"
+                                style="border: 2px solid #cd6073; padding: 10px; color: #cd6073;">
+                        </div>
                     </div>
-
+                    <div class="check-btns" style="margin-top: 20px; float: right;">
+                        <button id="Checkout" class="theme-btn btn-style-three Checkout">Checkout</button>
+                    </div>
                 </div>
 
                 <div class="row clearfix">
@@ -326,7 +434,7 @@
                                     <!--Totals Table-->
                                     <ul class="totals-table">
                                         <li class="clearfix"><span class="col bold-text">Subtotal</span><span
-                                                class="col total-amount">$110</span></li>
+                                                class="col total-amount">Rs. </span></li>
                                     </ul>
                                 </div>
 
@@ -345,13 +453,13 @@
                                     <div class="select-box"><input type="radio" name="payment-group" id="radio-three"
                                             checked><label for="radio-three"><span class="default-check"></span><span
                                                 class="check-icon fa fa-check"></span>Local Pickup (Free)</label></div>
-                                    <a href="#" class="theme-btn btn-style-three calculate-ship">calculate shipping</a>
+                                    <!-- <a href="#" class="theme-btn btn-style-three calculate-ship">calculate shipping</a> -->
                                 </div>
 
                                 <!--Lower Total-->
                                 <ul class="lower-total">
                                     <li class="clearfix"><span class="col bold-text">TOTAL</span><span
-                                            class="col total">$110</span></li>
+                                            class="col total-amount">Rs. </span></li>
                                 </ul>
 
                             </div>
@@ -359,7 +467,6 @@
                             <!--Check Btns-->
                             <div class="check-btns">
                                 <a href="#" class="theme-btn btn-style-two update-btn">update cart</a>
-                                <!-- <a href="#popUp" class="theme-btn btn-style-three proceed-btn">Proceed to Checkout</a> -->
                                 <button id="rzp-button1" class="theme-btn btn-style-three proceed-btn">Proceed for
                                     payment</button>
                             </div>
@@ -538,7 +645,7 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="../static/js/CartOrder.js"></script>
     <script>
-        
+
         document.getElementById('rzp-button1').onclick = function (e) {
             USERNAME = "rzp_test_JGsIexMIOVh3bW";
             PASSWORD = "kpvTVMIBppTJGlKtMmnzwcVd";
