@@ -648,8 +648,8 @@ def UpdateOrderHistory():
                 PRODUCT_LIST = request_json['PRODUCT_LIST']
                 print(PRODUCT_LIST)
                 for i in PRODUCT_LIST:
-                    sql = "UPDATE ORDER_SUMMARY SET QUANTITY = %s, TOTAL_AMOUNT = %s, SCHEDULE_TIME = %s, PAYMENT_ID = %s, IS_COMPLETE = %s WHERE PRODUCT_ID = %s"
-                    val = (i['QUANTITY'], i['TOTAL_AMOUNT'], i['SCHEDULE_TIME'], PAYMENT_ID, IS_COMPLETE,  i['PRODUCT_ID'])
+                    sql = "UPDATE ORDER_SUMMARY SET QUANTITY = %s, TOTAL_AMOUNT = %s, SCHEDULE_TIME = %s, PAYMENT_ID = %s, IS_COMPLETE = %s WHERE PRODUCT_ID = %s AND USER_EMAIL=%s AND PAYMENT_ID=%s"
+                    val = (i['QUANTITY'], i['TOTAL_AMOUNT'], i['SCHEDULE_TIME'], PAYMENT_ID, IS_COMPLETE,  i['PRODUCT_ID'], session['USER_EMAIL'], '')
                     mycursor.execute(sql, val)
                     conn.commit()
                 update_cart_count()
