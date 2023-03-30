@@ -71,10 +71,7 @@ $(function () {
             <td colspan="2" class="prod-column">
                 <div class="column-box">
                     <figure class="prod-thumb"><a href="#"><img
-                                src="` +
-          tabledata[key].PRODUCT_LOGO +
-          `"
-                                alt=""></a></figure>
+                                src="` +tabledata[key].PRODUCT_LOGO +`"alt=`+tabledata[key].PRODUCT_LOGO+`"></a></figure>
                     <h4 class="prod-title">` +
           tabledata[key].PRODUCT_NAME +
           `</h4>
