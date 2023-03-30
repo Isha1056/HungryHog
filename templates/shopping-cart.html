@@ -232,15 +232,15 @@
                 <!--Cart Outer-->
                 <div class="cart-outer" id="cart-outer">
                     <div class="table-outer" id="table-outer">
+                        {% if data|length > 0 %}
                         <table class="_table">
                             <thead>
                                 <tr>
                                     <th class="prod-column" colspan="2">PRODUCT</th>
-                                    <th class="price">PRICE</th>
+                                    <th class="price">PRICE (in Rs.)</th>
                                     <th>QUANTITY</th>
                                     <th>KITCHEN</th>
-                                    <th>SCHEDULE</th>
-                                    <th>TOTAL</th>
+                                    <th>TOTAL (in Rs.)</th>
                                     <th width="50px">
                                         <div class="action_container">
                                             <!-- <button class="success" onclick="create_tr('table_body')">
@@ -250,36 +250,42 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <!-- <tbody id="table_body">
+
+                            <tbody id="table_body">
+                                {% for i in data %}
                                 <tr>
+                                    <td class="productID" style="display:none;">{{i.PRODUCT_ID}}</td>
                                     <td colspan="2" class="prod-column">
                                         <div class="column-box">
                                             <figure class="prod-thumb"><a href="#"><img
-                                                        src="../static/images/resource/products/prod-thumb-1.jpg"
-                                                        alt=""></a></figure>
-                                            <h4 class="prod-title">Caffee Americano</h4>
+                                                        src="{{ url_for('static', filename='/images/'+i.PRODUCT_LOGO) }}" alt="{{i.PRODUCT_LOGO}}"
+                                                         ></a></figure>
+                                            <h4 class="prod-title">{{i.PRODUCT_NAME}}</h4>
                                         </div>
                                     </td>
-                                    <td class="price">Rs. 550.00</td>
+                                    <td class="price">{{i.PRODUCT_PRICE}}</td>
                                     <td class="qty">
                                         <div class="quantity-spinner"><button type="button" class="minus"><span
                                                     class="fa fa-minus"></span></button><input type="text"
                                                 name="product" value="1" class="prod_qty" /><button type="button"
                                                 class="plus"><span class="fa fa-plus"></span></button></div>
                                     </td>
-                                    <td class="kitchenname">Urban Kitchen</td>
-                                    <td><input type="datetime-local" name="datetime" /></td>
+                                    <td class="kitchenname">{{i.Kitchen_Name}}</td>
+                                    <td class="total">{{i.PRODUCT_PRICE}}</td>
                                     <td>
                                         <div class="action_container">
-                                            <button class="danger" onclick="remove_tr(this)">
+                                            <button class="danger removeOrder">
                                                 <i class="fa fa-close"></i>
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
-                            </tbody> -->
+                                {% endfor %}
+                            </tbody>
                         </table>
-
+                        {% else %}
+                        <h3>Snort! your shopping cart is empty. Please select meals to add in your tiffin</h3>
+                        {% endif %}
                     </div>
 
                 </div>
@@ -531,12 +537,7 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="../static/js/CartOrder.js"></script>
     <script>
-        var username = localStorage.getItem("UserName");
-        var useremail = localStorage.getItem("UserEmail");
-        var usermobile = localStorage.getItem("UserMobile");
-        var useraddress = localStorage.getItem("UserAddress");
-        console.log(useraddress);
-        $("#DeliveryAddress").append(useraddress);
+        
         document.getElementById('rzp-button1').onclick = function (e) {
             USERNAME = "rzp_test_JGsIexMIOVh3bW";
             PASSWORD = "kpvTVMIBppTJGlKtMmnzwcVd";
@@ -560,7 +561,7 @@
                 },
                 data: JSON.stringify(senddata),
                 beforeSend: function (xhr) {
-                    xhr.setRequestHeader ("Authorization", "Basic " + btoa(USERNAME + ":" + PASSWORD));
+                    xhr.setRequestHeader("Authorization", "Basic " + btoa(USERNAME + ":" + PASSWORD));
                 },
                 success: function (response) {
                     console.log(response);
