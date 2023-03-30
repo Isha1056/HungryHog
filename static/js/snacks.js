@@ -12,7 +12,9 @@ $(document).ready(function(){
             contentType: "application/json; charset=utf-8",
             traditional: true,
             success: function (data) {
-                alert("Meal added successfully!")
+                $(".class").text(parseInt($(".class").text())+1);
+                $(this).prop('disabled', true);
+                $(this).text('Added');  
             }
         });
     });

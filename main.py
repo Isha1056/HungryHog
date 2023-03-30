@@ -1,5 +1,5 @@
 import mysql.connector
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, redirect, url_for, session
 from io import BytesIO
 from PIL import Image
 import matplotlib.pyplot as plt
@@ -11,12 +11,150 @@ from io import StringIO
 import PIL.Image
 import razorpay
 from flask_cors import CORS
+
+from authlib.integrations.flask_client import OAuth
+import os
+
+
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+
+oauth = OAuth(app)
+app.secret_key="HungryHogOinkOink"
+
+#### OAUTH ########
+##############################################################################################################################################################
+
+#GOOGLE
+@app.route('/google/')
+def google():
+   
+    # Google Oauth Config
+    # Get client_id and client_secret from environment variables
+    # For developement purpose you can directly put it
+    # here inside double quotes
+    GOOGLE_CLIENT_ID = "334805346698-8oq76gdpbl9cud4q48b2ah5t492k94sg.apps.googleusercontent.com"
+    GOOGLE_CLIENT_SECRET = "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"
+     
+    CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
+    oauth.register(
+        name='google',
+        client_id=GOOGLE_CLIENT_ID,
+        client_secret=GOOGLE_CLIENT_SECRET,
+        server_metadata_url=CONF_URL,
+        client_kwargs={
+            'scope': 'openid email profile'
+        }
+    )
+     
+    # Redirect to google_auth function
+    redirect_uri = url_for('google_auth', _external=True)
+    return oauth.google.authorize_redirect(redirect_uri)
+ 
+@app.route('/google/auth/')
+def google_auth():
+    token = oauth.google.authorize_access_token()
+    #user = oauth.google.parse_id_token(token)
+    session['USER_EMAIL'] = token['userinfo']['email']
+    session['USER_NAME'] = token['userinfo']['name']
+
+    mycursor = conn.cursor()
+    sql = "INSERT IGNORE INTO USERS VALUES (%s, '', %s, '', '', '', '', '');"
+    val = (session['USER_NAME'], session['USER_EMAIL'])
+    mycursor.execute(sql, val)
+    conn.commit()
+    
+    mycursor = conn.cursor()
+    mycursor.execute('SELECT * FROM USERS WHERE USER_EMAIL="'+session["USER_EMAIL"]+'"')
+    myresult = mycursor.fetchall()
+    print(myresult)
+    session['USER_PASSWORD'] = myresult[0][1]
+    session['USER_STREET'] = myresult[0][3]
+    session['USER_STATE'] = myresult[0][4]
+    session['USER_CITY'] = myresult[0][5]
+    session['USER_PINCODE'] = myresult[0][6]
+    session['USER_MOBILE'] = myresult[0][7]
 
 
+    mycursor = conn.cursor()
+    mycursor.execute('SELECT COUNT(*) FROM ORDER_SUMMARY WHERE USER_EMAIL="'+session["USER_EMAIL"]+'" AND IS_COMPLETE=0')
+    myresult = mycursor.fetchall()
+    session['CART_COUNT'] = myresult[0][0]
+
+    print(" Google User ", token['userinfo']['email'])
+    return redirect('/')
+
+
+
+#FACEBOOK
+@app.route('/facebook/')
+def facebook():
+   
+    # Facebook Oauth Config
+    FACEBOOK_CLIENT_ID = os.environ.get('FACEBOOK_CLIENT_ID')
+    FACEBOOK_CLIENT_SECRET = os.environ.get('FACEBOOK_CLIENT_SECRET')
+    oauth.register(
+        name='facebook',
+        client_id=FACEBOOK_CLIENT_ID,
+        client_secret=FACEBOOK_CLIENT_SECRET,
+        access_token_url='https://graph.facebook.com/oauth/access_token',
+        access_token_params=None,
+        authorize_url='https://www.facebook.com/dialog/oauth',
+        authorize_params=None,
+        api_base_url='https://graph.facebook.com/',
+        client_kwargs={'scope': 'email'},
+    )
+    redirect_uri = url_for('facebook_auth', _external=True)
+    return oauth.facebook.authorize_redirect(redirect_uri)
+ 
+@app.route('/facebook/auth/')
+def facebook_auth():
+    token = oauth.facebook.authorize_access_token()
+    resp = oauth.facebook.get(
+        'https://graph.facebook.com/me?fields=id,name,email,picture{url}')
+    profile = resp.json()
+    print("Facebook User ", profile)
+    return redirect('/')
+
+
+
+#TWITTER
+@app.route('/twitter/')
+def twitter():
+   
+    # Twitter Oauth Config
+    TWITTER_CLIENT_ID = os.environ.get('TWITTER_CLIENT_ID')
+    TWITTER_CLIENT_SECRET = os.environ.get('TWITTER_CLIENT_SECRET')
+    oauth.register(
+        name='twitter',
+        client_id=TWITTER_CLIENT_ID,
+        client_secret=TWITTER_CLIENT_SECRET,
+        request_token_url='https://api.twitter.com/oauth/request_token',
+        request_token_params=None,
+        access_token_url='https://api.twitter.com/oauth/access_token',
+        access_token_params=None,
+        authorize_url='https://api.twitter.com/oauth/authenticate',
+        authorize_params=None,
+        api_base_url='https://api.twitter.com/1.1/',
+        client_kwargs=None,
+    )
+    redirect_uri = url_for('twitter_auth', _external=True)
+    return oauth.twitter.authorize_redirect(redirect_uri)
+ 
+@app.route('/twitter/auth/')
+def twitter_auth():
+    token = oauth.twitter.authorize_access_token()
+    resp = oauth.twitter.get('account/verify_credentials.json')
+    profile = resp.json()
+    print(" Twitter User", profile)
+    return redirect('/')
+
+
+##############################################################################################################################################################
 # client = razorpay.Client(auth=("rzp_test_JGsIexMIOVh3bW", "kpvTVMIBppTJGlKtMmnzwcVd"))
 
 # DATA = {
@@ -61,28 +199,30 @@ def indexPage():
                 "Meal_ID": myresult[i][9],
             }
             l.append(kitchen)
-        return render_template('index.html', kitchens=l)
+        return render_template('index.html', kitchens=l, session=session)
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
 @app.route('/about')
 def aboutPage():
     if conn:
-        return render_template('about.html')
+        return render_template('about.html', session=session)
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
 @app.route('/checkout')
 def checkoutPage():
-    if conn:
-        return render_template('checkout.html')
+    if conn and "USER_EMAIL" in session:
+        return render_template('checkout.html', session=session)
+    elif conn:
+        return redirect('/sign_in')
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
 @app.route('/contact')
 def contactPage():
     if conn:
-        return render_template('contact.html')
+        return render_template('contact.html', session=session)
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
@@ -90,35 +230,43 @@ def contactPage():
 @app.route('/gallery')
 def galleryPage():
     if conn:
-        return render_template('gallery.html')
+        return render_template('gallery.html', session=session)
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
 @app.route('/ordernow')
 def ordernowPage():
-    if conn:
-        return render_template('ordernow.html')
+    if conn and "USER_EMAIL" in session:
+        return render_template('ordernow.html', session=session)
+    elif conn:
+        return redirect('/sign_in')
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
 @app.route('/reservation')
 def reservationPage():
-    if conn:
-        return render_template('reservation.html')
+    if conn and "USER_EMAIL" in session:
+        return render_template('reservation.html', session=session)
+    elif conn:
+        return redirect('/sign_in')
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
 @app.route('/shopping_cart')
 def shopping_cartPage():
-    if conn:
+    if conn and "USER_EMAIL" in session:
         data = GetCart()
-        return render_template('shopping-cart.html', data=data)
+        return render_template('shopping-cart.html', session=session)
+    elif conn:
+        return redirect('/sign_in', data=data)
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
-@app.route('/sign_in')
+@app.route('/sign_in', methods=['GET', 'POST'])
 def sign_inPage():
-    if conn:
+    if conn and "USER_EMAIL" in session:
+        redirect('/')
+    elif conn:
         return render_template('sign_in.html')
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
@@ -144,17 +292,16 @@ def snacksPage():
                 "Meal_ID": myresult[i][9],
             }
             l.append(kitchen)
-        return render_template('snacks.html', kitchens=l, kitchen_name="Snacks", snack=[])
+        return render_template('snacks.html', kitchens=l, kitchen_name="Snacks", snack=[], session=session)
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
 @app.route('/snacks/<string:Kitchen_ID>')
 def snacksPageDynamic(Kitchen_ID):
-    if conn:
+    if conn and "USER_EMAIL" in session:
         mycursor = conn.cursor()
         mycursor.execute("select SNACK.SNACK_ID, SNACK.SNACK_NAME, SNACK.SNACK_PRICE, SNACK.Kitchen_ID, Kitchen.Kitchen_Name, SNACK.Meal_ID, SNACK.SNACK_LOGO, Meals.Meal_Type, Meals.Meal_Timings FROM SNACK  LEFT JOIN Kitchen ON SNACK.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON SNACK.Meal_ID = Meals.Meal_ID WHERE Kitchen.Kitchen_ID='"+Kitchen_ID+"'")
         myresult = mycursor.fetchall()
-        #print(myresult)
         l = []
         kitchen_name=""
         for i in range(len(myresult)):
@@ -182,7 +329,9 @@ def snacksPageDynamic(Kitchen_ID):
             l.append(snack)
             kitchen_name=myresult[i][4]
         print(l)
-        return render_template('snacks.html', snack=l, kitchen_name=kitchen_name, kitchens=[])
+        return render_template('snacks.html', snack=l, kitchen_name=kitchen_name, kitchens=[], session=session)
+    elif conn:
+        return redirect('/sign_in')
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
@@ -190,28 +339,28 @@ def snacksPageDynamic(Kitchen_ID):
 @app.route('/admin_home')
 def admin_homePage():
     if conn:
-        return render_template('admin_home.html')
+        return render_template('admin_home.html', session=session)
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
 @app.route('/admin_users')
 def admin_usersPage():
     if conn:
-        return render_template('admin_users.html')
+        return render_template('admin_users.html', session=session)
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
 @app.route('/admin_kitchens')
 def admin_kitchensPage():
     if conn:
-        return render_template('admin_kitchens.html')
+        return render_template('admin_kitchens.html', session=session)
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
 @app.route('/admin_delivery_partners')
 def admin_delivery_partnersPage():
     if conn:
-        return render_template('admin_delivery_partner.html')
+        return render_template('admin_delivery_partner.html', session=session)
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
@@ -272,30 +421,60 @@ def UsersAuthentication():
     try:
         if conn:
             mycursor = conn.cursor()
-            User_Email = req["USER_EMAIL"]
-            User_Password = req["USER_PASSWORD"]
-            mycursor.execute('SELECT * FROM USERS WHERE USER_EMAIL="'+User_Email+'"')
+            sql = "INSERT IGNORE INTO USERS VALUES (%s, %s, %s, '', '', '', '', '');"
+            val = (req['USER_EMAIL'].split("@")[0], req["USER_PASSWORD"], req['USER_EMAIL'])
+            mycursor.execute(sql, val)
+            conn.commit()
+            
+            session['USER_EMAIL'] = req['USER_EMAIL']
+            session['USER_NAME'] = req['USER_EMAIL'].split("@")[0]
+
+
+            mycursor = conn.cursor()
+            mycursor.execute('SELECT * FROM USERS WHERE USER_EMAIL="'+req["USER_EMAIL"]+'"')
             myresult = mycursor.fetchall()
             print(myresult)
             if len(myresult) == 0:
                 return jsonify(StatusCode = '0',ErrorMessage='Invalid User email')
-            if (req['USER_EMAIL'] == myresult[0][4] and req['USER_PASSWORD'] == myresult[0][2]): 
-                user_record = {
-                    "USER_ID" : myresult[0][0],
-                    "USER_NAME" : myresult[0][1],
-                    "USER_PASSWORD" : myresult[0][2],
-                    "USER_TYPE" : myresult[0][3],
-                    "USER_EMAIL" : myresult[0][4],
-                    "USER_ADDRESS" : myresult[0][5] ,
-                    "USER_MOBILE" : myresult[0][6],
-                    "VEG_NONVEG_PERF" : myresult[0][7],
-                    "Subscription_ID" : myresult[0][8],
-                }
-                return jsonify(StatusCode = '1', UserRecord=user_record)
-            else:
-                return jsonify(StatusCode = '2',ErrorMessage='Wrong Credentials')
+            user_record = {
+                "USER_NAME" : myresult[0][0],
+                "USER_PASSWORD" : myresult[0][1],
+                "USER_EMAIL" : myresult[0][2],
+                "USER_STREET" : myresult[0][3],
+                "USER_STATE" : myresult[0][4],
+                "USER_CITY" : myresult[0][5],
+                "USER_PINCODE" : myresult[0][6],
+                "USER_MOBILE" : myresult[0][7],
+            }
+            session['USER_PASSWORD'] = myresult[0][1]
+            session['USER_STREET'] = myresult[0][3]
+            session['USER_STATE'] = myresult[0][4]
+            session['USER_CITY'] = myresult[0][5]
+            session['USER_PINCODE'] = myresult[0][6]
+            session['USER_MOBILE'] = myresult[0][7]
+
+            mycursor = conn.cursor()
+            mycursor.execute('SELECT COUNT(*) FROM ORDER_SUMMARY WHERE USER_EMAIL="'+session["USER_EMAIL"]+'" AND IS_COMPLETE=0')
+            myresult = mycursor.fetchall()
+            session['CART_COUNT'] = myresult[0][0]
+
+            return jsonify(StatusCode = '1', UserRecord=user_record)
     except Exception as e:
         return str(e)
+
+
+@app.route('/logout',methods = ['GET']) 
+def logout():
+    session.pop("USER_NAME")
+    session.pop("USER_PASSWORD")
+    session.pop("USER_EMAIL")
+    session.pop("USER_STREET")
+    session.pop("USER_STATE")
+    session.pop("USER_CITY")
+    session.pop("USER_PINCODE")
+    session.pop("USER_MOBILE")
+    return redirect('/')
+
 
 @app.route('/getKitchens',methods = ['GET'])
 def getKitchens():
@@ -335,7 +514,7 @@ def showMyLunchBoxOrders():
         try:
             if conn:
                 mycursor = conn.cursor()
-                mycursor.execute("select Lunch_Box_Order.Lunch_Box_Order_ID, Lunch_Box_Order.Lunch_Box_Type, Lunch_Box_Order.Lunch_Box_Size, Lunch_Box_Order.Lunch_Box_color_pref, Payment.Payment_type, Payment.Payment_Amt, Payment.Payment_Status, Kitchen.Kitchen_ID, Kitchen.Kitchen_Name, Delivery_Management.Delivery_Timings, Delivery_Management.Door_Step_Delivery FROM Lunch_Box_Order LEFT JOIN Kitchen ON Lunch_Box_Order.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Payment ON Lunch_Box_Order.Payment_ID = Payment.Payment_ID LEFT JOIN Delivery_Management ON Lunch_Box_Order.Delivery_ID = Delivery_Management.Delivery_ID Where Lunch_Box_Order.User_ID='"+req['USER_ID']+"'")
+                mycursor.execute("select Lunch_Box_Order.Lunch_Box_Order_ID, Lunch_Box_Order.Lunch_Box_Type, Lunch_Box_Order.Lunch_Box_Size, Lunch_Box_Order.Lunch_Box_color_pref, Payment.Payment_type, Payment.Payment_Amt, Payment.Payment_Status, Kitchen.Kitchen_ID, Kitchen.Kitchen_Name, Delivery_Management.Delivery_Timings, Delivery_Management.Door_Step_Delivery FROM Lunch_Box_Order LEFT JOIN Kitchen ON Lunch_Box_Order.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Payment ON Lunch_Box_Order.Payment_ID = Payment.Payment_ID LEFT JOIN Delivery_Management ON Lunch_Box_Order.Delivery_ID = Delivery_Management.Delivery_ID Where Lunch_Box_Order.User_EMAIL='"+session('USER_EMAIL')+"'")
                 myresult = mycursor.fetchall()
                 print(myresult)
                 LunchBoxOrdersList = []
@@ -359,44 +538,14 @@ def showMyLunchBoxOrders():
         except Exception as e:
             return str(e)
 
-def GetCart():
-    if conn:
-        mycursor = conn.cursor()
-        mycursor.execute("Select ORDER_SUMMURY.PRODUCT_ID, ORDER_SUMMURY.PRODUCT_NAME, ORDER_SUMMURY.QUANTITY, ORDER_SUMMURY.PRODUCT_PRICE, ORDER_SUMMURY.PRODUCT_LOGO, ORDER_SUMMURY.Kitchen_ID, ORDER_SUMMURY.SCHEDULE_TIME, ORDER_SUMMURY.TOTAL_AMOUNT, ORDER_SUMMURY.Meal_ID, Meals.Meal_Timings, Meals.Meal_Type, Kitchen.Kitchen_Name FROM ORDER_SUMMURY LEFT JOIN Kitchen ON ORDER_SUMMURY.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON ORDER_SUMMURY.Meal_ID = Meals.Meal_ID;")
-        myresult = mycursor.fetchall()
-        print(myresult)
-        ShoppingCartList = []
-        RecordCount = len(myresult)
-        for i in range(len(myresult)):
-            ShoppingCartRecord = {
-                "PRODUCT_ID" : myresult[i][0],
-                "PRODUCT_NAME" : myresult[i][1],
-                "QUANTITY": myresult[i][2],
-                "PRODUCT_PRICE": myresult[i][3],
-                "PRODUCT_LOGO": myresult[i][4],
-                "Kitchen_ID": myresult[i][5],
-                "SCHEDULE_TIME": myresult[i][6],
-                "TOTAL_AMOUNT": myresult[i][7],
-                "Meal_ID": myresult[i][8],
-                "Meal_Timings": myresult[i][9],
-                "Meal_Type": myresult[i][10],
-                "Kitchen_Name" : myresult[i][11]
-            }
-            getSnacks(ShoppingCartRecord["PRODUCT_ID"], ShoppingCartRecord["PRODUCT_LOGO"])
-            ShoppingCartRecord["PRODUCT_LOGO"] = ShoppingCartRecord["PRODUCT_ID"]+".jpg"
-            ShoppingCartList.append(ShoppingCartRecord)
-        return ShoppingCartList
 
 @app.route('/Shoping_cart',methods = ['GET', 'POST'])
 def Shoping_cart():
-    # if request.method == 'POST':
-    #     req = request.get_json()
-    #     print(req)
         if request.method == 'GET':
             try:
                 if conn:
                     mycursor = conn.cursor()
-                    mycursor.execute("Select ORDER_SUMMURY.PRODUCT_ID, ORDER_SUMMURY.PRODUCT_NAME, ORDER_SUMMURY.QUANTITY, ORDER_SUMMURY.PRODUCT_PRICE, ORDER_SUMMURY.PRODUCT_LOGO, ORDER_SUMMURY.Kitchen_ID, ORDER_SUMMURY.SCHEDULE_TIME, ORDER_SUMMURY.TOTAL_AMOUNT, ORDER_SUMMURY.Meal_ID, Meals.Meal_Timings, Meals.Meal_Type, Kitchen.Kitchen_Name FROM ORDER_SUMMURY LEFT JOIN Kitchen ON ORDER_SUMMURY.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON ORDER_SUMMURY.Meal_ID = Meals.Meal_ID;")
+                    mycursor.execute("Select ORDER_SUMMARY.PRODUCT_ID, ORDER_SUMMARY.PRODUCT_NAME, ORDER_SUMMARY.QUANTITY, ORDER_SUMMARY.PRODUCT_PRICE, ORDER_SUMMARY.PRODUCT_LOGO, ORDER_SUMMARY.Kitchen_ID, ORDER_SUMMARY.SCHEDULE_TIME, ORDER_SUMMARY.TOTAL_AMOUNT, ORDER_SUMMARY.Meal_ID, ORDER_SUMMARY.USER_EMAIL, ORDER_SUMMARY.IS_COMPLETE, Meals.Meal_Timings, Meals.Meal_Type, Kitchen.Kitchen_Name FROM ORDER_SUMMARY LEFT JOIN Kitchen ON ORDER_SUMMARY.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON ORDER_SUMMARY.Meal_ID = Meals.Meal_ID WHERE ORDER_SUMMARY.IS_COMPLETE=0;")
                     myresult = mycursor.fetchall()
                     print(myresult)
                     ShoppingCartList = []
@@ -412,9 +561,11 @@ def Shoping_cart():
                             "SCHEDULE_TIME": myresult[i][6],
                             "TOTAL_AMOUNT": myresult[i][7],
                             "Meal_ID": myresult[i][8],
-                            "Meal_Timings": myresult[i][9],
-                            "Meal_Type": myresult[i][10],
-                            "Kitchen_Name" : myresult[i][11]
+                            "USER_EMAIL": myresult[i][9],
+                            "IS_COMPLETE": myresult[i][10],
+                            "Meal_Timings": myresult[i][11],
+                            "Meal_Type": myresult[i][12],
+                            "Kitchen_Name" : myresult[i][13]
                         }
                         getSnacks(ShoppingCartRecord["PRODUCT_ID"], ShoppingCartRecord["PRODUCT_LOGO"])
                         ShoppingCartRecord["PRODUCT_LOGO"] = ShoppingCartRecord["PRODUCT_ID"]+".jpg"
@@ -431,10 +582,11 @@ def Shoping_cart():
                     snack_id = request_json.get("SNACK_ID")
                     #print(snack_id)
                     mycursor = conn.cursor()
-                    sql = "INSERT INTO ORDER_SUMMURY SELECT SNACK_ID, SNACK_NAME, SNACK_PRICE, SNACK_LOGO, Kitchen_ID, %s, SNACK_PRICE, 1, Meal_ID FROM SNACK WHERE SNACK_ID=%s"
-                    val = (datetime.now().strftime("%m/%d/%Y, %H:%M:%S"), snack_id)
+                    sql = "INSERT INTO ORDER_SUMMARY SELECT SNACK_ID, SNACK_NAME, SNACK_PRICE, SNACK_LOGO, Kitchen_ID, %s, SNACK_PRICE, 1, Meal_ID,%s, %s FROM SNACK WHERE SNACK_ID=%s"
+                    val = (datetime.now().strftime("%m/%d/%Y, %H:%M:%S"), session['USER_EMAIL'], 0, snack_id)
                     mycursor.execute(sql, val)
                     conn.commit()
+                    session["CART_COUNT"]+=1
                     return jsonify(StatusCode = '1', Total = mycursor.rowcount)
             except Exception as e:
                 return str(e)

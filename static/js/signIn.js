@@ -26,7 +26,8 @@ $(document).ready(function () {
       success: function (response) {
         console.log(response);
         if (response.StatusCode == 1){
-          window.open("http://127.0.0.1:5000/ordernow", "_self");
+          console.log("Signed in!")
+          window.open("http://127.0.0.1:5000/", "_self")          
         }
         else{
           alert(response.ErrorMessage)

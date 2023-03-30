@@ -52,25 +52,28 @@
 
                         <!--Top Right-->
                         <div class="top-right">
-
+                    
                             <ul>
-                                <li>Booking Hours : 9:00am - 8:00pm</li>
-                                <li class="eng-dropdown dropdown"><a class="btn btn-default dropdown-toggle"
-                                        id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="true" href="#"><span class="icon"></span> Account <span
-                                            class="arow-icon fa fa-angle-down"></span></a>
+                                {% if 'USER_EMAIL' in session %}
+                                <li>{{session.USER_NAME}}</li>
+                                {% endif %}
+                                <li class="eng-dropdown dropdown"><a class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" href="#"><span class="icon"></span> Account <span class="arow-icon fa fa-angle-down"></span></a>
                                     <ul class="dropdown-menu style-one" aria-labelledby="dropdownMenu1">
+                                        {% if 'USER_EMAIL' in session %}
+                                        <li><a class="logout" href="javascript:void(0);" >Sign Out</a></li>
+                                        {% else %}
                                         <li><a href="{{url_for('sign_inPage')}}">Sign In</a></li>
+                                        {% endif %}
                                         <!--<li><a href="#">Sign Up</a></li>-->
-
+                                       
                                     </ul>
                                 </li>
                                 <!--Cart Btn-->
-                                <li class="cart-btn"><a href="{{url_for('shopping_cartPage')}}"><i
-                                            class="fa fa-shopping-cart" aria-hidden="true"></i><span
-                                            class="count">2</span></a></li>
+                                {% if 'USER_EMAIL' in session %}
+                                <li class="cart-btn"><a href="{{url_for('shopping_cartPage')}}"><i class="fa fa-shopping-cart" aria-hidden="true"></i><span class="count">{{session.CART_COUNT}}</span></a></li>
+                                {% endif %}
                             </ul>
-
+                            
                         </div>
 
                     </div>
@@ -122,15 +125,20 @@
                                                 <li><a href="{{url_for('indexPage')}}">Home</a></li>
                                                 <li><a href="{{url_for('aboutPage')}}">About</a></li>
                                                 <li><a href="{{url_for('contactPage')}}">Contact</a></li>
+                                                {% if 'USER_EMAIL' in session %}
                                                 <li><a href="{{url_for('shopping_cartPage')}}">Shopping Cart</a></li>
+                                                {% endif %}
+                                                {% if 'USER_EMAIL' in session %}
                                                 <li><a href="{{url_for('checkoutPage')}}">Checkout</a></li>
-
+                                                {% endif %}
                                                 <li><a href="{{url_for('galleryPage')}}">Gallery</a></li>
                                                 <li><a href="{{url_for('ordernowPage')}}">Order Now</a></li>
                                                 <li><a href="{{url_for('reservationPage')}}">Reservation</a></li>
+                                                {% if 'USER_EMAIL' not in session %}
                                                 <li><a href="{{url_for('sign_inPage')}}">Sign In</a></li>
+                                                {% endif %}
                                                 <li><a href="{{url_for('snacksPage')}}">Snacks</a></li>
-
+    
                                             </ul>
                                         </li>
 
@@ -254,11 +262,11 @@
                         <button type="submit" class="btn btn-default" onsubmit="getUserSignInDetails()">Submit</button>
 
 
-                        <a class="btn btn-block btn-social btn-facebook gap_socialbtn">
+                        <a class="btn btn-block btn-social btn-facebook gap_socialbtn" href="facebook/">
                             <span class="fa fa-facebook"></span> Sign in with Facebook
                         </a>
 
-                        <a class="btn btn-block btn-social btn-google gap_socialbtn">
+                        <a class="btn btn-block btn-social btn-google gap_socialbtn" href="google/">
                             <span class="fa fa-google"></span> Sign in with Google
                         </a>
 
@@ -429,6 +437,8 @@
     <script src="../static/js/script.js"></script>
     <script src="../static/js/signIn.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../static/js/index.js"></script>
+
 </body>
 
 </html>
