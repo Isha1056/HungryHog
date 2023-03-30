@@ -118,8 +118,9 @@ CREATE TABLE ORDER_SUMMARY (
     QUANTITY numeric,
     Meal_ID numeric NOT NULL,
     USER_EMAIL varchar(255) NOT NULL,
+    PAYMENT_ID varchar(255) NOT NULL,
     IS_COMPLETE numeric NOT NULL,
-    FOREIGN KEY (Kitchen_ID) REFERENCES Kitchen(Kitchen_ID)
+    FOREIGN KEY (Kitchen_ID) REFERENCES Kitchen(Kitchen_ID),
     FOREIGN KEY (Meal_ID) REFERENCES Meals(Meal_ID)
 );
 SHOW TABLES;
@@ -201,7 +202,7 @@ ON SNACK.Kitchen_ID = Kitchen.Kitchen_ID
 LEFT JOIN Meals
 ON SNACK.Meal_ID = Meals.Meal_ID;
 
-
+select * from users;
 select * from ORDER_SUMMARY;
 
 
