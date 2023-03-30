@@ -62,6 +62,7 @@ $("body").on("click", ".removeOrder", function () {
     traditional: true,
     success: function (data) {
       console.log("Data deleted!")
+      $(".count").text(parseInt($(".count").text())-1);
     }
   });
 });
