@@ -178,8 +178,18 @@ conn = mysql.connector.connect(
 
 # Page routes 
 # *********************************************#
+
+def get_cart_count():
+    if "USER_EMAIL" in session:
+        mycursor = conn.cursor()
+        mycursor.execute('SELECT COUNT(*) FROM ORDER_SUMMARY WHERE USER_EMAIL="'+session["USER_EMAIL"]+'" AND IS_COMPLETE=0')
+        myresult = mycursor.fetchall()
+        session['CART_COUNT'] = myresult[0][0]
+
+
 @app.route('/')
 def indexPage():
+    get_cart_count()
     if conn:
         mycursor = conn.cursor()
         mycursor.execute("select * from Kitchen order by Kitchen_Ratings desc")
@@ -205,6 +215,7 @@ def indexPage():
 
 @app.route('/about')
 def aboutPage():
+    get_cart_count()
     if conn:
         return render_template('about.html', session=session)
     else:
@@ -212,6 +223,7 @@ def aboutPage():
 
 @app.route('/checkout')
 def checkoutPage():
+    get_cart_count()
     if conn and "USER_EMAIL" in session:
         return render_template('checkout.html', session=session)
     elif conn:
@@ -221,6 +233,7 @@ def checkoutPage():
 
 @app.route('/contact')
 def contactPage():
+    get_cart_count()
     if conn:
         return render_template('contact.html', session=session)
     else:
@@ -229,6 +242,7 @@ def contactPage():
 
 @app.route('/gallery')
 def galleryPage():
+    get_cart_count()
     if conn:
         return render_template('gallery.html', session=session)
     else:
@@ -236,6 +250,7 @@ def galleryPage():
 
 @app.route('/ordernow')
 def ordernowPage():
+    get_cart_count()
     if conn and "USER_EMAIL" in session:
         return render_template('ordernow.html', session=session)
     elif conn:
@@ -245,6 +260,7 @@ def ordernowPage():
 
 @app.route('/reservation')
 def reservationPage():
+    get_cart_count()
     if conn and "USER_EMAIL" in session:
         return render_template('reservation.html', session=session)
     elif conn:
@@ -286,6 +302,7 @@ def GetCart():
 
 @app.route('/shopping_cart')
 def shopping_cartPage():
+    get_cart_count()
     if conn and "USER_EMAIL" in session:
         data = GetCart()
         return render_template('shopping-cart.html', session=session, data=data)
@@ -296,6 +313,7 @@ def shopping_cartPage():
 
 @app.route('/sign_in', methods=['GET', 'POST'])
 def sign_inPage():
+    get_cart_count()
     if conn and "USER_EMAIL" in session:
         redirect('/')
     elif conn:
@@ -305,6 +323,7 @@ def sign_inPage():
 
 @app.route('/snacks')
 def snacksPage():
+    get_cart_count()
     if conn:
         mycursor = conn.cursor()
         mycursor.execute("select * from Kitchen order by Kitchen_Ratings desc")
@@ -330,6 +349,7 @@ def snacksPage():
 
 @app.route('/snacks/<string:Kitchen_ID>')
 def snacksPageDynamic(Kitchen_ID):
+    get_cart_count()
     if conn and "USER_EMAIL" in session:
         mycursor = conn.cursor()
         mycursor.execute("select SNACK.SNACK_ID, SNACK.SNACK_NAME, SNACK.SNACK_PRICE, SNACK.Kitchen_ID, Kitchen.Kitchen_Name, SNACK.Meal_ID, SNACK.SNACK_LOGO, Meals.Meal_Type, Meals.Meal_Timings FROM SNACK  LEFT JOIN Kitchen ON SNACK.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON SNACK.Meal_ID = Meals.Meal_ID WHERE Kitchen.Kitchen_ID='"+Kitchen_ID+"'")
@@ -615,8 +635,8 @@ def Shoping_cart():
                     snack_id = request_json.get("SNACK_ID")
                     #print(snack_id)
                     mycursor = conn.cursor()
-                    sql = "INSERT INTO ORDER_SUMMARY SELECT SNACK_ID, SNACK_NAME, SNACK_PRICE, SNACK_LOGO, Kitchen_ID, %s, SNACK_PRICE, 1, Meal_ID,%s, %s FROM SNACK WHERE SNACK_ID=%s"
-                    val = (datetime.now().strftime("%m/%d/%Y, %H:%M:%S"), session['USER_EMAIL'], 0, snack_id)
+                    sql = "INSERT INTO ORDER_SUMMARY SELECT SNACK_ID, SNACK_NAME, SNACK_PRICE, SNACK_LOGO, Kitchen_ID, %s, SNACK_PRICE, 1, Meal_ID,%s, %s FROM SNACK WHERE SNACK_ID=%s AND NOT EXISTS(SELECT NULL FROM ORDER_SUMMARY WHERE PRODUCT_ID=%s AND USER_EMAIL=%s AND IS_COMPLETE=0)"
+                    val = (datetime.now().strftime("%m/%d/%Y, %H:%M:%S"), session['USER_EMAIL'], 0, snack_id, snack_id, session['USER_EMAIL'])
                     mycursor.execute(sql, val)
                     conn.commit()
                     session["CART_COUNT"]+=1
@@ -651,7 +671,7 @@ def deleteCartRow():
                 PRODUCT_ID = request_json.get("PRODUCT_ID")
                 print("PRODUCT_ID: ", PRODUCT_ID)
                 mycursor = conn.cursor()
-                mycursor.execute("DELETE FROM order_summury WHERE PRODUCT_ID='"+PRODUCT_ID+"'")
+                mycursor.execute("DELETE FROM ORDER_SUMMARY WHERE PRODUCT_ID='"+PRODUCT_ID+"' AND USER_EMAIL='"+session['USER_EMAIL']+"'")
                 conn.commit()
                 return 'Row Deleted!'
         except Exception as e:

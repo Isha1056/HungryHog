@@ -252,14 +252,14 @@
                                         <div class="col-sm-4">
                                             <div class="form-group">
                                                 <label for="name">Full Name</label>
-                                                <input type="text" placeholder="Full Name"
+                                                <input type="text" placeholder="Full Name" value="{{session.USER_NAME}}"
                                                     class="form-control input-sm required" name="name" />
                                             </div>
                                         </div>
                                         <div class="col-sm-4">
                                             <div class="form-group">
                                                 <label for="email">Email</label>
-                                                <input type="email" placeholder="Email Address"
+                                                <input type="email" placeholder="Email Address" value="{{session.USER_EMAIL}}"
                                                     class="form-control input-sm required" name="email" />
                                             </div>
                                         </div>
@@ -268,7 +268,7 @@
                                                 <label for="mobile">Mobile</label>
                                                 <div class="input-group input-group-sm">
                                                     <span class="input-group-addon">+91</span>
-                                                    <input type="text" class="form-control input-sm required"
+                                                    <input type="text" class="form-control input-sm required" value="{{session.USER_MOBILEs}}"
                                                         placeholder="Mobile Number" name="mobile" maxlength="10"
                                                         min="10" />
                                                 </div>
@@ -277,7 +277,7 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label for="address">House Address</label>
-                                                <input type="text" placeholder="Street address"
+                                                <input type="text" placeholder="Street address" value="{{session.USER_STREET}}"
                                                     class="form-control input-sm required" name="address" />
                                             </div>
                                         </div>
@@ -285,7 +285,7 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label for="">State:</label>
-                                                <input type="text" placeholder="state"
+                                                <input type="text" placeholder="state" value="{{session.USER_STATE}}"
                                                     class="form-control input-sm required" name="state" />
                                             </div>
                                         </div>
@@ -294,14 +294,14 @@
                                             <div class="form-group">
 
                                                 <label for="">City:</label>
-                                                <input type="text" placeholder="city"
+                                                <input type="text" placeholder="city" value="{{session.USER_CITY}}"
                                                     class="form-control input-sm required" name="city" />
                                             </div>
                                         </div>
                                         <div class="col-sm-4">
                                             <div class="form-group">
                                                 <label for="pincode">Pincode</label>
-                                                <input type="text" placeholder="Pincode"
+                                                <input type="text" placeholder="Pincode" value="{{session.USER_PINCODE}}"
                                                     class="form-control input-sm required" name="pincode" />
                                             </div>
                                         </div>

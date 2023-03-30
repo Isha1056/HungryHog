@@ -2,6 +2,8 @@ $(document).ready(function(){
     $(".order-button").click(function(){
         var id = $(this).attr('id');
         console.log(id);
+        $(this).prop('disabled', true);
+        $(this).text('Added');  
         var json = {
             "SNACK_ID":id
         }
@@ -12,9 +14,8 @@ $(document).ready(function(){
             contentType: "application/json; charset=utf-8",
             traditional: true,
             success: function (data) {
-                $(".class").text(parseInt($(".class").text())+1);
-                $(this).prop('disabled', true);
-                $(this).text('Added');  
+                $(".count").text(parseInt($(".count").text())+1);
+                
             }
         });
     });
