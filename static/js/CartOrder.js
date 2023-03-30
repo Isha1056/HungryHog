@@ -11,6 +11,15 @@ function create_tr(table_id) {
 let price = 0;
 let totalAmount = [];
 
+// let updateOrderHistory = {
+//   PRODUCT_ID: {
+//     QUANTITY: '',
+//     SCHEDULE_TIME: '',
+//     PAYMENT_ID: '',
+//     IS_COMPLETE: ''
+//   },
+// }
+
 function clean_first_tr(firstTr) {
   let children = firstTr.children;
 
@@ -66,6 +75,10 @@ function calculateOrderTotal(){
   var sum = 0;
   var iPrice = 0;
   $('._table tbody tr').each(function () {
+
+    // var PRODUCT_ID = $(this).find('td').eq(1).text();
+    // var quantity = $(this).find('td').eq(1).val();
+    // var total_product_amount = $(this).find('td').eq(1).val();
     iPrice  = $(this).find('td').eq(5).text() || 0,
     qty = +$(this).find('.price').val() || 0,
     iPrice = parseInt(iPrice);

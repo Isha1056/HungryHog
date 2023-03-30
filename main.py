@@ -644,21 +644,21 @@ def Shoping_cart():
             except Exception as e:
                 return str(e)
             
-        if request.method == 'PUT':
-            try:
-                if conn:
-                    request_json = request.get_json()
-                    mycursor = conn.cursor()
-                    sql = "UPDATE ORDER_SUMMARY SET QUANTITY = %s, TOTAL_AMOUNT = %s, SCHEDULE_TIME = %s, PAYMENT_ID = %s, IS_COMPLETE = %s WHERE PRODUCT_ID = %s"
-                    val = (request_json['QUANTITY'], request_json['TOTAL_AMOUNT'], request_json['SCHEDULE_TIME'], request_json['PAYMENT_ID'], request_json['IS_COMPLETE'],  request_json['PRODUCT_ID'])
-                    mycursor.execute(sql, val)
-                    conn.commit()
-                    return jsonify({'success': True}), 200
-            except:
-                conn.rollback()
-                return jsonify({'success': False}), 400
-            finally:
-                mycursor.close()
+        # if request.method == 'PUT':
+        #     try:
+        #         if conn:
+        #             request_json = request.get_json()
+        #             mycursor = conn.cursor()
+        #             sql = "UPDATE ORDER_SUMMARY SET QUANTITY = %s, TOTAL_AMOUNT = %s, SCHEDULE_TIME = %s, PAYMENT_ID = %s, IS_COMPLETE = %s WHERE PRODUCT_ID = %s"
+        #             val = (request_json['QUANTITY'], request_json['TOTAL_AMOUNT'], request_json['SCHEDULE_TIME'], request_json['PAYMENT_ID'], request_json['IS_COMPLETE'],  request_json['PRODUCT_ID'])
+        #             mycursor.execute(sql, val)
+        #             conn.commit()
+        #             return jsonify({'success': True}), 200
+        #     except:
+        #         conn.rollback()
+        #         return jsonify({'success': False}), 400
+        #     finally:
+        #         mycursor.close()
             
 
 

@@ -632,6 +632,8 @@
     <script>
 
         let payment_id = '';
+        let signature = '';
+        let order_id = '';
         document.getElementById('rzp-button1').onclick = function (e) {
             USERNAME = "rzp_test_JGsIexMIOVh3bW";
             PASSWORD = "kpvTVMIBppTJGlKtMmnzwcVd";
@@ -671,7 +673,7 @@
                     console.log(xhr, status, error);
                 },
             });
-
+            
             var options = {
                 "key": "rzp_test_JGsIexMIOVh3bW", // Enter the Key ID generated from the Dashboard
                 "amount": "500", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -681,9 +683,10 @@
                 "image": "../static/images/HungryHogLogo.png",
                 "order_id": order, // use order variable here
                 "handler": function (response) {
-                    alert(response.razorpay_payment_id);
-                    alert(response.razorpay_order_id);
-                    alert(response.razorpay_signature)
+                    // payment_id = response.razorpay_payment_id;
+                    // order_id = response.razorpay_order_id;
+                    // signature = response.razorpay_signature;
+                    // window.location.href = "{{url_for('ordernowPage')}}";
                 },
                 "prefill": {
                     "name": 'sample', //your customer's name
