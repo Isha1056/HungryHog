@@ -24,11 +24,11 @@ function clean_first_tr(firstTr) {
 
 $(function() {
   $("body").on("click", ".Checkout", function () {
-    $(".clearfix").show();
+    $(".checkout-clearfix").show();
     var amt = calculateOrderTotal();
     $(".total-amount").append(amt);
   });
-  $(".clearfix").hide();
+  $(".checkout-clearfix").hide();
 });
 
 $("body").on("click", ".removeOrder", function () {
