@@ -46,7 +46,8 @@ function remove_tr(This) {
 function calculateTotal(price){
     var quantity = Number($('.prod_qty').val());
     price = Number(price);
-    console.log(quantity,price,typeof(quantity*price));
+    let total = (quantity*price);
+    console.log(quantity*price,typeof(quantity*price));
     return total
 }
 
@@ -90,6 +91,7 @@ $(function () {
           <td class="kitchenname">` +
             tabledata[key].Kitchen_Name +
           `</td>
+          <td class="SCHEDULE"></td>
           <td class="producttotal">`+calculateTotal(tabledata[key].PRODUCT_PRICE)+`</td>
             <td>
                 <div class="action_container">
