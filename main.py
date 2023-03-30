@@ -411,6 +411,20 @@ def Shoping_cart():
             except Exception as e:
                 return str(e)
 
+@app.route('/deleteCartRow',methods = ['POST'])
+def deleteCartRow():
+    if request.method == 'POST':
+        try:
+            if conn:
+                request_json = request.get_json()
+                PRODUCT_ID = request_json.get("PRODUCT_ID")
+                mycursor = conn.cursor()
+                mycursor.execute('DELETE FROM order_summury WHERE PRODUCT_ID='+PRODUCT_ID+';')
+                conn.commit()
+        except Exception as e:
+                return str(e)
+
+
 
 
 
