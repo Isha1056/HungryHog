@@ -74,3 +74,4 @@ function calculateOrderTotal(){
   return sum;
   console.log("total: ",sum);
 }
+

@@ -251,14 +251,46 @@ def reservationPage():
         return redirect('/sign_in')
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
+    
+
+def GetCart():
+    if conn:
+        mycursor = conn.cursor()
+        mycursor.execute("Select ORDER_SUMMARY.PRODUCT_ID, ORDER_SUMMARY.PRODUCT_NAME, ORDER_SUMMARY.QUANTITY, ORDER_SUMMARY.PRODUCT_PRICE, ORDER_SUMMARY.PRODUCT_LOGO, ORDER_SUMMARY.Kitchen_ID, ORDER_SUMMARY.SCHEDULE_TIME, ORDER_SUMMARY.TOTAL_AMOUNT, ORDER_SUMMARY.Meal_ID, ORDER_SUMMARY.USER_EMAIL, ORDER_SUMMARY.IS_COMPLETE, Meals.Meal_Timings, Meals.Meal_Type, Kitchen.Kitchen_Name FROM ORDER_SUMMARY LEFT JOIN Kitchen ON ORDER_SUMMARY.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON ORDER_SUMMARY.Meal_ID = Meals.Meal_ID WHERE ORDER_SUMMARY.IS_COMPLETE=0;")
+        myresult = mycursor.fetchall()
+        print(myresult)
+        ShoppingCartList = []
+        RecordCount = len(myresult)
+        for i in range(len(myresult)):
+            ShoppingCartRecord = {
+                    "PRODUCT_ID" : myresult[i][0],
+                    "PRODUCT_NAME" : myresult[i][1],
+                    "QUANTITY": myresult[i][2],
+                    "PRODUCT_PRICE": myresult[i][3],
+                    "PRODUCT_LOGO": myresult[i][4],
+                    "Kitchen_ID": myresult[i][5],
+                    "SCHEDULE_TIME": myresult[i][6],
+                    "TOTAL_AMOUNT": myresult[i][7],
+                    "Meal_ID": myresult[i][8],
+                    "USER_EMAIL": myresult[i][9],
+                    "IS_COMPLETE": myresult[i][10],
+                    "Meal_Timings": myresult[i][11],
+                    "Meal_Type": myresult[i][12],
+                    "Kitchen_Name" : myresult[i][13]
+                }
+            getSnacks(ShoppingCartRecord["PRODUCT_ID"], ShoppingCartRecord["PRODUCT_LOGO"])
+            ShoppingCartRecord["PRODUCT_LOGO"] = ShoppingCartRecord["PRODUCT_ID"]+".jpg"
+            ShoppingCartList.append(ShoppingCartRecord)
+        return ShoppingCartList
+
 
 @app.route('/shopping_cart')
 def shopping_cartPage():
     if conn and "USER_EMAIL" in session:
         data = GetCart()
-        return render_template('shopping-cart.html', session=session)
+        return render_template('shopping-cart.html', session=session, data=data)
     elif conn:
-        return redirect('/sign_in', data=data)
+        return redirect('/sign_in')
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
