@@ -652,6 +652,7 @@ def UpdateOrderHistory():
                     val = (i['QUANTITY'], i['TOTAL_AMOUNT'], i['SCHEDULE_TIME'], PAYMENT_ID, IS_COMPLETE,  i['PRODUCT_ID'])
                     mycursor.execute(sql, val)
                     conn.commit()
+                update_cart_count()
                 return jsonify({'success': True})
         except Exception as e:
             print(str(e))
