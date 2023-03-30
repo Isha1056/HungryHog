@@ -403,8 +403,8 @@ def Shoping_cart():
                     snack_id = request_json.get("SNACK_ID")
                     #print(snack_id)
                     mycursor = conn.cursor()
-                    sql = "INSERT INTO ORDER_SUMMURY SELECT SNACK_ID, SNACK_NAME, SNACK_PRICE, SNACK_LOGO, Kitchen_ID, '%s', SNACK_PRICE, 1, Meal_ID FROM SNACK WHERE SNACK_ID='%s'"
-                    val = (datetime.now.strftime("%m/%d/%Y, %H:%M:%S"), snack_id)
+                    sql = "INSERT INTO ORDER_SUMMURY SELECT SNACK_ID, SNACK_NAME, SNACK_PRICE, SNACK_LOGO, Kitchen_ID, %s, SNACK_PRICE, 1, Meal_ID FROM SNACK WHERE SNACK_ID=%s"
+                    val = (datetime.now().strftime("%m/%d/%Y, %H:%M:%S"), snack_id)
                     mycursor.execute(sql, val)
                     conn.commit()
                     return jsonify(StatusCode = '1', Total = mycursor.rowcount)
