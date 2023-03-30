@@ -377,7 +377,7 @@
                         <div class="OrderSchedule" style="margin: 20px;float: right;">
                             <h4>Select a date for your meal delivery</h4>
                             <input type="date" class="ScheduleCartOrder" id="ScheduleCartOrder" name="ScheduleCartOrder"
-                                style="border: 2px solid #cd6073; padding: 10px; color: #cd6073;">
+                                style="border: 2px solid #cd6073; padding: 10px; color: #cd6073;"/>
                         </div>
                     </div>
                     <div class="check-btns" style="margin-top: 20px; float: right;">
@@ -683,10 +683,26 @@
                 "image": "../static/images/HungryHogLogo.png",
                 "order_id": order, // use order variable here
                 "handler": function (response) {
-                    // payment_id = response.razorpay_payment_id;
-                    // order_id = response.razorpay_order_id;
-                    // signature = response.razorpay_signature;
-                    // window.location.href = "{{url_for('ordernowPage')}}";
+                    payment_id = response.razorpay_payment_id;
+                    order_id = response.razorpay_order_id;
+                    signature = response.razorpay_signature;
+                    data = {
+                        'PAYMENT_ID': payment_id,
+                        'IS_COMPLETE': 1,
+                        'PRODUCT_LIST': updateOrderHistory
+                    }
+            
+                    $.ajax({
+                        type: 'post',
+                        url: 'http://127.0.0.1:5000/UpdateOrderHistory',
+                        data: JSON.stringify(updateOrderHistory),
+                        contentType: "application/json; charset=utf-8",
+                        traditional: true,
+                        success: function (data) {
+                            window.location.href = "{{url_for('ordernowPage')}}";
+                        }
+                    });
+                    
                 },
                 "prefill": {
                     "name": 'sample', //your customer's name

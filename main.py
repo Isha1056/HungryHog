@@ -626,8 +626,8 @@ def Shoping_cart():
                     snack_id = request_json.get("SNACK_ID")
                     #print(snack_id)
                     mycursor = conn.cursor()
-                    sql = "INSERT INTO ORDER_SUMMARY SELECT SNACK_ID, SNACK_NAME, SNACK_PRICE, SNACK_LOGO, Kitchen_ID, %s, SNACK_PRICE, 1, Meal_ID,%s, %s FROM SNACK WHERE SNACK_ID=%s AND NOT EXISTS(SELECT NULL FROM ORDER_SUMMARY WHERE PRODUCT_ID=%s AND USER_EMAIL=%s AND IS_COMPLETE=0)"
-                    val = (datetime.now().strftime("%m/%d/%Y, %H:%M:%S"), session['USER_EMAIL'], 0, snack_id, snack_id, session['USER_EMAIL'])
+                    sql = "INSERT INTO ORDER_SUMMARY SELECT SNACK_ID, SNACK_NAME, SNACK_PRICE, SNACK_LOGO, Kitchen_ID, %s, SNACK_PRICE, 1, Meal_ID,%s, %s, %s FROM SNACK WHERE SNACK_ID=%s AND NOT EXISTS(SELECT NULL FROM ORDER_SUMMARY WHERE PRODUCT_ID=%s AND USER_EMAIL=%s AND IS_COMPLETE=0)"
+                    val = (datetime.now().strftime("%m/%d/%Y, %H:%M:%S"), session['USER_EMAIL'],'', 0, snack_id, snack_id, session['USER_EMAIL'])
                     mycursor.execute(sql, val)
                     conn.commit()
                     session["CART_COUNT"]+=1
@@ -635,21 +635,28 @@ def Shoping_cart():
             except Exception as e:
                 return str(e)
             
-        # if request.method == 'PUT':
-        #     try:
-        #         if conn:
-        #             request_json = request.get_json()
-        #             mycursor = conn.cursor()
-        #             sql = "UPDATE ORDER_SUMMARY SET QUANTITY = %s, TOTAL_AMOUNT = %s, SCHEDULE_TIME = %s, PAYMENT_ID = %s, IS_COMPLETE = %s WHERE PRODUCT_ID = %s"
-        #             val = (request_json['QUANTITY'], request_json['TOTAL_AMOUNT'], request_json['SCHEDULE_TIME'], request_json['PAYMENT_ID'], request_json['IS_COMPLETE'],  request_json['PRODUCT_ID'])
-        #             mycursor.execute(sql, val)
-        #             conn.commit()
-        #             return jsonify({'success': True}), 200
-        #     except:
-        #         conn.rollback()
-        #         return jsonify({'success': False}), 400
-        #     finally:
-        #         mycursor.close()
+
+@app.route('/UpdateOrderHistory',methods = ['GET', 'POST'])
+def UpdateOrderHistory(): 
+    if request.method == 'POST':
+        try:
+            if conn:
+                mycursor = conn.cursor()
+                request_json = request.get_json()
+                PAYMENT_ID = request_json['PAYMENT_ID']
+                IS_COMPLETE = request_json['IS_COMPLETE']
+                PRODUCT_LIST = request_json['PRODUCT_LIST']
+                print(PRODUCT_LIST)
+                for i in PRODUCT_LIST:
+                    sql = "UPDATE ORDER_SUMMARY SET QUANTITY = %s, TOTAL_AMOUNT = %s, SCHEDULE_TIME = %s, PAYMENT_ID = %s, IS_COMPLETE = %s WHERE PRODUCT_ID = %s"
+                    val = (i['QUANTITY'], i['TOTAL_AMOUNT'], i['SCHEDULE_TIME'], PAYMENT_ID, IS_COMPLETE,  i['PRODUCT_ID'])
+                    mycursor.execute(sql, val)
+                    conn.commit()
+                return jsonify({'success': True})
+        except Exception as e:
+            print(str(e))
+            return jsonify({'success': False})
+        
             
 
 
