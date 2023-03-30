@@ -26,12 +26,6 @@ $(document).ready(function () {
       success: function (response) {
         console.log(response);
         if (response.StatusCode == 1){
-          localStorage.setItem('UserID', response.UserRecord.USER_ID);
-          localStorage.setItem('UserName', response.UserRecord.USER_NAME);
-          localStorage.setItem('UserEmail', response.UserRecord.USER_EMAIL);
-          localStorage.setItem('UserMobile', response.UserRecord.USER_MOBILE);
-          localStorage.setItem('UserAddress', response.UserRecord.USER_ADDRESS);
-          
           window.open("http://127.0.0.1:5000/ordernow", "_self");
         }
         else{
