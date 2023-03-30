@@ -19,18 +19,23 @@ function clean_first_tr(firstTr) {
   });
 }
 
-$( document ).ready(function() {
-    $('body').on('click', '.quantity-spinner .plus', function() {
-        var val = $(this).prev('.prod_qty').val();
-        console.log(val)
-        $(this).prev('.prod_qty').val((val*1)+1);
-    });
-    
-    $('body').on('click', '.quantity-spinner .minus',function(){
-        var val = $(this).next('.prod_qty').val();
-        if (val != 1 ){
-        $(this).next('.prod_qty').val((val*1)-1);
-        }})
+$(document).ready(function () {
+  $("body").on("click", ".quantity-spinner .plus", function () {
+    var val = $(this).prev(".prod_qty").val();
+    // console.log(val);
+    $(this)
+      .prev(".prod_qty")
+      .val(val * 1 + 1);
+  });
+
+  $("body").on("click", ".quantity-spinner .minus", function () {
+    var val = $(this).next(".prod_qty").val();
+    if (val != 1) {
+      $(this)
+        .next(".prod_qty")
+        .val(val * 1 - 1);
+    }
+  });
 });
 
 function remove_tr(This) {
@@ -43,12 +48,8 @@ function remove_tr(This) {
     This.closest("tr").remove();
   }
 }
-function calculateTotal(price){
-    var quantity = Number($('.prod_qty').val());
-    price = Number(price);
-    let total = (quantity*price);
-    console.log(quantity*price,typeof(quantity*price));
-    return total
+function calculateTotal(price, quantity) {
+  return price * quantity;
 }
 
 $(function () {
@@ -75,12 +76,12 @@ $(function () {
           `"
                                 alt=""></a></figure>
                     <h4 class="prod-title">` +
-                    tabledata[key].PRODUCT_NAME +
+          tabledata[key].PRODUCT_NAME +
           `</h4>
                 </div>
             </td>
             <td class="price">Rs. ` +
-            tabledata[key].PRODUCT_PRICE +
+          tabledata[key].PRODUCT_PRICE +
           `</td>
             <td class="qty">
                 <div class="quantity-spinner"><button type="button" class="minus"><span
@@ -89,10 +90,10 @@ $(function () {
                         class="plus"><span class="fa fa-plus"></span></button></div>
             </td>
           <td class="kitchenname">` +
-            tabledata[key].Kitchen_Name +
+          tabledata[key].Kitchen_Name +
           `</td>
-          <td class="SCHEDULE"></td>
-          <td class="producttotal">`+calculateTotal(tabledata[key].PRODUCT_PRICE)+`</td>
+          <td class="schedule"></td>
+          <td class="total"></td>
             <td>
                 <div class="action_container">
                     <button class="danger" onclick="remove_tr(this)">
