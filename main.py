@@ -1,5 +1,5 @@
 import mysql.connector
-from flask import Flask, jsonify, request, render_template, redirect, url_for, session
+from flask import Flask, jsonify, request, render_template, redirect, url_for, session, Response
 from io import BytesIO
 from PIL import Image
 import matplotlib.pyplot as plt
@@ -17,6 +17,10 @@ import os
 
 from itertools import groupby
 
+import json
+from compile_solidity_utils import w3
+from marshmallow import Schema, fields, ValidationError
+
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -28,7 +32,17 @@ app.config["SESSION_TYPE"] = "filesystem"
 oauth = OAuth(app)
 app.secret_key="HungryHogOinkOink"
 
-#### OAUTH ########
+# Creating connection object
+conn = mysql.connector.connect(
+    host = "localhost",
+    user = "root",
+    password = "pass@123",
+    database = "tiffin_service"
+)
+
+
+##############################################################################################################################################################
+####### OAUTH ########
 ##############################################################################################################################################################
 
 #GOOGLE
@@ -170,13 +184,31 @@ def twitter_auth():
 # }
 # print(client.order.create(data=DATA))
 
-# Creating connection object
-conn = mysql.connector.connect(
-    host = "localhost",
-    user = "root",
-    password = "pass@123",
-    database = "tiffin_service"
-)
+
+
+##############################################################################################################################################################
+####### Ethereum ########
+##############################################################################################################################################################
+
+
+class ReviewSchema(Schema):
+    USER_EMAIL = fields.String(required=True)
+    USER_NAME = fields.String(required=True)
+    SNACK_ID = fields.String(required=True)
+    SNACK_REVIEW = fields.String(required=True)
+    SNACK_RATING = fields.String(required=True)
+
+
+
+
+
+
+
+
+
+
+##############################################################################################################################################################
+
 
 # Page routes 
 # *********************************************#
