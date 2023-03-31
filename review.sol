@@ -1,7 +1,7 @@
 // solidity compiler version
 // use solidity --version
 // https://solidity.readthedocs.io/en/v0.4.24/layout-of-source-files.html#version-pragma
-pragma solidity ^0.4.21;
+pragma solidity ^0.4.24;
 
 // import library file  
 // https://solidity.readthedocs.io/en/v0.4.24/layout-of-source-files.html#importing-other-source-files
@@ -11,7 +11,7 @@ pragma solidity ^0.4.21;
 import "stringUtils.sol";
 
 
-contract ReviewRecords {
+contract reviewRecords {
 
     // enum type variable to store user gender
     // Actual user object which we will store

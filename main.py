@@ -18,8 +18,13 @@ import os
 from itertools import groupby
 
 import json
-from compile_solidity_utils import w3
+#from compile_solidity_utils import w3, deploy_n_transact
 from marshmallow import Schema, fields, ValidationError
+from solc import link_code
+import json
+from web3 import Web3
+from solc import compile_files
+
 
 
 app = Flask(__name__)
@@ -190,6 +195,51 @@ def twitter_auth():
 ####### Ethereum ########
 ##############################################################################################################################################################
 
+'''
+w3 = Web3(Web3.HTTPProvider("http://127.0.0.1:8545"))
+
+def deploy_contract(contract_interface):
+    # Instantiate and deploy contract
+    contract = w3.eth.contract(
+    abi=contract_interface['abi'],
+    bytecode=contract_interface['bin']
+    )
+# Get transaction hash from deployed contract
+    tx_hash = contract.deploy(
+    transaction={'from': w3.eth.accounts[1]}
+    )
+# Get tx receipt to get contract address
+    tx_receipt = w3.eth.getTransactionReceipt(tx_hash)
+    return tx_receipt['contractAddress']
+
+# compile all contract files
+contracts = compile_files(['review.sol', 'stringUtils.sol'])
+# separate main file and link file
+main_contract = contracts.pop("review.sol:reviewRecords")
+library_link = contracts.pop("stringUtils.sol:StringUtils")
+
+
+library_address = {
+    "stringUtils.sol:StringUtils": deploy_contract(library_link)
+}
+
+main_contract['bin'] = link_code(
+    main_contract['bin'], library_address
+)
+
+# add abi(application binary interface) and transaction reciept in json file
+with open('data.json', 'w') as outfile:
+    data = {
+    "abi": main_contract['abi'],
+    "contract_address": deploy_contract(main_contract)
+    }
+    json.dump(data, outfile, indent=4, sort_keys=True)
+
+
+with open("data.json", 'r') as f:
+    datastore = json.load(f)
+    abi = datastore["abi"]
+    contract_address = datastore["contract_address"]
 
 class ReviewSchema(Schema):
     USER_EMAIL = fields.String(required=True)
@@ -199,12 +249,37 @@ class ReviewSchema(Schema):
     SNACK_RATING = fields.String(required=True)
 
 
+def transaction():
+    w3.eth.defaultAccount = w3.eth.accounts[1]
+    with open("data.json", 'r') as f:
+        datastore = json.load(f)
+    abi = datastore["abi"]
+    contract_address = datastore["contract_address"]
+
+    # Create the contract instance with the newly-deployed address
+    user = w3.eth.contract(
+        address=contract_address, abi=abi,
+    )
+    #body = request.get_json()
+    body = {"USER_EMAIL":'angadsinghkataria.chd@gmail.com', 'USER_NAME':'Angad Singh', 'SNACK_ID':'SNK00010', 'SNACK_REVIEW':'Tasted Amazing!', 'SNACK_RATING':'9'}
+    result, error = ReviewSchema().load(body)
+    if error:        
+        return jsonify(error), 422
+    tx_hash = user.functions.setUser(
+        result['USER_EMAIL'], result['USER_NAME'], result['SNACK_ID'], result['SNACK_REVIEW'], result['SNACK_RATING']
+    )
+    tx_hash = tx_hash.transact()
+    # Wait for transaction to be mined...
+    w3.eth.waitForTransactionReceipt(tx_hash)
+    user_data = user.functions.getUser().call()
+    print(user_data)
+
+transaction()
+transaction()
+transaction()
 
 
-
-
-
-
+'''
 
 
 ##############################################################################################################################################################
