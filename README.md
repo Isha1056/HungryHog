@@ -1,5 +1,5 @@
 ## HungryHog
-- A Corporate Tiffin service website with the facility of Table Reservation.
+- A Corporate Tiffin service website with the facility of custom menus and the providing users the ability to book meals from various kitchens and restaurants.
 - Basically it is a corporate tiffin service template which provide online order with different menu on everyday basis, it can help lots of people who work at the office and want to eat something different but home healthy food.
 
 ## Table of contents
@@ -10,7 +10,7 @@
 - [Live Project](#live-project)
 
 ### About HungryHog
-- This website based on a corporate tiffin service, it's have the facility of online food and snacks ordering so user don't need to hustle in the queue for lunch or favourite snacks, and It's also have feature of table booking in case you have urgent meeting than book a table for you and meet whoever you want to.
+- This website based on a corporate tiffin service, it's have the facility of online food and snacks ordering so user don't need to hustle in the queue for lunch or favourite snacks.
 
 ### Responsibility
 - Template Design
