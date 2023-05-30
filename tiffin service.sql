@@ -25,6 +25,7 @@ CREATE TABLE USERS (
     USER_CITY varchar(255),
     USER_PINCODE varchar(255),
     USER_MOBILE varchar(255),
+    USER_PRIVATE_KEY varchar(255),
 	PRIMARY KEY (USER_EMAIL)
 );
 CREATE TABLE USER_SUBSCRIBED (
@@ -129,12 +130,12 @@ SHOW TABLES;
 
 
 
-INSERT INTO USERS VALUES ('Rishabh Bhatia', 'Pass@123' ,'xyz@gmail.com', 'Street1', 'Maharashtra', 'Andheri East, Mumbai', '400321', '7777777777');
-INSERT INTO USERS VALUES ('Isha Gupta', 'Pass@123', 'abc@gmail.com', 'Street2', 'Maharashtra', 'Airoli, navi Mumbai', '123456','7877777777');
-INSERT INTO USERS VALUES ('Angad Singh', 'Pass@123', 'pqr@gmail.com', 'Street3', 'Maharashtra', 'Airoli, navi Mumbai',  '654321','7877777779');
-INSERT INTO USERS VALUES ('Shreyas Joshi', 'Pass@123', 'jkl@gmail.com', 'Street4', 'Maharashtra', 'Thane', '678901','7877777799');
-INSERT INTO USERS VALUES ('Sunil Lakhwani', 'Pass@123', 'you@gmail.com', 'Street5', 'Maharashtra', 'Andheri East, Mumbai', '253782','7877777796');
-INSERT INTO USERS VALUES ('Yashvi Bhatt', 'Pass@123', 'mno@gmail.com', 'Street6', 'Maharashtra', 'Ghatkopar, Mumbai', '234567','7877777770');
+INSERT INTO USERS VALUES ('Rishabh Bhatia', 'Pass@123' ,'xyz@gmail.com', 'Street1', 'Maharashtra', 'Andheri East, Mumbai', '400321', '7777777777', 'abc');
+INSERT INTO USERS VALUES ('Isha Gupta', 'Pass@123', 'abc@gmail.com', 'Street2', 'Maharashtra', 'Airoli, navi Mumbai', '123456','7877777777', 'pqr');
+INSERT INTO USERS VALUES ('Angad Singh', 'Pass@123', 'pqr@gmail.com', 'Street3', 'Maharashtra', 'Airoli, navi Mumbai',  '654321','7877777779', 'xyz');
+INSERT INTO USERS VALUES ('Shreyas Joshi', 'Pass@123', 'jkl@gmail.com', 'Street4', 'Maharashtra', 'Thane', '678901','7877777799', 'lmn');
+INSERT INTO USERS VALUES ('Sunil Lakhwani', 'Pass@123', 'you@gmail.com', 'Street5', 'Maharashtra', 'Andheri East, Mumbai', '253782','7877777796', 'zxc');
+INSERT INTO USERS VALUES ('Yashvi Bhatt', 'Pass@123', 'mno@gmail.com', 'Street6', 'Maharashtra', 'Ghatkopar, Mumbai', '234567','7877777770', 'qwe');
 select * from USERS;
 
 

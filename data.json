@@ -1,0 +1,132 @@
+{
+    "abi": [
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "name": "SNACK_ID",
+                    "type": "string"
+                },
+                {
+                    "name": "USER_EMAIL",
+                    "type": "string"
+                },
+                {
+                    "name": "SCHEDULE_DATE",
+                    "type": "string"
+                }
+            ],
+            "name": "getUserReview",
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "string"
+                },
+                {
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "name": "SNACK_ID",
+                    "type": "string"
+                },
+                {
+                    "name": "INDEX",
+                    "type": "uint256"
+                }
+            ],
+            "name": "getReview",
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "string"
+                },
+                {
+                    "name": "",
+                    "type": "string"
+                },
+                {
+                    "name": "",
+                    "type": "string"
+                },
+                {
+                    "name": "",
+                    "type": "string"
+                },
+                {
+                    "name": "",
+                    "type": "string"
+                },
+                {
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "name": "USER_EMAIL",
+                    "type": "string"
+                },
+                {
+                    "name": "USER_NAME",
+                    "type": "string"
+                },
+                {
+                    "name": "SNACK_ID",
+                    "type": "string"
+                },
+                {
+                    "name": "SNACK_REVIEW",
+                    "type": "string"
+                },
+                {
+                    "name": "SCHEDULE_DATE",
+                    "type": "string"
+                },
+                {
+                    "name": "SNACK_RATING",
+                    "type": "uint256"
+                }
+            ],
+            "name": "setReview",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "name": "SNACK_ID",
+                    "type": "string"
+                }
+            ],
+            "name": "get_array_length",
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }
+    ],
+    "contract_address": "0xF5192186caa2e7e82bEe80aF16a4DC7FdC9Ba35C"
+}

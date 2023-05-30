@@ -456,6 +456,7 @@
                                     <th class="price">QUANTITY</th>
                                     <th>KITCHEN</th>
                                     <th>TOTAL_AMOUNT</th>
+                                    <th>REVIEW</th>
                                 </tr>
 
                             </thead>
@@ -472,6 +473,52 @@
                                     <td class="price">{{i.QUANTITY}}</td>
                                     <td class="kitchenname">{{i.Kitchen_Name}}</td>
                                     <td class="total">{{i.PRODUCT_PRICE}}</td>
+                                    {% if (i.PRODUCT_RATING == 0) %}
+                                    <td class="review">
+                                        <div class="container" style="width:fit-content;">
+                                            <div class="row">
+                                                <div class="col-sm">
+                                                    <input class="{{i.PRODUCT_ID}} {{i.SCHEDULE_TIME}} review" type="text" placeholder="Enter a review..."></input>
+                                                </div>
+                                                <div class="col-sm">
+                                                    <select class="{{i.PRODUCT_ID}} {{i.SCHEDULE_TIME}} rating">
+                                                        <option value="0" selected>Select a rating...</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm">
+                                                    <button class="{{i.PRODUCT_ID}} {{i.SCHEDULE_TIME}} review-button" type="button">Submit</button>
+                                                </div>
+                                            </div>
+                                        </div>                                        
+                                    </td>
+                                    {% else %}
+                                    <td class="review">
+                                        <div class="container" style="width:fit-content;">
+                                            <div class="row">
+                                                <div class="col-sm">
+                                                    <span class="{{i.PRODUCT_ID}} {{i.SCHEDULE_TIME}} review">{{i.PRODUCT_REVIEW}}</span>
+                                                </div>
+                                                <div class="col-sm">
+                                                    <select class="{{i.PRODUCT_ID}} {{i.SCHEDULE_TIME}} rating" disabled>
+                                                        <option value="-1" {% if (i.PRODUCT_RATING == 0) %}selected{% endif %} >Select a rating...</option>
+                                                        <option value="1" {% if (i.PRODUCT_RATING == 1) %}selected{% endif %}>1</option>
+                                                        <option value="2" {% if (i.PRODUCT_RATING == 2) %}selected{% endif %}>2</option>
+                                                        <option value="3" {% if (i.PRODUCT_RATING == 3) %}selected{% endif %}>3</option>
+                                                        <option value="4" {% if (i.PRODUCT_RATING == 4) %}selected{% endif %}>4</option>
+                                                        <option value="5" {% if (i.PRODUCT_RATING == 5) %}selected{% endif %}>5</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    {%endif%}
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -644,6 +691,7 @@
     <script src="../static/js/wow.js"></script>
     <script src="../static/js/script.js"></script>
     <script src="../static/js/index.js"></script>
+    <script src="../static/js/ordernow.js"></script>
 
 </body>
 

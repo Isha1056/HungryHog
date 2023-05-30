@@ -361,33 +361,35 @@
     <section class="testimonial-section" style="background-image:url(../static/images/background/3.jpg);">
     	<div class="auto-container">
         	<div class="single-item-carousel">
-            
+                {% if snack|length > 0 %}
+                {% for i in snack %}
+                    {% if i.SNACK_REVIEWS|length > 0 %}
+                    {% for j in i.SNACK_REVIEWS %}
                 <!--Testimonial Block-->
-                <div class="testimonial-block">
-                    <div class="inner-box">
-                        <div class="quote-icon"><span class="flaticon-left-quote"></span></div>
-                        <div class="text">“ We enjoy sharing the projects and posts we make just as much as we enjoy creating them. consectetur adipiscing elit, sed do eiusmod tempor incididunt Sit back & take a moment to browse through some of our recent completed work.”</div>
-                        <h3><span>-</span> Stevan Smith,</h3>
+                        <div class="testimonial-block">
+                            <div class="inner-box">
+                                <h3>{{i.SNACK_NAME}}</h3>
+                                <div class="quote-icon"><span class="flaticon-left-quote"></span></div>
+                                <div class="text">“ {{j.SNACK_RATING}}/5 ”</div>
+                                <div class="text">“ {{j.SNACK_REVIEW}} ”</div>
+                                <div class="text">“ {{j.SCHEDULE_DATE}} ”</div>
+                                <h3><span>-</span>{{j.USER_NAME}}</h3>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% else %}
+
+                    <div class="testimonial-block">
+                        <div class="inner-box">
+                            <div class="quote-icon"><span class="flaticon-left-quote"></span></div>
+                            <div class="text">“ No Reviews for {{i.SNACK_NAME}} yet! ”</div>
+                            <h3><span>-</span> HungryHog Team</h3>
+                        </div>
                     </div>
-                </div>
-                
-                <!--Testimonial Block-->
-                <div class="testimonial-block">
-                    <div class="inner-box">
-                        <div class="quote-icon"><span class="flaticon-left-quote"></span></div>
-                        <div class="text">“ We enjoy sharing the projects and posts we make just as much as we enjoy creating them. consectetur adipiscing elit, sed do eiusmod tempor incididunt Sit back & take a moment to browse through some of our recent completed work.”</div>
-                        <h3><span>-</span> Stevan Smith,</h3>
-                    </div>
-                </div>
-                
-                <!--Testimonial Block-->
-                <div class="testimonial-block">
-                    <div class="inner-box">
-                        <div class="quote-icon"><span class="flaticon-left-quote"></span></div>
-                        <div class="text">“ We enjoy sharing the projects and posts we make just as much as we enjoy creating them. consectetur adipiscing elit, sed do eiusmod tempor incididunt Sit back & take a moment to browse through some of our recent completed work.”</div>
-                        <h3><span>-</span> Stevan Smith,</h3>
-                    </div>
-                </div>
+
+                    {% endif %}
+                {% endfor %}
+                {% endif %}
                 
             </div>
         </div>
