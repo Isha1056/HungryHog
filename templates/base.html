@@ -1,21 +1,24 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Reservation</title>
+<title>{% block title %}{% endblock %} || HungryHog </title>
 <!-- Stylesheets -->
 <link href="../static/css/bootstrap.css" rel="stylesheet">
 <link href="../static/css/revolution-slider.css" rel="stylesheet">
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <link href="../static/css/style.css" rel="stylesheet">
+<link href="../static/css/font-awesome.css" rel="stylesheet">
+<link href="../static/css/bootstrap-social.css" rel="stylesheet" />
 <!-- <link rel="shortcut icon" href="../static/css/favicon.ico" type="image/x-icon">
 <link rel="icon" href="../static/css/favicon.ico" type="image/x-icon"> -->
 <!-- Responsive -->
+<link href="../static/css/bootstrap.vertical-tabs.css" rel="stylesheet">
+
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <link href="../static/css/responsive.css" rel="stylesheet">
-
+{% block links %}{% endblock %}
 </head>
 
 <body>
@@ -129,7 +132,7 @@
                                                 {% endif %}
                                                 <li><a href="{{url_for('galleryPage')}}">Gallery</a></li>
                                                 <li><a href="{{url_for('ordernowPage')}}">Order Now</a></li>
-                                                <li><a href="{{url_for('reservationPage')}}">Reservation</a></li>
+                                                <li><a href="{{url_for('recipePage')}}">Recipes</a></li>
                                                 {% if 'USER_EMAIL' not in session %}
                                                 <li><a href="{{url_for('sign_inPage')}}">Sign In</a></li>
                                                 {% endif %}
@@ -198,7 +201,7 @@
     
                                                 <li><a href="{{url_for('galleryPage')}}">Gallery</a></li>
                                                 <li><a href="{{url_for('ordernowPage')}}">Order Now</a></li>
-                                                <li><a href="{{url_for('reservationPage')}}">Reservation</a></li>
+                                                <li><a href="{{url_for('recipePage')}}">Recipes</a></li>
                                                 <li><a href="{{url_for('sign_inPage')}}">Sign In</a></li>
                                                 <li><a href="{{url_for('snacksPage')}}">Snacks</a></li>
                                             </ul>
@@ -220,142 +223,13 @@
             </div><!-- / Hidden Bar Wrapper -->
         </section>
     <!-- / Hidden Bar -->
-    
-    <!--Reservartin Section-->
-    <section class="reservation-section">
-    	<div class="auto-container">
-        	<!--Content Box-->
-        	<div class="content-box">
-            	<h2>Booking a table online is easy</h2>
-            	<h3>Make A Reservation</h3>
-            	<div class="text">
-                	<p>Booking a table has never been so easy with free & instant online restaurant reservations, booking now!!</p>
-                    <p>Monday to Friday <span>9:00 am - 23:00 pm</span>  Saturday to Sunday <span>10:00 am - 22:00 pm</span> Note: Arctica Restaurant is closed on holidays.</p>
-                </div>
-                <h4>0844.335.1211</h4>
-            </div>
-            <!--End Content Box-->
-            
-            <!--form-box-->
-            <div class="form-box default-form wow fadeInUp" data-wow-delay="0ms" data-wow-duration="1500ms">
-            	<h3>Book Your Table Online</h3>
-            	<form method="" action="">
-                	<div class="clearfix">
-                        <div class="form-group icon-group col-md-4 col-sm-6 col-xs-12">
-                            <div class="group-inner">
-                                <input id="field-one" type="text" name="username" value="" placeholder="Your Name *" required>
-                            </div>
-                        </div>
-                    
-                        <div class="form-group icon-group col-md-4 col-sm-6 col-xs-12">
-                            <div class="group-inner">
-                                <input id="field-two" type="email" name="email" value="" placeholder="Your Email *" required>
-                            </div>
-                        </div>
-                    
-                        <div class="form-group icon-group col-md-4 col-sm-6 col-xs-12">
-                            <div class="group-inner">
-                                <label class="icon-label" for="field-three"><span class="fa fa-mobile"></span></label>
-                                <input id="field-three" type="text" name="text" value="" placeholder="Mobile Number *" required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group icon-group col-md-4 col-sm-6 col-xs-12">
-                            <div class="group-inner">
-                                <label class="icon-label" for="field-four"><span class="fa fa-calendar"></span></label>
-                                <input id="field-four" class="datepicker" type="text" name="text" value="" placeholder="Date *" required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group icon-group col-md-4 col-sm-6 col-xs-12">
-                            <div class="group-inner">
-                                <label class="icon-label" for="field-five"><span class="fa fa-clock-o"></span></label>
-                                <input id="field-five" type="text" name="text" value="" placeholder="Time *" required>
-                            </div>
-                        </div>
 
-                        <div class="form-group icon-group col-md-4 col-sm-6 col-xs-12">
-                            <div class="group-inner">
-                                <label class="icon-label" for="field-six"><span class="fa fa-user"></span></label>
-                                <input id="field-six" type="text" name="text" value="" placeholder="No. of Persons *" required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group col-xs-12 col-md-12 col-sm-12 col-xs-12 text-center">
-                            <button type="submit" class="theme-btn btn-style-one">Book now</button>
-                        </div>
-                        
-                    </div>
-                </form>
-            </div>
-            
-        </div>
-    </section>
-    <!--Reservartin Section-->
-    
-    <!--Parallax Image Section-->
-    <section class="parallax-image-section" style="background-image:url(../static/css/background/8.jpg);">
-    	<div class="auto-container">
-        	<h2>Enjoy Pleasant Pastime With Friends and Partners</h2>
-            <h4>Relaxing Atmosphere</h4>
-        </div>
-    </section>
-    <!--End Parallax Image Section-->
-    
-    <!--Meeting Section-->
-    <section class="meeting-section">
-    	<div class="auto-container">
-        	<div class="row clearfix">
-            	<!--Content Column-->
-            	<div class="content-column col-md-6 col-sm-12 col-xs-12">
-                	<div class="inner-box">
-                    	<!--Sec Title-->
-                    	<div class="sec-title">
-                        	<h2>Gorgeous Halls</h2>
-                            <h3>Find Perfect Place For Any Meeting </h3>
-                        </div>
-                        <div class="content">
-                            <div class="text">sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</div>
-                            
-                            <!--Meeting Info-->
-                            <div class="meeting-info">
-                                <h4>Seat Up 155 Company Meatings</h4>
-                                <div class="text">sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation </div>
-                            </div>
-                            
-                            <!--Meeting Info-->
-                            <div class="meeting-info">
-                                <h4>Traditional Home hall</h4>
-                                <div class="text">sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation </div>
-                            </div>
-                            
-                            <a href="#" class="read-more theme-btn btn-style-one">Book Now</a>
-                        </div>
-                        
-                    </div>
-                </div>
-                
-                <!--Image Column-->
-                <div class="image-column col-md-6 col-sm-12 col-xs-12">
-                	<div class="row clearfix">
-                    	<div class="column col-md-6 col-sm-6 col-xs-6">
-                        	<figure class="image-box">
-                            	<img src="../static/css/resource/meeting-1.jpg" alt="" />
-                            </figure>
-                        </div>
-                        <div class="column col-md-6 col-sm-6 col-xs-6">
-                        	<figure class="image-box">
-                            	<img src="../static/css/resource/meeting-2.jpg" alt="" />
-                            </figure>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-    </section>
-    <!--End Meeting Section-->
-   
+
+
+    {% block content %}{% endblock %}
+
+
+
     <!--Main Footer-->
     <footer class="main-footer">
     	<div class="auto-container">
@@ -370,7 +244,7 @@
                             <!--Footer Column-->
                         	<div class="footer-column col-md-7 col-sm-7 col-xs-12">
                             	<div class="footer-widget about-widget">
-                                	<div class="footer-logo"><figure><a href="index.html"><img src="../static/css/HungryHogLogo.png" alt=""></a></figure></div>
+                                	<div class="footer-logo"><figure><a href="index.html"><img src="../static/images/HungryHogLogo.png" alt=""></a></figure></div>
                                     <div class="widget-content">
                                     	<div class="text">We take pride in our exceptional customer service. Our friendly and knowledgeable team is always here to answer your questions and assist you with anything you need. </div>
                                         <!--Contact Info-->
@@ -416,17 +290,17 @@
                                     <div class="widget-content">
                                     	<div class="posts">
                                             <div class="post">
-                                                <figure class="post-thumb"><img src="../static/css/resource/post-thumb-1.jpg" alt=""><a href="blog-single.html" class="overlay-link"><span class="fa fa-link"></span></a></figure>
+                                                <figure class="post-thumb"><img src="../static/images/resource/post-thumb-1.jpg" alt=""><a href="blog-single.html" class="overlay-link"><span class="fa fa-link"></span></a></figure>
                                                 <div class="desc-text"><a href="blog-single.html">Peaceful Hostel</a></div>
                                                 <div class="time">25th June 2023</div>
                                             </div>
                                             <div class="post">
-                                                <figure class="post-thumb"><img src="../static/css/resource/post-thumb-2.jpg" alt=""><a href="blog-single.html" class="overlay-link"><span class="fa fa-link"></span></a></figure>
+                                                <figure class="post-thumb"><img src="../static/images/resource/post-thumb-2.jpg" alt=""><a href="blog-single.html" class="overlay-link"><span class="fa fa-link"></span></a></figure>
                                                 <div class="desc-text"><a href="blog-single.html">Chicken Caesar</a></div>
                                                 <div class="time">25th June 2023</div>
                                             </div>
                                             <div class="post">
-                                                <figure class="post-thumb"><img src="../static/css/resource/post-thumb-3.jpg" alt=""><a href="blog-single.html" class="overlay-link"><span class="fa fa-link"></span></a></figure>
+                                                <figure class="post-thumb"><img src="../static/images/resource/post-thumb-3.jpg" alt=""><a href="blog-single.html" class="overlay-link"><span class="fa fa-link"></span></a></figure>
                                                 <div class="desc-text"><a href="blog-single.html">Portobello Pizza</a></div>
                                                 <div class="time">25th June 2023</div>
                                             </div>
@@ -465,6 +339,81 @@
 </div>
 <!--End pagewrapper-->
 
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel" style="text-align:center; color:#dc1616;">Bulk Order Enquiry</h4>
+        </div>
+        <div class="modal-body">
+         <form>
+    <div class="form-group">
+      <label for="">Company Name:</label>
+      <input type="text" class="form-control" id="" placeholder="Company Name">
+    </div>
+    <div class="form-group">
+      <label for="">Contact Person:</label>
+      <input type="text" class="form-control" id="" placeholder="Contact Person">
+    </div>
+    
+    <div class="form-group">
+      <label for="">Email Id:</label>
+      <input type="email" class="form-control" id="" placeholder="Email Id">
+    </div>
+    
+    <div class="form-group">
+      <label for="">Mobile No. :</label>
+      <input type="tel" class="form-control" id="" placeholder="Mobile No.">
+    </div>
+    
+    <div class="form-group">
+      <label for="">Land Line No:</label>
+      <input type="tel" class="form-control" id="" placeholder="Land Line No">
+    </div>
+    
+     <div class="form-group">
+      <label for="">Address</label>
+     <textarea rows="3" cols="3" class="form-control" placeholder="Address"></textarea>
+    </div>
+    
+    
+    <div class="form-group">
+      <label for="">Location:</label>
+   <select class="form-control">
+   <option>--Select--</option>
+   <option>One</option>
+   <option>Two</option>
+   </select>
+    </div>
+    
+    
+    <div class="form-group">
+      <label for="">Pincode:</label>
+   <input type="text" class="form-control" id="" placeholder="Pincode">
+    </div>
+    
+    <div class="form-group">
+      <label for="">Website Url:</label>
+   <input type="text" class="form-control" id="" placeholder="Website Url">
+    </div>
+    
+    <div class="checkbox">
+      <label>
+        <input type="checkbox"> Accept Privacy Policy and Term & Conditions
+      </label>
+    </div>
+   
+  </form>
+        </div>
+        <div class="modal-footer">
+         <button type="submit" class="btn btn-success">Submit</button>
+         <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>-->
+        </div>
+      </div>
+    </div>
+  </div>
 <!--Scroll to top-->
 <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-long-arrow-up"></span></div>
 
@@ -479,6 +428,6 @@
 <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script src="../static/js/script.js"></script>
 <script src="../static/js/index.js"></script>
-
+{% block scripts %}{% endblock %}
 </body>
 </html>

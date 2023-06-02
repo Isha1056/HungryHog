@@ -36,6 +36,17 @@ from eth_utils import event_abi_to_log_topic, to_hex
 from hexbytes import HexBytes
 import random
 
+from transformers import FlaxAutoModelForSeq2SeqLM
+from transformers import AutoTokenizer
+from diffusers import StableDiffusionPipeline
+import torch
+
+
+
+##############################################################################################################################################################
+####### DECLARATIONS ########
+##############################################################################################################################################################
+
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -58,9 +69,13 @@ conn = mysql.connector.connect(
 w3 = Web3(Web3.HTTPProvider("http://127.0.0.1:8545"))
 account_key = w3.eth.accounts[1]
 
+
+
 ##############################################################################################################################################################
 ####### OAUTH ########
 ##############################################################################################################################################################
+
+
 
 #GOOGLE
 @app.route('/google/')
@@ -187,7 +202,6 @@ def twitter_auth():
     return redirect('/')
 
 
-##############################################################################################################################################################
 # client = razorpay.Client(auth=("rzp_test_JGsIexMIOVh3bW", "kpvTVMIBppTJGlKtMmnzwcVd"))
 
 # DATA = {
@@ -204,7 +218,7 @@ def twitter_auth():
 
 
 ##############################################################################################################################################################
-####### Ethereum ########
+####### ETHEREUM ########
 ##############################################################################################################################################################
 
 
@@ -397,11 +411,107 @@ def transaction(account_key, USER_EMAIL, USER_NAME, SNACK_ID, SNACK_REVIEW, SCHE
 #tx_dictionary = getSnackReviews("SNK00010")
 #print(tx_dictionary)
 
+
+
+##############################################################################################################################################################
+# RECIPE GENERATION 
 ##############################################################################################################################################################
 
 
-# Page routes 
-# *********************************************#
+
+# Text to recipe
+MODEL_NAME_OR_PATH = "flax-community/t5-recipe-generation"
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME_OR_PATH, use_fast=True)
+model = FlaxAutoModelForSeq2SeqLM.from_pretrained(MODEL_NAME_OR_PATH)
+
+# Text to image
+model_id = "runwayml/stable-diffusion-v1-5"
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+pipe = pipe.to("cuda")
+
+
+prefix = "items: "
+# generation_kwargs = {
+#     "max_length": 512,
+#     "min_length": 64,
+#     "no_repeat_ngram_size": 3,
+#     "early_stopping": True,
+#     "num_beams": 5,
+#     "length_penalty": 1.5,
+# }
+generation_kwargs = {
+    "max_length": 512,
+    "min_length": 64,
+    "no_repeat_ngram_size": 3,
+    "do_sample": True,
+    "top_k": 60,
+    "top_p": 0.95
+}
+
+special_tokens = tokenizer.all_special_tokens
+tokens_map = {
+    "<sep>": "--",
+    "<section>": "\n"
+}
+def skip_special_tokens(text, special_tokens):
+    for token in special_tokens:
+        text = text.replace(token, "")
+
+    return text
+
+def target_postprocessing(texts, special_tokens):
+    if not isinstance(texts, list):
+        texts = [texts]
+    
+    new_texts = []
+    for text in texts:
+        text = skip_special_tokens(text, special_tokens)
+
+        for k, v in tokens_map.items():
+            text = text.replace(k, v)
+
+        new_texts.append(text)
+
+    return new_texts
+
+def generation_function(texts):
+    _inputs = texts if isinstance(texts, list) else [texts]
+    inputs = [prefix + inp for inp in _inputs]
+    inputs = tokenizer(
+        inputs, 
+        max_length=256, 
+        padding="max_length", 
+        truncation=True, 
+        return_tensors="jax"
+    )
+
+    input_ids = inputs.input_ids
+    attention_mask = inputs.attention_mask
+
+    output_ids = model.generate(
+        input_ids=input_ids, 
+        attention_mask=attention_mask,
+        **generation_kwargs
+    )
+    generated = output_ids.sequences
+    generated_recipe = target_postprocessing(
+        tokenizer.batch_decode(generated, skip_special_tokens=False),
+        special_tokens
+    )
+    return generated_recipe
+
+
+def generate_image(prompt):
+    image = pipe(prompt).images[0]
+    image.save("./static/images/"+"_".join(prompt.split())+".jpg", "JPEG")
+    return image
+
+
+
+##############################################################################################################################################################
+# PAGE ROUTES 
+##############################################################################################################################################################
+
 
 
 @app.route('/')
@@ -514,10 +624,10 @@ def ordernowPage():
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
 
-@app.route('/reservation')
-def reservationPage():
+@app.route('/recipe')
+def recipePage():
     if conn and "USER_EMAIL" in session:
-        return render_template('reservation.html', session=session)
+        return render_template('recipe.html', session=session)
     elif conn:
         return redirect('/sign_in')
     else:
@@ -670,9 +780,13 @@ def admin_delivery_partnersPage():
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
-# *********************************************#
-# APIs routes
-# *********************************************#
+
+
+##############################################################################################################################################################
+# API ROUTES 
+##############################################################################################################################################################
+
+
 @app.route('/CheckServer')
 def CheckServer():
     if conn:
@@ -717,6 +831,49 @@ def update_cart_count():
         myresult = mycursor.fetchall()
         session['CART_COUNT'] = myresult[0][0]
 
+@app.route('/getrecipe', methods = ['POST'])
+def get_recipe():
+    if "USER_EMAIL" in session:
+        req = request.get_json()
+        generated = generation_function([i.strip() for i in req['INGREDIENTS'].split(",")])
+        print(generated)
+        result = []
+        cur = ""
+
+        for text in generated:
+            recipe = {}
+            sections = text.split("\n")
+            for section in sections:
+                section = section.strip()
+                if section.startswith("title:"):
+                    section = section.replace("title:", "")
+                    cur = "Title"
+                    if cur not in recipe:
+                        recipe["Title"] = ""
+                elif section.startswith("ingredients:"):
+                    section = section.replace("ingredients:", "")
+                    cur = "Ingredients"
+                    if cur not in recipe:
+                        recipe["Ingredients"] = ""
+                elif section.startswith("directions:"):
+                    section = section.replace("directions:", "")
+                    cur = "Directions"
+                    if cur not in recipe:
+                        recipe["Directions"] = ""
+                if cur=="Title":
+                    recipe[cur] += section.strip().capitalize()
+                else:
+                    recipe[cur] += "\n".join([f"  - {info.strip().capitalize()}" for i, info in enumerate(section.split("--"))])
+            result.append(recipe)
+                
+        for i in range(len(result)):
+            img = generate_image(result[i]["Title"])
+            with open("./static/images/"+"_".join(result[i]["Title"].split())+".jpg", "rb") as img_file:
+                img = base64.b64encode(img_file.read()).decode("utf-8")
+            result[i]["Image"] = img
+        
+        return jsonify(RECIPE=result)
+
 
 # @app.route('/getSnacks',methods = ['GET'])
 def getSnacks(image_name, image_data):
@@ -732,7 +889,6 @@ def getSnacks(image_name, image_data):
 def UsersAuthentication():
     if request.method == 'POST':
         req = request.get_json()
-        print(req)
     try:
         if conn:
             mycursor = conn.cursor()
@@ -748,7 +904,6 @@ def UsersAuthentication():
             mycursor = conn.cursor()
             mycursor.execute('SELECT * FROM USERS WHERE USER_EMAIL="'+req["USER_EMAIL"]+'"')
             myresult = mycursor.fetchall()
-            print(myresult)
             if len(myresult) == 0:
                 return jsonify(StatusCode = '0',ErrorMessage='Invalid User email')
             user_record = {
@@ -835,7 +990,6 @@ def getKitchens():
 def showMyLunchBoxOrders():
     if request.method == 'POST':
         req = request.get_json()
-        print(req)
         try:
             if conn:
                 mycursor = conn.cursor()
@@ -958,6 +1112,12 @@ def deleteCartRow():
         except Exception as e:
                 return str(e)
 
+
+def convertToBinaryData(filename):
+    with open(filename, 'rb') as file:
+        binaryData = file.read()
+    return binaryData
+
+
 if __name__ == '__main__':
-  
-    app.run(debug = True)
+    app.run(debug = False)

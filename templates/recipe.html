@@ -1,0 +1,105 @@
+
+{%extends "base.html" %}
+
+{% block title %}Recipes{% endblock %}
+    
+{% block content %}
+<!--Reservartin Section-->
+<section class="reservation-section">
+    <div class="auto-container">
+        <!--Content Box-->
+        <div class="content-box">
+            <h2>Recipes based on your Ingredients</h2>
+            <h3>Get A Recipe</h3>
+            <div class="text">
+                <p>Embark on a Porcine Gastronomic Adventure: Hungry Hog Unveils the Art of Pig-Inspired Cooking!</p>
+                <p>Anyday, <span>anytime, </span>available 24/7, <span> to fulfill </span> all your pig-outs.</p>
+            </div>
+            <h4>ReciPig!</h4>
+        </div>
+        <!--End Content Box-->
+        
+        <!--form-box-->
+        <div class="form-box default-form wow fadeInUp" data-wow-delay="0ms" data-wow-duration="1500ms">
+            <h3>Enter your ingredients separated by a comma...</h3>
+            <div class="clearfix">
+
+                <div class="form-group icon-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="group-inner">
+                        <input class="recipe-input" type="text" value="" placeholder="Ingredients" required>
+                    </div>
+                </div>
+
+                <div class="form-group col-xs-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                    <button class="theme-btn btn-style-one recipe-button">Oink!</button>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</section>
+<!--Reservartin Section-->
+
+<!--Parallax Image Section-->
+<!-- <section class="parallax-image-section" style="background-image:url(../static/css/background/8.jpg);">
+    <div class="auto-container">
+        <h2>Enjoy Pleasant Pastime With Friends and Partners</h2>
+        <h4>Relaxing Atmosphere</h4>
+    </div>
+</section> -->
+<!--End Parallax Image Section-->
+
+<!--Meeting Section-->
+<section class="meeting-section">
+    <div class="auto-container recipe-container">
+        <div class="row clearfix">
+
+            <!--Content Column-->
+            <div class="content-column col-md-6 col-sm-12 col-xs-12">
+                <div class="inner-box">
+                    <!--Sec Title-->
+                    <div class="sec-title">
+                        <h2>Gorgeous Halls</h2>
+                        <h3>Find Perfect Place For Any Meeting </h3>
+                    </div>
+                    <div class="content">
+                        <div class="text">sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</div>
+                        
+                        <!--Meeting Info-->
+                        <div class="meeting-info">
+                            <h4>Seat Up 155 Company Meatings</h4>
+                            <div class="text">sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation </div>
+                        </div>
+                        
+                        <!--Meeting Info-->
+                        <div class="meeting-info">
+                            <h4>Traditional Home hall</h4>
+                            <div class="text">sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation </div>
+                        </div>
+                        
+                        <a href="#" class="read-more theme-btn btn-style-one">Book Now</a>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <!--Image Column-->
+            <div class="image-column col-md-6 col-sm-12 col-xs-12">
+                <div class="row clearfix">
+                    <div class="column col-md-12 col-sm-12 col-xs-12">
+                        <figure class="image-box">
+                            <img src="../static/images/resource/meeting-1.jpg" alt="" />
+                        </figure>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+<!--End Meeting Section-->
+{% endblock %}
+{% block scripts %}
+<script src="../static/js/recipe.js"></script>
+{% endblock %}

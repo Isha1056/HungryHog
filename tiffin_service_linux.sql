@@ -1,18 +1,19 @@
+DROP DATABASE tiffin_service;
 Create Database IF NOT EXISTS tiffin_service;
 SHOW DATABASES;
 USE tiffin_service;
 
 
-DROP TABLE lunch_box_order;
-DROP TABLE user_subscribed;
-DROP TABLE users;
-DROP TABLE snack;
-DROP TABLE order_summary;
-DROP TABLE kitchen;
-DROP TABLE meals;
-DROP TABLE delivery_management;
-DROP TABLE delivery_partner;
-DROP TABLE payment;
+DROP TABLE Lunch_Box_Order;
+DROP TABLE USER_SUBSCRIBED;
+DROP TABLE USERS;
+DROP TABLE SNACK;
+DROP TABLE ORDER_SUMMARY;
+DROP TABLE Kitchen;
+DROP TABLE Meals;
+DROP TABLE Delivery_Management;
+DROP TABLE Delivery_Partner;
+DROP TABLE Payment;
 
 
 
@@ -139,11 +140,11 @@ INSERT INTO USERS VALUES ('Yashvi Bhatt', 'Pass@123', 'mno@gmail.com', 'Street6'
 select * from USERS;
 
 
-INSERT INTO User_Subscribed VALUE ('1001', 'Premium', 'Monthly', 'xyz@gmail.com');
-INSERT INTO User_Subscribed VALUE ('1002', 'Premium', 'Quarterly', 'abc@gmail.com');
-INSERT INTO User_Subscribed VALUE ('1003', 'Premium', 'Weekly', 'pqr@gmail.com');
-INSERT INTO User_Subscribed VALUE ('1004', 'Premium', 'Daily', 'jkl@gmail.com');
-select * from User_Subscribed;
+INSERT INTO USER_SUBSCRIBED VALUE ('1001', 'Premium', 'Monthly', 'xyz@gmail.com');
+INSERT INTO USER_SUBSCRIBED VALUE ('1002', 'Premium', 'Quarterly', 'abc@gmail.com');
+INSERT INTO USER_SUBSCRIBED VALUE ('1003', 'Premium', 'Weekly', 'pqr@gmail.com');
+INSERT INTO USER_SUBSCRIBED VALUE ('1004', 'Premium', 'Daily', 'jkl@gmail.com');
+select * from USER_SUBSCRIBED;
 
 
 INSERT INTO Meals VALUES (2010, 'Lunch', '1:00-3:00');
@@ -182,18 +183,18 @@ select * from Kitchen;
 INSERT INTO Lunch_Box_Order VALUES ('LBO2020', '', 'Large', 'Bule', 'xyz@gmail.com', 'PAY4000', 'DLM2010', 3001);
 INSERT INTO Lunch_Box_Order VALUES ('LBO2021', '', 'Large', 'Green', 'abc@gmail.com', 'PAY4001', 'DLM2011', 3002);
 select * from Lunch_Box_Order;
-
-INSERT INTO SNACK VALUES ('SNK0001', 'Veg Momos', '45', 3001, 2012, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_vegmomo.jpg"));
-INSERT INTO SNACK VALUES ('SNK0002', 'Fried Chicken Momos', '60', 3002, 2010, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_frynonvegmomo.jpg"));
-INSERT INTO SNACK VALUES ('SNK0003', 'Veg Chowmein', '65', 3003, 2012, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_chommeen.jpg"));
-INSERT INTO SNACK VALUES ('SNK0004', 'Chicken Momos', '55', 3004, 2010, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_nonvegmomo.jpg"));
-INSERT INTO SNACK VALUES ('SNK0005', 'Fried Veg Momos', '50', 3005, 2010, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_vegmomo.jpg"));
-INSERT INTO SNACK VALUES ('SNK0006', 'Veg Spring Rolls', '60', 3006, 2011, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_vegroll.jpg"));
-INSERT INTO SNACK VALUES ('SNK0007', 'Golgappa', '50',3005, 2010, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_gol.jpg"));
-INSERT INTO SNACK VALUES ('SNK0008', 'Noodles', '100',3005, 2015, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_chommeen.jpg"));
-INSERT INTO SNACK VALUES ('SNK0009', 'Kimchi', '140',3005, 2015, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_chommeen.jpg"));
-INSERT INTO SNACK VALUES ('SNK00010', 'Boba Tea', '100',3005, 2015, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_chommeen.jpg"));
-INSERT INTO SNACK VALUES ('SNK00011', 'Pizza', '400',3005, 2015, load_file("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/snacks_chommeen.jpg"));
+/*
+INSERT INTO SNACK VALUES ('SNK0001', 'Veg Momos', '45', 3001, 2012, load_file("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_vegmomo.jpg"));
+INSERT INTO SNACK VALUES ('SNK0002', 'Fried Chicken Momos', '60', 3002, 2010, load_file("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_frynonvegmomo.jpg"));
+INSERT INTO SNACK VALUES ('SNK0003', 'Veg Chowmein', '65', 3003, 2012, load_file("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"));
+INSERT INTO SNACK VALUES ('SNK0004', 'Chicken Momos', '55', 3004, 2010, load_file("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_nonvegmomo.jpg"));
+INSERT INTO SNACK VALUES ('SNK0005', 'Fried Veg Momos', '50', 3005, 2010, load_file("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_vegmomo.jpg"));
+INSERT INTO SNACK VALUES ('SNK0006', 'Veg Spring Rolls', '60', 3006, 2011, load_file("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_vegroll.jpg"));
+INSERT INTO SNACK VALUES ('SNK0007', 'Golgappa', '50',3005, 2010, load_file("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_gol.jpg"));
+INSERT INTO SNACK VALUES ('SNK0008', 'Noodles', '100',3005, 2015, load_file("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"));
+INSERT INTO SNACK VALUES ('SNK0009', 'Kimchi', '140',3005, 2015, load_file("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"));
+INSERT INTO SNACK VALUES ('SNK00010', 'Boba Tea', '100',3005, 2015, load_file("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"));
+INSERT INTO SNACK VALUES ('SNK00011', 'Pizza', '400',3005, 2015, load_file("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"));
 SELECT * FROM SNACK;
 select SNACK.SNACK_ID, SNACK.SNACK_NAME, SNACK.SNACK_PRICE, SNACK.Kitchen_ID, Kitchen.Kitchen_Name, SNACK.Meal_ID, 
 SNACK.SNACK_LOGO, Meals.Meal_Type, Meals.Meal_Timings
@@ -202,8 +203,9 @@ LEFT JOIN Kitchen
 ON SNACK.Kitchen_ID = Kitchen.Kitchen_ID
 LEFT JOIN Meals
 ON SNACK.Meal_ID = Meals.Meal_ID;
+*/
 
-select * from users;
+select * from USERS;
 select * from ORDER_SUMMARY;
 
 
