@@ -6,6 +6,8 @@ $(document).ready(function(){
         }
         $('.recipe-input').val("");
         $(".recipe-container").empty();
+        $(".recipe-container").append(`<div class="preloader"></div>`);
+        
         $.ajax({
             type: 'post',
             url: 'http://127.0.0.1:5000/getrecipe',
@@ -13,6 +15,7 @@ $(document).ready(function(){
             contentType: "application/json; charset=utf-8",
             traditional: true,
             success: function (data) {
+                $(".recipe-container").empty();
                 data = data['RECIPE']
                 $(".recipe-button").removeAttr('disabled');
                 console.log(typeof data, data);
@@ -33,7 +36,7 @@ $(document).ready(function(){
                                 <div class="inner-box">
                                     <!--Sec Title-->
                                     <div class="sec-title">
-                                        <h2>`+c+1+`:</h2>
+                                        <h2>`+c+`:</h2>
                                         <h3>`+data[i]['Title']+`</h3>
                                     </div>
                                     <div class="content">
@@ -51,7 +54,7 @@ $(document).ready(function(){
                                             <div class="text">`+data[i]['Directions']+`</div>
                                         </div>
                                         
-                                        <a href="#" class="read-more theme-btn btn-style-one">Book Now</a>
+                                        <a href="http://www.google.com/search?q=`+data[i]['Title']+`" class="read-more theme-btn btn-style-one" target="_blank">Know More</a>
                                     </div>
                                     
                                 </div>

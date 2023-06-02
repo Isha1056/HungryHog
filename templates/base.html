@@ -47,7 +47,7 @@
                             </div>
                             
                             <ul class="clearfix">
-                                <li>Call for Special Order: +011 29 345 678</li>
+                                <li>Satisfying the Hunger of every Hog!</li>
                             </ul>
                         </div>
                         
@@ -114,9 +114,10 @@
                                         <li><a href="{{url_for('aboutPage')}}">About</a></li>
                                        <!-- <li><a href="">Order Now</a></li>-->
                                         
-                                        <li><a href="#" data-toggle="modal" data-target="#myModal">Bulk Order</a></li>
+                                        <!-- <li><a href="#" data-toggle="modal" data-target="#myModal">Bulk Order</a></li> -->
                                         
-                                         <li><a href="{{url_for('snacksPage')}}">Snacks</a></li>
+                                        <li><a href="{{url_for('snacksPage')}}">Kitchens</a></li>
+                                        <li><a href="{{url_for('recipePage')}}">Recipes</a></li>
                                         <li><a href="{{url_for('contactPage')}}">Contact</a></li>
     
                                         <li class="dropdown"><a href="#">All Pages</a>
@@ -128,15 +129,14 @@
                                                 <li><a href="{{url_for('shopping_cartPage')}}">Shopping Cart</a></li>
                                                 {% endif %}
                                                 {% if 'USER_EMAIL' in session %}
-                                                <li><a href="{{url_for('checkoutPage')}}">Checkout</a></li>
+                                                <li><a href="{{url_for('checkoutPage')}}">Order History</a></li>
                                                 {% endif %}
                                                 <li><a href="{{url_for('galleryPage')}}">Gallery</a></li>
-                                                <li><a href="{{url_for('ordernowPage')}}">Order Now</a></li>
                                                 <li><a href="{{url_for('recipePage')}}">Recipes</a></li>
                                                 {% if 'USER_EMAIL' not in session %}
                                                 <li><a href="{{url_for('sign_inPage')}}">Sign In</a></li>
                                                 {% endif %}
-                                                <li><a href="{{url_for('snacksPage')}}">Snacks</a></li>
+                                                <li><a href="{{url_for('snacksPage')}}">Kitchens</a></li>
     
                                             </ul>
                                         </li>
@@ -148,7 +148,7 @@
                             <!-- Main Menu End-->
                             
                             <!--Reserv Box Btn-->
-                            <div class="btn-outer"><a href="{{url_for('ordernowPage')}}" class=" reserv-box-btn">Order Now</a></div>
+                            <div class="btn-outer"><a href="{{url_for('snacksPage')}}" class=" reserv-box-btn">Order Now</a></div>
                             
                         </div><!--Nav Outer End-->
                         
@@ -187,9 +187,10 @@
                             
                         </li>
                         <li><a href="{{url_for('aboutPage')}}">About</a></li>
-                                        <li><a href="ordernow.html">Order Now</a></li>
-                                        
-                                        <li><a href="#" data-toggle="modal" data-target="#myModal">Bulk Order</a></li>
+                                        <li><a href="{{url_for('snacksPage')}}">Order Now</a></li>
+                                        <li><a href="{{url_for('recipePage')}}">Recipes</a></li>
+
+                                        <!-- <li><a href="#" data-toggle="modal" data-target="#myModal">Bulk Order</a></li> -->
                                         
                                         <li class="dropdown"><a href="#">All Pages</a>
                                             <ul>
@@ -197,16 +198,15 @@
                                                 <li><a href="{{url_for('aboutPage')}}">About</a></li>
                                                 <li><a href="{{url_for('contactPage')}}">Contact</a></li>
                                                 <li><a href="{{url_for('shopping_cartPage')}}">Shopping Cart</a></li>
-                                                <li><a href="{{url_for('checkoutPage')}}">Checkout</a></li>
+                                                <li><a href="{{url_for('checkoutPage')}}">Order History</a></li>
     
                                                 <li><a href="{{url_for('galleryPage')}}">Gallery</a></li>
-                                                <li><a href="{{url_for('ordernowPage')}}">Order Now</a></li>
                                                 <li><a href="{{url_for('recipePage')}}">Recipes</a></li>
                                                 <li><a href="{{url_for('sign_inPage')}}">Sign In</a></li>
-                                                <li><a href="{{url_for('snacksPage')}}">Snacks</a></li>
+                                                <li><a href="{{url_for('snacksPage')}}">Kitchens</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="{{url_for('snacksPage')}}">Snacks</a></li>
+                                        <li><a href="{{url_for('snacksPage')}}">Kitchens</a></li>
                                         <li><a href="{{url_for('contactPage')}}">Contact</a></li>
                      </ul>
                 </div><!-- /.Side-menu -->
@@ -262,14 +262,16 @@
                             <!--Footer Column-->
                         	<div class="footer-column col-md-5 col-sm-5 col-xs-12">
                             	<div class="footer-widget links-widget">
-                                	<h2>usefull links</h2>
+                                	<h2>useful links</h2>
                                     <div class="widget-content">
                                         <ul class="list">
-                                            <li><a href="#">About Company</a></li>
-                                            <li><a href="#">Bulk Order</a></li>
-                                            <li><a href="#">Our Blog</a></li>
-                                            <li><a href="#">Order Now</a></li>
-                                            <li><a href="#">Contact us</a></li>
+                                            <li><a href="{{url_for('aboutPage')}}">About Company</a></li>
+                                            {% if 'USER_EMAIL' in session %}
+                                            <li><a href="{{url_for('checkoutPage')}}">Order History</a></li>
+                                            {% endif %}
+                                            <li><a href="{{url_for('recipePage')}}">Recipes</a></li>
+                                            <li><a href="{{url_for('snacksPage')}}">Order Now</a></li>
+                                            <li><a href="{{url_for('contactPage')}}">Contact us</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -286,23 +288,23 @@
                             <!--Footer Column-->
                         	<div class="footer-column col-md-6 col-sm-6 col-xs-12">
                             	<div class="footer-widget posts-widget">
-                                	<h2>Latest Blog Post</h2>
+                                	<h2>Top Kitchens</h2>
                                     <div class="widget-content">
                                     	<div class="posts">
                                             <div class="post">
                                                 <figure class="post-thumb"><img src="../static/images/resource/post-thumb-1.jpg" alt=""><a href="blog-single.html" class="overlay-link"><span class="fa fa-link"></span></a></figure>
-                                                <div class="desc-text"><a href="blog-single.html">Peaceful Hostel</a></div>
-                                                <div class="time">25th June 2023</div>
+                                                <div class="desc-text"><a href="blog-single.html">Louis Burger</a></div>
+                                                <div class="time">Burgers and Snacks</div>
                                             </div>
                                             <div class="post">
                                                 <figure class="post-thumb"><img src="../static/images/resource/post-thumb-2.jpg" alt=""><a href="blog-single.html" class="overlay-link"><span class="fa fa-link"></span></a></figure>
-                                                <div class="desc-text"><a href="blog-single.html">Chicken Caesar</a></div>
-                                                <div class="time">25th June 2023</div>
+                                                <div class="desc-text"><a href="blog-single.html">Senorita FoodHall</a></div>
+                                                <div class="time">Authentic Italian Food</div>
                                             </div>
                                             <div class="post">
                                                 <figure class="post-thumb"><img src="../static/images/resource/post-thumb-3.jpg" alt=""><a href="blog-single.html" class="overlay-link"><span class="fa fa-link"></span></a></figure>
-                                                <div class="desc-text"><a href="blog-single.html">Portobello Pizza</a></div>
-                                                <div class="time">25th June 2023</div>
+                                                <div class="desc-text"><a href="blog-single.html">Dabba Garam</a></div>
+                                                <div class="time">Home Made Food</div>
                                             </div>
                                         </div>
                                     </div>
