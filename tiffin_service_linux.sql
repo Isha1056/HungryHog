@@ -24,9 +24,12 @@ CREATE TABLE USERS (
     USER_STREET varchar(255),
     USER_STATE varchar(255),
     USER_CITY varchar(255),
+    USER_COUNTRY varchar(255),
     USER_PINCODE varchar(255),
     USER_MOBILE varchar(255),
     USER_PRIVATE_KEY varchar(255),
+    USER_LATITUDE FLOAT,
+    USER_LONGITUDE FLOAT,
 	PRIMARY KEY (USER_EMAIL)
 );
 CREATE TABLE USER_SUBSCRIBED (
@@ -50,10 +53,14 @@ CREATE TABLE Kitchen (
     Kitchen_open_time varchar(255),
     Kitchen_Close_time varchar(255),
 	Kitchen_Address varchar(255),
-    Kitchen_Ratings varchar(255),
+    Kitchen_Ratings FLOAT,
     Kitchen_Number varchar(255),
     Popularity varchar(255),
     Meal_ID numeric Not Null,
+    Kitchen_Latitude FLOAT,
+    Kitchen_Longitude FLOAT,
+    Kitchen_Review_Count numeric Not Null,
+    Kitchen_Review_Total numeric Not Null,
 	PRIMARY KEY (Kitchen_ID),
     FOREIGN KEY (Meal_ID) REFERENCES Meals(Meal_ID)
 );
@@ -105,6 +112,9 @@ CREATE TABLE SNACK (
     Kitchen_ID numeric Not Null,
 	Meal_ID numeric Not Null,
     SNACK_LOGO BLOB,
+    SNACK_REVIEW_COUNT numeric Not Null,
+    SNACK_REVIEW_TOTAL numeric Not Null,
+    SNACK_RATING FLOAT Not Null,
 	PRIMARY KEY (SNACK_ID),
     FOREIGN KEY (Kitchen_ID) REFERENCES Kitchen(Kitchen_ID),
     FOREIGN KEY (Meal_ID) REFERENCES Meals(Meal_ID)
@@ -131,12 +141,12 @@ SHOW TABLES;
 
 
 
-INSERT INTO USERS VALUES ('Rishabh Bhatia', 'Pass@123' ,'xyz@gmail.com', 'Street1', 'Maharashtra', 'Andheri East, Mumbai', '400321', '7777777777', 'abc');
-INSERT INTO USERS VALUES ('Isha Gupta', 'Pass@123', 'abc@gmail.com', 'Street2', 'Maharashtra', 'Airoli, navi Mumbai', '123456','7877777777', 'pqr');
-INSERT INTO USERS VALUES ('Angad Singh', 'Pass@123', 'pqr@gmail.com', 'Street3', 'Maharashtra', 'Airoli, navi Mumbai',  '654321','7877777779', 'xyz');
-INSERT INTO USERS VALUES ('Shreyas Joshi', 'Pass@123', 'jkl@gmail.com', 'Street4', 'Maharashtra', 'Thane', '678901','7877777799', 'lmn');
-INSERT INTO USERS VALUES ('Sunil Lakhwani', 'Pass@123', 'you@gmail.com', 'Street5', 'Maharashtra', 'Andheri East, Mumbai', '253782','7877777796', 'zxc');
-INSERT INTO USERS VALUES ('Yashvi Bhatt', 'Pass@123', 'mno@gmail.com', 'Street6', 'Maharashtra', 'Ghatkopar, Mumbai', '234567','7877777770', 'qwe');
+INSERT INTO USERS VALUES ('Rishabh Bhatia', 'Pass@123' ,'xyz@gmail.com', 'Street1', 'Maharashtra', 'Andheri East, Mumbai', 'India','400321', '7777777777', 'abc', 122.123, 123.123);
+INSERT INTO USERS VALUES ('Isha Gupta', 'Pass@123', 'abc@gmail.com', 'Street2', 'Maharashtra', 'Airoli, navi Mumbai', 'India', '123456','7877777777', 'pqr', 122.123, 123.123);
+INSERT INTO USERS VALUES ('Angad Singh', 'Pass@123', 'pqr@gmail.com', 'Street3', 'Maharashtra', 'Airoli, navi Mumbai', 'India',  '654321','7877777779', 'xyz', 122.123, 123.123);
+INSERT INTO USERS VALUES ('Shreyas Joshi', 'Pass@123', 'jkl@gmail.com', 'Street4', 'Maharashtra', 'Thane', 'India', '678901','7877777799', 'lmn', 122.123, 123.123);
+INSERT INTO USERS VALUES ('Sunil Lakhwani', 'Pass@123', 'you@gmail.com', 'Street5', 'Maharashtra', 'Andheri East, Mumbai', 'India', '253782','7877777796', 'zxc', 122.123, 123.123);
+INSERT INTO USERS VALUES ('Yashvi Bhatt', 'Pass@123', 'mno@gmail.com', 'Street6', 'Maharashtra', 'Ghatkopar, Mumbai', 'India', '234567','7877777770', 'qwe', 122.123, 123.123);
 select * from USERS;
 
 
@@ -170,12 +180,12 @@ INSERT INTO Payment VALUES ('PAY4001', 'Debit Card', '450', 'Completed');
 select * from Payment;
 
 
-INSERT INTO Kitchen VALUES (3001, 'Angad Ka Dhaba', '', '8:00', '23:59', 'Andheri Railway station, Mumbai', '4.5', '2222222222', 'High', 2012);
-INSERT INTO Kitchen VALUES (3002, 'Dabba Garam', '', '9:00', '23:59', 'Chakala Metro, Mumbai', '3.7', '2822222222', 'Medium', 2010);
-INSERT INTO Kitchen VALUES (3003, 'Hare Rama Hare Krishna', '', '8:00', '23:59', 'Western Express Highway metro, Mumbai', '4.7', '2822222222', 'Very High', 2012);
-INSERT INTO Kitchen VALUES (3004, 'Senorita FoodHall', '', '10:00', '23:59', 'Khar West, Mumbai', '4.7', '2822222222', 'Very High', 2010);
-INSERT INTO Kitchen VALUES (3005, 'Louis Burger', '', '11:00', '23:59', 'Andher West, Mumbai', '4.5', '2822222222', 'Very High', 2010);
-INSERT INTO Kitchen VALUES (3006, 'Bikaner Breakfast House', '', '7:00', '23:59', 'Versova, Mumbai', '4.0', '2822222288', 'High', 2011);
+INSERT INTO Kitchen VALUES (3001, 'Angad Ka Dhaba', '', '8:00', '23:59', 'Andheri Railway station, Mumbai', 0, '2222222222', 'High', 2012, 19.150206863545474, 72.82677495588325, 0, 0);
+INSERT INTO Kitchen VALUES (3002, 'Dabba Garam', '', '9:00', '23:59', 'Chakala Metro, Mumbai', 0, '2822222222', 'Medium', 2010, 19.16145883073272, 72.99882270411405, 0, 0);
+INSERT INTO Kitchen VALUES (3003, 'Hare Rama Hare Krishna', '', '8:00', '23:59', 'Western Express Highway metro, Mumbai', 0, '2822222222', 'Very High', 2012, 19.1613777552713, 72.99081899238811, 0, 0);
+INSERT INTO Kitchen VALUES (3004, 'Senorita FoodHall', '', '10:00', '23:59', 'Khar West, Mumbai', 0, '2822222222', 'Very High', 2010, 19.161641250375165, 72.99167729927562, 0, 0);
+INSERT INTO Kitchen VALUES (3005, 'Louis Burger', '', '11:00', '23:59', 'Andher West, Mumbai', 0, '2822222222', 'Very High', 2010, 19.163080331589306, 72.99189187599751, 0, 0);
+INSERT INTO Kitchen VALUES (3006, 'Bikaner Breakfast House', '', '7:00', '23:59', 'Versova, Mumbai', 0, '2822222288', 'High', 2011, 28.663662204748466, 77.10031119068194, 0, 0);
 select * from Kitchen;
 
 

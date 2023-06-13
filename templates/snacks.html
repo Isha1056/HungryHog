@@ -31,6 +31,15 @@
       				<div class="col-md-12 col-sm-12">
       					<p class="price" style="color:#F00; text-align:center;font-size:18px;">Price: {{ i.SNACK_PRICE }}</p>
       				</div>
+                    {% if i.SNACK_RATING != 0 %}
+                    <div class="col-md-12 col-sm-12">
+                        <p class="price" style="color:#F00; text-align:center;font-size:18px;">Rating: {{ i.SNACK_RATING }} / 5</p>
+                    </div>
+                    {% else %}
+                    <div class="col-md-12 col-sm-12">
+                        <p class="price" style="color:#F00; text-align:center;font-size:18px;">Rating: None </p>
+                    </div>
+                    {% endif %}
       				      				
       			</div>
       			<hr class="line">
@@ -49,16 +58,16 @@
         	<!--sec title one-->
             <div class="sec-title-one">
                 <h2>Top Kitchens in your Area</h2>
-                <h4>We Create Delicous Memory</h4>
+                <h4>We Create Delicous Memories</h4>
             </div>
         
         	<div class="row clearfix">
             	<!--Opening Column-->
             	<div class="opening-column col-md-4 col-sm-12 col-xs-12">
                 	<div class="inner-box wow slideInLeft" data-wow-delay="0ms" data-wow-duration="1500ms">
-                    	<div class="title-box">Opening Hours</div>
+                    	<div class="title-box">Our Goal:</div>
                         <ul>
-                        	<li>Monday — Friday<br>9:00 am - 23:00 pm</li>
+                        	<li>Fulfilling your cravings,<br>Ensuring your health!</li>
                             <li>We Deliver 24 hours a day<br>All days a week!</li>
                             <li></li>
                             <li><img src="../static/images/pig_waiter_img.png" alt="" style="max-width: 30%;"/></li>
@@ -92,7 +101,11 @@
                                     <!--Content Column-->
                                     <div class="content-column col-md-8 col-sm-8 col-xs-12 pull-right">
                                         <h3>{{ i.Kitchen_Name }}</h3>
-                                        <div class="text"></div>
+                                        {% if i.Kitchen_Ratings != 0 %}
+                                        <div class="text">Rating: {{ i.Kitchen_Ratings }} / 5</div>
+                                        {% else %}
+                                        <div class="text">Rating: None</div>
+                                        {% endif %}
                                         <a class="read-more theme-btn" href="{{url_for('snacksPageDynamic', Kitchen_ID=i.Kitchen_ID)}}">View Menu</a>
                                     </div>
                                     
@@ -122,7 +135,7 @@
     <!--Parallax Image Section-->
     <section class="parallax-image-section" style="background-image:url(../static/images/background/1.jpg);">
     	<div class="auto-container">
-        	<h2>Healthy Fresh And Hot Dishes.</h2>
+        	<h2>Healthy, Fresh And Hot Dishes.</h2>
             <h4>Best offers from the house chef.</h4>
         </div>
     </section>

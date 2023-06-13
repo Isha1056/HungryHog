@@ -77,7 +77,7 @@ function calculateOrderTotal(){
       'PRODUCT_ID': PRODUCT_ID,
       'QUANTITY': quantity,
       'TOTAL_AMOUNT': total_product_amount,
-      'SCHEDULE_TIME': $('.ScheduleCartOrder').val()
+      'SCHEDULE_TIME': $('.ScheduleCartOrder').val(),
     }
     updateOrderHistory.push(x);
     iPrice  = $(this).find('td').eq(5).text() || 0

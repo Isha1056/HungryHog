@@ -4,6 +4,15 @@ function getUserSignInDetails() {
   console.log(email);
 }
 
+var latitude = 200;
+var longitude = 200;
+
+function showPosition(position) {
+  latitude = position.coords.latitude;
+  longitude = position.coords.longitude;
+}
+
+
 $(document).ready(function () {
   jQuery.support.cors = true;
   $(".user_signin_form").submit(function (e) {
@@ -11,10 +20,14 @@ $(document).ready(function () {
     let email = document.getElementById("email").value;
     let password = document.getElementById("password").value;
     console.log(email, password);
-
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } 
     var senddata = {
-      USER_EMAIL: email,
-      USER_PASSWORD: password,
+      "USER_EMAIL": email,
+      "USER_PASSWORD": password,
+      "USER_LATITUDE": latitude,
+      "USER_LONGITUTDE": longitude
     };
 
     $.ajax({

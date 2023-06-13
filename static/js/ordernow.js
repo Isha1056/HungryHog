@@ -2,6 +2,7 @@ $(document).ready(function () {
     $("body").on("click", ".review-button", function () {
         var myClass = $(this).attr("class").split(/\s+/);
         myClass.pop()
+        Kitchen_ID = myClass.pop();
 
         reviewClass = myClass.concat(["review"]).join(".");
         ratingClass = myClass.concat(["rating"]).join(".");
@@ -18,7 +19,8 @@ $(document).ready(function () {
                 "SNACK_RATING": rating,
                 "SNACK_REVIEW": review,
                 "SCHEDULE_TIME": myClass[1],
-                "SNACK_ID": myClass[0]
+                "SNACK_ID": myClass[0],
+                "Kitchen_ID": Kitchen_ID
             }
             $.ajax({
                 url: "http://127.0.0.1:5000/ReviewSubmit",

@@ -2,182 +2,194 @@
 
 {% block title %}Cart{% endblock %}
 
-{% block content %}        
-        <!--Page Title-->
-        <section class="page-title" style="background-image:url(../static/images/background/10.jpg);">
-            <div class="auto-container">
-                <h3>Hand-Crafted Dishes Sourced</h3>
-                <h2>Cart Page</h2>
-            </div>
-        </section>
-        <!--Page Title-->
+{% block content %}
+<!--Page Title-->
+<section class="page-title" style="background-image:url(../static/images/background/10.jpg);">
+    <div class="auto-container">
+        <h3>Hand-Crafted Dishes</h3>
+        <h2>Cart Page</h2>
+    </div>
+</section>
+<!--Page Title-->
 
-        <!--Cart Section-->
-        <section class="cart-section">
-            <div class="auto-container">
+<!--Cart Section-->
+<section class="cart-section">
+    <div class="auto-container">
 
-                <form id="">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <!-- <img src="../static/images/product.jpg" class="img-responsive thumbnail" /> -->
-                            <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d408.0799579171845!2d72.86328343730732!3d19.109513749500625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1680202549014!5m2!1sen!2sin"
-                            width="370" height="300" style="border:0;" allowfullscreen="" loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <form id="">
+            <div class="row">
+                <div id="myMap" class="col-md-4 myMap">
+                    <!-- <img src="../static/images/product.jpg" class="img-responsive thumbnail" />
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d408.0799579171845!2d72.86328343730732!3d19.109513749500625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1680202549014!5m2!1sen!2sin"
+                        width="370" height="300" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe> -->
+                    <iframe
+                        src="https://maps.google.com/maps?q={{session.USER_LATITUDE}},{{session.USER_LONGITUDE}}&z=15&output=embed"
+                        height="300" frameborder="0" style="border:0;width:100%;"></iframe>
+                </div>
+                <div class="col-md-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h5 class="panel-title"><i class="fa fa-map-marker"></i> Delivery Details</h5>
                         </div>
-                        <div class="col-md-8">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h5 class="panel-title"><i class="fa fa-map-marker"></i> Delivery Details</h5>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="name">Full Name</label>
+                                        <input type="text" placeholder="Full Name" value="{{session.USER_NAME}}"
+                                            class="form-control input-sm required" name="name" disabled/>
+                                    </div>
                                 </div>
-                                <div class="panel-body">
-                                    <div class="row">
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label for="name">Full Name</label>
-                                                <input type="text" placeholder="Full Name" value="{{session.USER_NAME}}"
-                                                    class="form-control input-sm required" name="name" />
-                                            </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="email" placeholder="Email Address" value="{{session.USER_EMAIL}}"
+                                            class="form-control input-sm required" name="email" disabled/>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="mobile">Mobile</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon">+91</span>
+                                            <input type="text" class="form-control input-sm required user-mobile"
+                                                value="{{session.USER_MOBILE}}" placeholder="Mobile Number"
+                                                name="mobile" maxlength="10" min="10" />
                                         </div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label for="email">Email</label>
-                                                <input type="email" placeholder="Email Address" value="{{session.USER_EMAIL}}"
-                                                    class="form-control input-sm required" name="email" />
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label for="mobile">Mobile</label>
-                                                <div class="input-group input-group-sm">
-                                                    <span class="input-group-addon">+91</span>
-                                                    <input type="text" class="form-control input-sm required" value="{{session.USER_MOBILEs}}"
-                                                        placeholder="Mobile Number" name="mobile" maxlength="10"
-                                                        min="10" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label for="address">House Address</label>
-                                                <input type="text" placeholder="Street address" value="{{session.USER_STREET}}"
-                                                    class="form-control input-sm required" name="address" />
-                                            </div>
-                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="address">House Address</label>
+                                        <input type="text" placeholder="Street address" value="{{session.USER_STREET}}"
+                                            class="form-control input-sm required user-street" name="address" />
+                                    </div>
+                                </div>
 
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label for="">State:</label>
-                                                <input type="text" placeholder="state" value="{{session.USER_STATE}}"
-                                                    class="form-control input-sm required" name="state" />
-                                            </div>
-                                        </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="">State:</label>
+                                        <input type="text" placeholder="state" value="{{session.USER_STATE}}"
+                                            class="form-control input-sm required user-state" name="state" />
+                                    </div>
+                                </div>
 
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
 
-                                                <label for="">City:</label>
-                                                <input type="text" placeholder="city" value="{{session.USER_CITY}}"
-                                                    class="form-control input-sm required" name="city" />
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label for="pincode">Pincode</label>
-                                                <input type="text" placeholder="Pincode" value="{{session.USER_PINCODE}}"
-                                                    class="form-control input-sm required" name="pincode" />
-                                            </div>
-                                        </div>
+                                        <label for="">City:</label>
+                                        <input type="text" placeholder="city" value="{{session.USER_CITY}}"
+                                            class="form-control input-sm required user-city" name="city" />
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+
+                                        <label for="">Country:</label>
+                                        <input type="text" placeholder="country" value="{{session.USER_COUNTRY}}"
+                                            class="form-control input-sm required user-country" name="country" />
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="pincode">Pincode</label>
+                                        <input type="text" placeholder="Pincode" value="{{session.USER_PINCODE}}"
+                                            class="form-control input-sm required user-pincode" name="pincode" />
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
+            </div>
+        </form>
 
-                <!--Cart Outer-->
-                <div class="cart-outer" id="cart-outer">
-                    <div class="table-outer" id="table-outer">
-                        {% if data|length > 0 %}
-                        <table class="_table">
-                            <thead>
-                                <tr>
-                                    <th class="prod-column" colspan="2">PRODUCT</th>
-                                    <th class="price">PRICE (in Rs.)</th>
-                                    <th>QUANTITY</th>
-                                    <th>KITCHEN</th>
-                                    <th>TOTAL (in Rs.)</th>
-                                    <th width="50px">
-                                        <div class="action_container">
-                                            <!-- <button class="success" onclick="create_tr('table_body')">
+        <!--Cart Outer-->
+        <div class="cart-outer" id="cart-outer">
+            <div class="table-outer" id="table-outer">
+                {% if data|length > 0 %}
+                <table class="_table">
+                    <thead>
+                        <tr>
+                            <th class="prod-column" colspan="2">PRODUCT</th>
+                            <th class="price">PRICE (in Rs.)</th>
+                            <th>QUANTITY</th>
+                            <th>KITCHEN</th>
+                            <th>TOTAL (in Rs.)</th>
+                            <th width="50px">
+                                <div class="action_container">
+                                    <!-- <button class="success" onclick="create_tr('table_body')">
                                                 <i class="fa fa-plus"></i>
                                             </button> -->
-                                        </div>
-                                    </th>
-                                </tr>
-                            </thead>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
 
-                            <tbody id="table_body">
-                                {% for i in data %}
-                                <tr>
-                                    <td class="productID" style="display:none;">{{i.PRODUCT_ID}}</td>
-                                    <td colspan="2" class="prod-column">
-                                        <div class="column-box">
-                                            <figure class="prod-thumb"><a href="#"><img
-                                                        src="{{ url_for('static', filename='/images/'+i.PRODUCT_LOGO) }}"
-                                                        width="150" height="150" alt="{{i.PRODUCT_LOGO}}">
-                                                    <h4 class="prod-title">{{i.PRODUCT_NAME}}</h4>
-                                        </div>
-                                    </td>
-                                    <td class="price">{{i.PRODUCT_PRICE}}</td>
-                                    <td class="qty">
-                                        <div class="quantity-spinner"><button type="button" class="minus"><span
-                                                    class="fa fa-minus"></span></button><input type="text"
-                                                name="product" value="{{i.QUANTITY}}" id="prod_qty"
-                                                class="prod_qty" /><button type="button" class="plus"><span
-                                                    class="fa fa-plus"></span></button></div>
-                                    </td>
-                                    <td class="kitchenname">{{i.Kitchen_Name}}</td>
-                                    <td class="total">{{i.PRODUCT_PRICE}}</td>
-                                    <td>
-                                        <div class="action_container">
-                                            <button class="danger removeOrder">
-                                                <i class="fa fa-close"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        {% else %}
-                        <h3>Snort! your shopping cart is empty. Please select meals to add in your tiffin</h3>
-                        {% endif %}
-                        <div class="OrderSchedule" style="margin: 20px;float: right;">
-                            <h4>Select a date for your meal delivery</h4>
-                            <input type="date" class="ScheduleCartOrder" id="ScheduleCartOrder" name="ScheduleCartOrder"
-                                style="border: 2px solid #cd6073; padding: 10px; color: #cd6073;"/>
+                    <tbody id="table_body">
+                        {% for i in data %}
+                        <tr>
+                            <td class="productID" style="display:none;">{{i.PRODUCT_ID}}</td>
+                            <td colspan="2" class="prod-column">
+                                <div class="column-box">
+                                    <figure class="prod-thumb"><a href="#"><img
+                                                src="{{ url_for('static', filename='/images/'+i.PRODUCT_LOGO) }}"
+                                                width="150" height="150" alt="{{i.PRODUCT_LOGO}}">
+                                            <h4 class="prod-title">{{i.PRODUCT_NAME}}</h4>
+                                </div>
+                            </td>
+                            <td class="price">{{i.PRODUCT_PRICE}}</td>
+                            <td class="qty">
+                                <div class="quantity-spinner"><button type="button" class="minus"><span
+                                            class="fa fa-minus"></span></button><input type="text" name="product"
+                                        value="{{i.QUANTITY}}" id="prod_qty" class="prod_qty" /><button type="button"
+                                        class="plus"><span class="fa fa-plus"></span></button></div>
+                            </td>
+                            <td class="kitchenname">{{i.Kitchen_Name}}</td>
+                            <td class="total">{{i.PRODUCT_PRICE}}</td>
+                            <td>
+                                <div class="action_container">
+                                    <button class="danger removeOrder">
+                                        <i class="fa fa-close"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <h3>Snort! your shopping cart is empty. Please select meals to add in your tiffin</h3>
+                {% endif %}
+                <div class="OrderSchedule" style="margin: 20px;float: right;">
+                    <h4>Select a date for your meal delivery</h4>
+                    <input type="date" class="ScheduleCartOrder" id="ScheduleCartOrder" name="ScheduleCartOrder"
+                        style="border: 2px solid #cd6073; padding: 10px; color: #cd6073;" />
+                </div>
+            </div>
+            <div class="check-btns" style="margin-top: 20px; float: right;">
+                <button id="Checkout" class="theme-btn btn-style-three Checkout">Checkout</button>
+            </div>
+        </div>
+
+        <div class="row checkout-clearfix clearfix">
+            <div class="column pull-left col-md-6 col-sm-12 col-xs-12">
+
+                <div class="cart-options clearfix">
+                    <div class="apply-coupon clearfix">
+                        <h4>Got A Coupon</h4>
+                        <div class="form-group clearfix">
+                            <input type="text" name="coupon-code" value="" placeholder="Coupon Code">
+                            <button type="button" class="theme-btn btn-style-one">Coupon Code</button>
                         </div>
-                    </div>
-                    <div class="check-btns" style="margin-top: 20px; float: right;">
-                        <button id="Checkout" class="theme-btn btn-style-three Checkout">Checkout</button>
                     </div>
                 </div>
 
-                <div class="row checkout-clearfix clearfix">
-                    <div class="column pull-left col-md-6 col-sm-12 col-xs-12">
-
-                        <div class="cart-options clearfix">
-                            <div class="apply-coupon clearfix">
-                                <h4>Got A Coupon</h4>
-                                <div class="form-group clearfix">
-                                    <input type="text" name="coupon-code" value="" placeholder="Coupon Code">
-                                    <button type="button" class="theme-btn btn-style-one">Coupon Code</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- <div class="cart-options clearfix">
+                <!-- <div class="cart-options clearfix">
                             <div class="check-address clearfix">
                                 <h4>Your order will be delivered to the following Address</h4>
                                 <div class="form-group clearfix" id="DeliveryAddress">
@@ -186,176 +198,251 @@
                             </div>
                         </div> -->
 
-                    </div>
-                    <div class="column pull-right col-md-6 col-sm-12 col-xs-12">
-                        <div class="price-calculator">
-                            <div class="outer-box">
+            </div>
+            <div class="column pull-right col-md-6 col-sm-12 col-xs-12">
+                <div class="price-calculator">
+                    <div class="outer-box">
 
-                                <!--Top Bar-->
-                                <div class="top-bar">
-                                    <div class="default-title">
-                                        <h3>Cart Totals</h3>
-                                    </div>
-                                    <!--Totals Table-->
-                                    <ul class="totals-table">
-                                        <li class="clearfix"><span class="col bold-text">Subtotal</span><span
-                                                class="col total-amount">Rs. </span></li>
-                                    </ul>
-                                </div>
-
-                                <!--Select Amount-->
-                                <div class="select-amount clearfix">
-                                    <div class="title-box"><label>Shipping</label></div>
-                                    <div class="select-box"><input type="radio" name="payment-group"
-                                            id="radio-one"><label for="radio-one"><span
-                                                class="default-check"></span><span
-                                                class="check-icon fa fa-check"></span>Free Shipping</label></div>
-                                    <div class="select-box"><input type="radio" name="payment-group"
-                                            id="radio-two"><label for="radio-two"><span
-                                                class="default-check"></span><span
-                                                class="check-icon fa fa-check"></span>Local Delivery (Free)</label>
-                                    </div>
-                                    <div class="select-box"><input type="radio" name="payment-group" id="radio-three"
-                                            checked><label for="radio-three"><span class="default-check"></span><span
-                                                class="check-icon fa fa-check"></span>Local Pickup (Free)</label></div>
-                                    <!-- <a href="#" class="theme-btn btn-style-three calculate-ship">calculate shipping</a> -->
-                                </div>
-
-                                <!--Lower Total-->
-                                <ul class="lower-total">
-                                    <li class="clearfix"><span class="col bold-text">TOTAL</span><span
-                                            class="col total-amount">Rs. </span></li>
-                                </ul>
-
+                        <!--Top Bar-->
+                        <div class="top-bar">
+                            <div class="default-title">
+                                <h3>Cart Totals</h3>
                             </div>
-
-                            <!--Check Btns-->
-                            <div class="check-btns">
-                                <button id="rzp-button1" class="theme-btn btn-style-three proceed-btn">Proceed for
-                                    payment</button>
-                            </div>
-                            <aside id="popUp" class="popup">
-                                <div class="popUpContainer">
-                                    <header>
-                                        <a href="#!" class="closePopUp">X</a>
-                                        <h2>Here's your order summary</h2>
-                                    </header>
-                                    <article class="articleSpace" style="padding: 10px;">
-                                        <h4>Schedule your delivery<h4>
-                                                <input type="datetime-local" id="birthdaytime" name="birthdaytime">
-                                    </article>
-                                </div>
-                                <a href="#!" class="closePopUpOutSide"></a>
-                            </aside>
-
+                            <!--Totals Table-->
+                            <ul class="totals-table">
+                                <li class="clearfix"><span class="col bold-text">Subtotal</span><span
+                                        class="col total-amount">Rs. </span></li>
+                            </ul>
                         </div>
+
+                        <!--Select Amount-->
+                        <div class="select-amount clearfix">
+                            <div class="title-box"><label>Shipping</label></div>
+                            <div class="select-box"><input type="radio" name="payment-group" id="radio-one"><label
+                                    for="radio-one"><span class="default-check"></span><span
+                                        class="check-icon fa fa-check"></span>Free Shipping</label></div>
+                            <div class="select-box"><input type="radio" name="payment-group" id="radio-two"><label
+                                    for="radio-two"><span class="default-check"></span><span
+                                        class="check-icon fa fa-check"></span>Local Delivery (Free)</label>
+                            </div>
+                            <div class="select-box"><input type="radio" name="payment-group" id="radio-three"
+                                    checked><label for="radio-three"><span class="default-check"></span><span
+                                        class="check-icon fa fa-check"></span>Local Pickup (Free)</label></div>
+                            <!-- <a href="#" class="theme-btn btn-style-three calculate-ship">calculate shipping</a> -->
+                        </div>
+
+                        <!--Lower Total-->
+                        <ul class="lower-total">
+                            <li class="clearfix"><span class="col bold-text">TOTAL</span><span
+                                    class="col total-amount">Rs. </span></li>
+                        </ul>
+
                     </div>
+
+                    <!--Check Btns-->
+                    <div class="check-btns">
+                        <button id="rzp-button1" class="theme-btn btn-style-three proceed-btn">Proceed for
+                            payment</button>
+                    </div>
+                    <aside id="popUp" class="popup">
+                        <div class="popUpContainer">
+                            <header>
+                                <a href="#!" class="closePopUp">X</a>
+                                <h2>Here's your order summary</h2>
+                            </header>
+                            <article class="articleSpace" style="padding: 10px;">
+                                <h4>Schedule your delivery<h4>
+                                        <input type="datetime-local" id="birthdaytime" name="birthdaytime">
+                            </article>
+                        </div>
+                        <a href="#!" class="closePopUpOutSide"></a>
+                    </aside>
 
                 </div>
-
             </div>
-        </section>
+
+        </div>
+
+    </div>
+</section>
 {% endblock %}
 
 {% block scripts %}
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <script src="../static/js/CartOrder.js"></script>
-    <script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="../static/js/CartOrder.js"></script>
+<script>
 
-        let payment_id = '';
-        let signature = '';
-        let order_id = '';
-        document.getElementById('rzp-button1').onclick = function (e) {
-            USERNAME = "rzp_test_JGsIexMIOVh3bW";
-            PASSWORD = "kpvTVMIBppTJGlKtMmnzwcVd";
-            var senddata = {
-                "amount": 100,
-                "currency": "INR",
-                "receipt": "receipt#1",
-            }
-            console.log("sending")
-            var order; // declare order variable
-            $.ajax({
-                url: "https://api.razorpay.com/v1/orders",
-                method: "GET",
-                dataType: 'jsonp',
-                cors: true,
-                secure: true,
-                contentType: "application/json",
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    "Authorization": "Basic " + btoa(USERNAME + ":" + PASSWORD)
-                },
-                data: JSON.stringify(senddata),
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Authorization", "Basic " + btoa(USERNAME + ":" + PASSWORD));
-                },
-                success: function (response) {
-                    console.log(response);
-                    if (response) {
-                        console.log(response);
-                        order = response.id; // assign value to order variable
-                    }
-                    else {
-                        console.log(response.ErrorMessage);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log(xhr, status, error);
-                },
-            });
-            
-            var options = {
-                "key": "rzp_test_JGsIexMIOVh3bW", // Enter the Key ID generated from the Dashboard
-                "amount": "500", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-                "currency": "INR",
-                "name": "HungryHog", //your business name
-                "description": "Test Transaction",
-                "image": "../static/images/HungryHogLogo.png",
-                "order_id": order, // use order variable here
-                "handler": function (response) {
-                    payment_id = response.razorpay_payment_id;
-                    order_id = response.razorpay_order_id;
-                    signature = response.razorpay_signature;
-                    data = {
-                        'PAYMENT_ID': payment_id,
-                        'IS_COMPLETE': 1,
-                        'PRODUCT_LIST': updateOrderHistory
-                    }
-            
-                    $.ajax({
-                        type: 'post',
-                        url: 'http://127.0.0.1:5000/UpdateOrderHistory',
-                        data: JSON.stringify(data),
-                        contentType: "application/json; charset=utf-8",
-                        traditional: true,
-                        success: function (data) {
-                            window.location.href = "{{url_for('ordernowPage')}}";
-                        }
-                    });
-                    
-                },
-                "prefill": {
-                    "name": 'sample', //your customer's name
-                    "email": 'email@gmail.com',
-                    "contact": '9087766771'
-                },
-                "notes": {
-                    "address": "HungryHog Tiffin Services"
-                },
-                "theme": {
-                    "color": "#dc3f6f"
-                }
-            };
-            var rzp1 = new Razorpay(options);
-            rzp1.open();
-            e.preventDefault();
+    var USER_MOBILE = $('.user-mobile').val()
+    var USER_STREET = $('.user-street').val()
+    var USER_STATE = $('.user-state').val()
+    var USER_CITY = $('.user-city').val()
+    var USER_COUNTRY = $('.user-country').val()
+    var USER_PINCODE = $('.user-pincode').val()
 
-            rzp1.on('payment.failed', function (response) {
-                var resp = `<p>Payment Transaction Failed! Please retry again after some time.</p>`;
-                $(".articleSpace").append(resp);
-            });
+    $(".user-mobile").change(function () {
+        USER_MOBILE = $(this).val();
+    });
+
+    $(".user-street").change(function () {
+        USER_STREET = $(this).val();
+    });
+
+    $(".user-state").change(function () {
+        USER_STATE = $(this).val();
+    });
+
+    $(".user-city").change(function () {
+        USER_CITY = $(this).val();
+    });
+
+    $(".user-country").change(function () {
+        USER_COUNTRY = $(this).val();
+    });
+
+    $(".user-pincode").change(function () {
+        USER_PINCODE = $(this).val();
+    });
+
+
+    let payment_id = '';
+    let signature = '';
+    let order_id = '';
+    document.getElementById('rzp-button1').onclick = function (e) {
+        USERNAME = "rzp_test_JGsIexMIOVh3bW";
+        PASSWORD = "kpvTVMIBppTJGlKtMmnzwcVd";
+        var senddata = {
+            "amount": 100,
+            "currency": "INR",
+            "receipt": "receipt#1",
         }
+        console.log("sending")
+        var order; // declare order variable
+        $.ajax({
+            url: "https://api.razorpay.com/v1/orders",
+            method: "GET",
+            dataType: 'jsonp',
+            cors: true,
+            secure: true,
+            contentType: "application/json",
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                "Authorization": "Basic " + btoa(USERNAME + ":" + PASSWORD)
+            },
+            data: JSON.stringify(senddata),
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Basic " + btoa(USERNAME + ":" + PASSWORD));
+            },
+            success: function (response) {
+                console.log(response);
+                if (response) {
+                    console.log(response);
+                    order = response.id; // assign value to order variable
+                }
+                else {
+                    console.log(response.ErrorMessage);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr, status, error);
+            },
+        });
 
-    </script>
+        var options = {
+            "key": "rzp_test_JGsIexMIOVh3bW", // Enter the Key ID generated from the Dashboard
+            "amount": "500", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "HungryHog", //your business name
+            "description": "Test Transaction",
+            "image": "../static/images/HungryHogLogo.png",
+            "order_id": order, // use order variable here
+            "handler": function (response) {
+                payment_id = response.razorpay_payment_id;
+                order_id = response.razorpay_order_id;
+                signature = response.razorpay_signature;
+                data = {
+                    'PAYMENT_ID': payment_id,
+                    'IS_COMPLETE': 1,
+                    'PRODUCT_LIST': updateOrderHistory,
+                    'USER_MOBILE': USER_MOBILE,
+                    'USER_STREET': USER_STREET,
+                    'USER_STATE': USER_STATE,
+                    'USER_CITY': USER_CITY,
+                    'USER_COUNTRY': USER_COUNTRY,
+                    'USER_PINCODE': USER_PINCODE
+                }
+
+                $.ajax({
+                    type: 'post',
+                    url: 'http://127.0.0.1:5000/UpdateOrderHistory',
+                    data: JSON.stringify(data),
+                    contentType: "application/json; charset=utf-8",
+                    traditional: true,
+                    success: function (data) {
+                        window.location.href = "{{url_for('ordernowPage')}}";
+                    }
+                });
+
+            },
+            "prefill": {
+                "name": 'sample', //your customer's name
+                "email": 'email@gmail.com',
+                "contact": '9087766771'
+            },
+            "notes": {
+                "address": "HungryHog Tiffin Services"
+            },
+            "theme": {
+                "color": "#dc3f6f"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+        e.preventDefault();
+
+        rzp1.on('payment.failed', function (response) {
+            var resp = `<p>Payment Transaction Failed! Please retry again after some time.</p>`;
+            $(".articleSpace").append(resp);
+        });
+    }
+</script>
+
+<!-- <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+    ({key: "AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg", v: "beta"});
+</script>
+ -->
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk"></script>
+
+
+<script>
+    // Initialize and add the map
+    let map;
+
+    async function initMap() {
+        // The location of Uluru
+        const position = { lat: -25.344, lng: 131.031 };
+        // Request needed libraries.
+        //@ts-ignore
+        const { Map } = await google.maps.importLibrary("maps");
+        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+        // The map, centered at Uluru
+        map = new Map(document.getElementById("myMap"), {
+            zoom: 4,
+            center: position,
+            mapId: "CART_MAP",
+        });
+
+        // The marker, positioned at Uluru
+        const marker = new AdvancedMarkerElement({
+            map: map,
+            position: position,
+            title: "Home",
+        });
+    }
+
+    initMap();
+</script> -->
+
+
+
 {% endblock %}
