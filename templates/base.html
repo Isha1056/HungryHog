@@ -60,7 +60,7 @@
                             <ul>
                                 {% if 'USER_EMAIL' in session %}
                                 <li><a href="{{url_for('profilePage')}}">{{session.USER_NAME}}</a></li>
-                                <li><a href="javascript:;" class="use-current-location">Use Current Location</a></li>
+                                <li><a href="javascript:void(0);" class="use-current-location">Use Current Location</a></li>
                                 {% endif %}
                                 <li class="eng-dropdown dropdown"><a class="btn btn-default dropdown-toggle"
                                         id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"

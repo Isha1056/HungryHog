@@ -36,6 +36,8 @@ from eth_utils import event_abi_to_log_topic, to_hex
 from hexbytes import HexBytes
 import random
 
+#os.environ['CURL_CA_BUNDLE'] = ''
+
 from transformers import FlaxAutoModelForSeq2SeqLM
 from transformers import AutoTokenizer
 from diffusers import StableDiffusionPipeline
@@ -51,6 +53,7 @@ import hashlib
 ##############################################################################################################################################################
 ####### DECLARATIONS ########
 ##############################################################################################################################################################
+
 
 
 
@@ -1272,20 +1275,29 @@ def updateUserCoordinates():
                 #print(request_json,street,city,state,country,zipcode)
                 if request_json['USER_REQUEST'] == 1:
                     sql = "UPDATE USERS SET USER_LATITUDE=%s, USER_LONGITUDE=%s, USER_STREET=%s, USER_CITY=%s, USER_STATE=%s, USER_COUNTRY=%s, USER_PINCODE=%s WHERE USER_EMAIL=%s AND USER_LATITUDE=200"
+                    if session['USER_LATITUDE'] == 200:
+                        session['USER_LATITUDE'] = request_json['USER_LATITUDE']
+                        session['USER_LONGITUDE'] = request_json['USER_LONGITUDE']
+                        session['USER_STREET'] = street
+                        session['USER_CITY'] = city
+                        session['USER_STATE'] = state
+                        session['USER_COUNTRY'] = country
+                        session['USER_PINCODE'] = zipcode
                 else:
                     sql = "UPDATE USERS SET USER_LATITUDE=%s, USER_LONGITUDE=%s, USER_STREET=%s, USER_CITY=%s, USER_STATE=%s, USER_COUNTRY=%s, USER_PINCODE=%s WHERE USER_EMAIL=%s"
+                    session['USER_LATITUDE'] = request_json['USER_LATITUDE']
+                    session['USER_LONGITUDE'] = request_json['USER_LONGITUDE']
+                    session['USER_STREET'] = street
+                    session['USER_CITY'] = city
+                    session['USER_STATE'] = state
+                    session['USER_COUNTRY'] = country
+                    session['USER_PINCODE'] = zipcode
                 val = (request_json['USER_LATITUDE'], request_json['USER_LONGITUDE'], street, city, state, country, zipcode, session['USER_EMAIL'])
                 mycursor.execute(sql, val)
                 conn.commit()
                 mycursor.close()
 
-                session['USER_LATITUDE'] = request_json['USER_LATITUDE']
-                session['USER_LONGITUDE'] = request_json['USER_LONGITUDE']
-                session['USER_STREET'] = street
-                session['USER_CITY'] = city
-                session['USER_STATE'] = state
-                session['USER_COUNTRY'] = country
-                session['USER_PINCODE'] = zipcode
+                
                 return jsonify(StatusCode = '1', Message="Location Updated!") 
             return jsonify(StatusCode = '0', Message="Error") 
         except Exception as e:

@@ -1,27 +1,32 @@
-$(document).ready(function(){
+var USER_REQUEST = 1;
 
-    function showPosition(position) {
-        //x.innerHTML = "Latitude: " + position.coords.latitude + 
-        //"<br>Longitude: " + position.coords.longitude;
-        var data = {
-            "USER_LATITUDE": position.coords.latitude,
-            "USER_LONGITUDE": position.coords.longitude,
-            "USER_REQUEST": 1
-        };
-        //console.log(data);
-        $.ajax({
-            type: 'post',
-            url: 'http://127.0.0.1:5000/updateUserCoordinates',
-            data: JSON.stringify(data),
-            contentType: "application/json; charset=utf-8",
-            traditional: true,
-            success: function (data) {
-              //console.log(data)
-            }
-          });
-    }
+function showPosition(position) {
+    //x.innerHTML = "Latitude: " + position.coords.latitude + 
+    //"<br>Longitude: " + position.coords.longitude;
+    var data = {
+        "USER_LATITUDE": position.coords.latitude,
+        "USER_LONGITUDE": position.coords.longitude,
+        "USER_REQUEST": USER_REQUEST
+    };
+    //console.log(data);
+    $.ajax({
+        type: 'post',
+        url: 'http://127.0.0.1:5000/updateUserCoordinates',
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        traditional: true,
+        success: function (data) {
+            $(".use-current-location").text("Using Current Location")
+          //console.log(data)
+        }
+      });
+}
+
+$(document).ready(function(){
+    
 
     if (navigator.geolocation) {
+        USER_REQUEST = 1;
         navigator.geolocation.getCurrentPosition(showPosition);
     } 
 
@@ -37,24 +42,12 @@ $(document).ready(function(){
         });
     });
 
-    $(".use-current-location").click(function(){
-        var data = {
-            "USER_LATITUDE": position.coords.latitude,
-            "USER_LONGITUDE": position.coords.longitude,
-            "USER_REQUEST": 0
-        };
-        //console.log(data);
-        $.ajax({
-            type: 'post',
-            url: 'http://127.0.0.1:5000/updateUserCoordinates',
-            data: JSON.stringify(data),
-            contentType: "application/json; charset=utf-8",
-            traditional: true,
-            success: function (data) {
-              //console.log(data)
-              $(".use-current-location").html("Using Current Location")
-            }
-          });
+    $("body").on("click", ".use-current-location", function(e) {
+        e.preventDefault();
+        if (navigator.geolocation) {
+            USER_REQUEST = 0;
+            navigator.geolocation.getCurrentPosition(showPosition);
+        }
     });
 
   });
