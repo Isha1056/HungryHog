@@ -63,6 +63,21 @@ app.config["SESSION_TYPE"] = "filesystem"
 
 oauth = OAuth(app)
 app.secret_key="HungryHogOinkOink"
+GOOGLE_CLIENT_ID = "334805346698-8oq76gdpbl9cud4q48b2ah5t492k94sg.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET = "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"
+    
+CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
+oauth.register(
+    name='google',
+    client_id=GOOGLE_CLIENT_ID,
+    client_secret=GOOGLE_CLIENT_SECRET,
+    server_metadata_url=CONF_URL,
+    client_kwargs={
+        'scope': 'openid email profile'
+    }
+)
+
+
 
 # Creating connection object
 conn = mysql.connector.connect(
@@ -105,9 +120,10 @@ def getSnacks(image_name, image_data):
 def GetCart():
     if conn:
         mycursor = conn.cursor()
-        mycursor.execute("Select ORDER_SUMMARY.PRODUCT_ID, ORDER_SUMMARY.PRODUCT_NAME, ORDER_SUMMARY.QUANTITY, ORDER_SUMMARY.PRODUCT_PRICE, ORDER_SUMMARY.PRODUCT_LOGO, ORDER_SUMMARY.Kitchen_ID, ORDER_SUMMARY.SCHEDULE_TIME, ORDER_SUMMARY.TOTAL_AMOUNT, ORDER_SUMMARY.Meal_ID, ORDER_SUMMARY.USER_EMAIL, ORDER_SUMMARY.IS_COMPLETE, Meals.Meal_Timings, Meals.Meal_Type, Kitchen.Kitchen_Name FROM ORDER_SUMMARY LEFT JOIN Kitchen ON ORDER_SUMMARY.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON ORDER_SUMMARY.Meal_ID = Meals.Meal_ID WHERE ORDER_SUMMARY.USER_EMAIL='"+session['USER_EMAIL']+"' AND ORDER_SUMMARY.IS_COMPLETE=0;")
+        mycursor.execute("Select ORDER_SUMMARY.PRODUCT_ID, ORDER_SUMMARY.PRODUCT_NAME, ORDER_SUMMARY.QUANTITY, ORDER_SUMMARY.PRODUCT_PRICE, ORDER_SUMMARY.PRODUCT_LOGO, ORDER_SUMMARY.Kitchen_ID, ORDER_SUMMARY.SCHEDULE_TIME, ORDER_SUMMARY.TOTAL_AMOUNT, ORDER_SUMMARY.Meal_ID, ORDER_SUMMARY.USER_EMAIL, ORDER_SUMMARY.IS_COMPLETE, Meals.Meal_Timings, Meals.Meal_Type, Kitchen.Kitchen_Name FROM ORDER_SUMMARY LEFT JOIN Kitchen ON ORDER_SUMMARY.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON ORDER_SUMMARY.Meal_ID = Meals.Meal_ID WHERE ORDER_SUMMARY.USER_EMAIL=%s AND ORDER_SUMMARY.IS_COMPLETE=0;", (session['USER_EMAIL'], ))
         myresult = mycursor.fetchall()
         #print(myresult)
+        mycursor.close()
         ShoppingCartList = []
         RecordCount = len(myresult)
         for i in range(len(myresult)):
@@ -138,6 +154,7 @@ def GetOrderNowData():
         mycursor = conn.cursor()
         mycursor.execute("Select ORDER_SUMMARY.PRODUCT_ID, ORDER_SUMMARY.PRODUCT_NAME, ORDER_SUMMARY.QUANTITY, ORDER_SUMMARY.PRODUCT_PRICE, ORDER_SUMMARY.PRODUCT_LOGO, ORDER_SUMMARY.Kitchen_ID, ORDER_SUMMARY.SCHEDULE_TIME, ORDER_SUMMARY.TOTAL_AMOUNT, ORDER_SUMMARY.Meal_ID, ORDER_SUMMARY.USER_EMAIL, ORDER_SUMMARY.IS_COMPLETE, Meals.Meal_Timings, Meals.Meal_Type, Kitchen.Kitchen_Name FROM ORDER_SUMMARY LEFT JOIN Kitchen ON ORDER_SUMMARY.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON ORDER_SUMMARY.Meal_ID = Meals.Meal_ID WHERE ORDER_SUMMARY.USER_EMAIL='"+session['USER_EMAIL']+"' AND ORDER_SUMMARY.IS_COMPLETE=1;")
         myresult = mycursor.fetchall()
+        mycursor.close()
         #print(myresult)
         GetOrderNowList = []
         RecordCount = len(myresult)
@@ -213,26 +230,7 @@ def getPointDistance(l1, l2):
 #GOOGLE
 @app.route('/google/')
 def google():
-   
-    # Google Oauth Config
-    # Get client_id and client_secret from environment variables
-    # For developement purpose you can directly put it
-    # here inside double quotes
-    GOOGLE_CLIENT_ID = "334805346698-8oq76gdpbl9cud4q48b2ah5t492k94sg.apps.googleusercontent.com"
-    GOOGLE_CLIENT_SECRET = "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"
-     
-    CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
-    oauth.register(
-        name='google',
-        client_id=GOOGLE_CLIENT_ID,
-        client_secret=GOOGLE_CLIENT_SECRET,
-        server_metadata_url=CONF_URL,
-        client_kwargs={
-            'scope': 'openid email profile'
-        }
-    )
-     
-    # Redirect to google_auth function
+        
     redirect_uri = url_for('google_auth', _external=True)
     return oauth.google.authorize_redirect(redirect_uri)
  
@@ -249,10 +247,12 @@ def google_auth():
     val = (session['USER_NAME'], session['USER_PASSWORD'], session['USER_EMAIL'], w3.eth.accounts[random.randint(0,9)])
     mycursor.execute(sql, val)
     conn.commit()
+    mycursor.close()
     
     mycursor = conn.cursor()
     mycursor.execute('SELECT * FROM USERS WHERE USER_EMAIL="'+session["USER_EMAIL"]+'"')
     myresult = mycursor.fetchall()
+    mycursor.close()
     #print(myresult)
     session['USER_STREET'] = myresult[0][3]
     session['USER_STATE'] = myresult[0][4]
@@ -267,6 +267,7 @@ def google_auth():
     mycursor = conn.cursor()
     mycursor.execute('SELECT COUNT(*) FROM ORDER_SUMMARY WHERE USER_EMAIL="'+session["USER_EMAIL"]+'" AND IS_COMPLETE=0')
     myresult = mycursor.fetchall()
+    mycursor.close()
     session['CART_COUNT'] = myresult[0][0]
 
     #print(" Google User ", token)
@@ -655,6 +656,7 @@ def indexPage():
         mycursor = conn.cursor()
         mycursor.execute("select * from Kitchen order by Kitchen_Ratings desc")
         myresult = mycursor.fetchall()
+        mycursor.close()
         l=[]
         for i in range(min(5, len(myresult))):
             kitchen = {
@@ -750,6 +752,15 @@ def shopping_cartPage():
     else:
         return jsonify(StatusCode = '0', Message="Connection Failed!")
 
+@app.route('/profile')
+def profilePage():
+    if conn and "USER_EMAIL" in session:
+        return render_template('profile.html', session=session)
+    elif conn:
+        return redirect('/sign_in')
+    else:
+        return jsonify(StatusCode = '0', Message="Connection Failed!")
+
 
 @app.route('/sign_in', methods=['GET', 'POST'])
 def sign_inPage():
@@ -767,6 +778,7 @@ def snacksPage():
         mycursor = conn.cursor()
         mycursor.execute("select * from Kitchen order by Kitchen_Ratings desc")
         myresult = mycursor.fetchall()
+        mycursor.close()
         l=[]
         for i in range(len(myresult)):
             kitchen = {
@@ -801,6 +813,7 @@ def snacksPageDynamic(Kitchen_ID):
         mycursor = conn.cursor()
         mycursor.execute("select SNACK.SNACK_ID, SNACK.SNACK_NAME, SNACK.SNACK_PRICE, SNACK.Kitchen_ID, Kitchen.Kitchen_Name, SNACK.Meal_ID, SNACK.SNACK_LOGO, Meals.Meal_Type, Meals.Meal_Timings, Kitchen.Kitchen_Latitude, Kitchen.Kitchen_Longitude, SNACK.SNACK_RATING FROM SNACK LEFT JOIN Kitchen ON SNACK.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON SNACK.Meal_ID = Meals.Meal_ID WHERE Kitchen.Kitchen_ID=%s", (Kitchen_ID,))
         myresult = mycursor.fetchall()
+        mycursor.close()
         l = []
         kitchen_name=""
         for i in range(len(myresult)):
@@ -831,7 +844,7 @@ def snacksPageDynamic(Kitchen_ID):
             #current_time=time.strptime(time.strftime("%H:%M",time.localtime()), "%H:%M")
             
             #if start_time<=current_time and current_time<=end_time:
-            #getSnacks(snack["SNACK_ID"], myresult[i][6])
+            getSnacks(snack["SNACK_ID"], myresult[i][6])
             snack["SNACK_LOGO_FILE"] = snack["SNACK_ID"]+".jpg"
             #print(snack["SNACK_ID"])
             l.append(snack)
@@ -894,6 +907,7 @@ def getUsers():
             mycursor = conn.cursor()
             mycursor.execute("SELECT * FROM USERS")
             myresult = mycursor.fetchall()
+            mycursor.close()
             #print(myresult)
             Users = myresult
             return jsonify(Users = Users)
@@ -910,6 +924,7 @@ def update_cart_count():
             mycursor = conn.cursor()
             mycursor.execute('SELECT COUNT(*) FROM ORDER_SUMMARY WHERE USER_EMAIL=%s AND IS_COMPLETE=0', (session["USER_EMAIL"], ))
             myresult = mycursor.fetchall()
+            mycursor.close()
             session['CART_COUNT'] = myresult[0][0]
             return jsonify(StatusCode = '0', success = True, CART_COUNT = myresult[0][0])
     except Exception as e:
@@ -979,6 +994,7 @@ def UsersAuthentication():
             val = (req['USER_EMAIL'].split("@")[0], req["USER_PASSWORD"], req['USER_EMAIL'], street, state, city, country, zipcode, w3.eth.accounts[random.randint(0,9)], req['USER_LATITUDE'], req['USER_LONGITUDE'])
             mycursor.execute(sql, val)
             conn.commit()
+            mycursor.close()
             
             session['USER_EMAIL'] = req['USER_EMAIL']
             session['USER_NAME'] = req['USER_EMAIL'].split("@")[0]
@@ -987,6 +1003,7 @@ def UsersAuthentication():
             mycursor = conn.cursor()
             mycursor.execute('SELECT * FROM USERS WHERE USER_EMAIL="'+req["USER_EMAIL"]+'"')
             myresult = mycursor.fetchall()
+            mycursor.close()
             if len(myresult) == 0:
                 return jsonify(StatusCode = '0',ErrorMessage='Invalid User email')
             user_record = {
@@ -1017,6 +1034,7 @@ def UsersAuthentication():
             mycursor = conn.cursor()
             mycursor.execute('SELECT COUNT(*) FROM ORDER_SUMMARY WHERE USER_EMAIL="'+session["USER_EMAIL"]+'" AND IS_COMPLETE=0')
             myresult = mycursor.fetchall()
+            mycursor.close()
             session['CART_COUNT'] = myresult[0][0]
 
             return jsonify(StatusCode = '1', UserRecord=user_record)
@@ -1038,12 +1056,14 @@ def ReviewSubmit():
             val = (int(req['SNACK_RATING']), int(req['SNACK_RATING']), req['SNACK_ID'])
             mycursor.execute(sql, val)
             conn.commit()
+            mycursor.close()
 
             mycursor = conn.cursor()
             sql = "UPDATE Kitchen SET Kitchen_Review_Count=Kitchen_Review_Count+1, Kitchen_Review_Total=Kitchen_Review_Total+%s, Kitchen_Ratings=ROUND((Kitchen_Review_Total+%s)/(Kitchen_Review_Count+1), 2) WHERE Kitchen_ID=%s"
             val = (int(req['SNACK_RATING']), int(req['SNACK_RATING']), req['Kitchen_ID'])
             mycursor.execute(sql, val)
             conn.commit()
+            mycursor.close()
 
             return jsonify(StatusCode = '1', Message="Review Saved!")
         except Exception as e:
@@ -1074,6 +1094,7 @@ def getKitchens():
                 mycursor = conn.cursor()
                 mycursor.execute('select * from Kitchen;')
                 myresult = mycursor.fetchall()
+                mycursor.close()
                 #print(myresult)
                 KitchensList = []
                 RecordCount = len(myresult)
@@ -1139,6 +1160,7 @@ def Shoping_cart():
                 mycursor = conn.cursor()
                 mycursor.execute("Select ORDER_SUMMARY.PRODUCT_ID, ORDER_SUMMARY.PRODUCT_NAME, ORDER_SUMMARY.QUANTITY, ORDER_SUMMARY.PRODUCT_PRICE, ORDER_SUMMARY.PRODUCT_LOGO, ORDER_SUMMARY.Kitchen_ID, ORDER_SUMMARY.SCHEDULE_TIME, ORDER_SUMMARY.TOTAL_AMOUNT, ORDER_SUMMARY.Meal_ID, ORDER_SUMMARY.USER_EMAIL, ORDER_SUMMARY.IS_COMPLETE, Meals.Meal_Timings, Meals.Meal_Type, Kitchen.Kitchen_Name FROM ORDER_SUMMARY LEFT JOIN Kitchen ON ORDER_SUMMARY.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON ORDER_SUMMARY.Meal_ID = Meals.Meal_ID WHERE ORDER_SUMMARY.USER_EMAIL='"+session['USER_EMAIL']+"' AND ORDER_SUMMARY.IS_COMPLETE=0;")
                 myresult = mycursor.fetchall()
+                mycursor.close()
                 #print(myresult)
                 ShoppingCartList = []
                 RecordCount = len(myresult)
@@ -1180,6 +1202,7 @@ def Shoping_cart():
                 val = (datetime.now().strftime("%m/%d/%Y, %H:%M:%S"), session['USER_EMAIL'],'', 0, snack_id, snack_id, session['USER_EMAIL'])
                 mycursor.execute(sql, val)
                 conn.commit()
+                mycursor.close()
                 session["CART_COUNT"]+=1
                 return jsonify(StatusCode = '1', Total = mycursor.rowcount)
         except Exception as e:
@@ -1203,16 +1226,29 @@ def UpdateOrderHistory():
                     val = (i['QUANTITY'], i['TOTAL_AMOUNT'], i['SCHEDULE_TIME'], PAYMENT_ID, IS_COMPLETE,  i['PRODUCT_ID'], session['USER_EMAIL'], '')
                     mycursor.execute(sql, val)
                     conn.commit()
-
+                mycursor.close()
                 latitude, longitude = getCoordinates(request_json['USER_STREET']+", "+request_json['USER_CITY']+", "+request_json['USER_STATE']+", "+request_json['USER_COUNTRY']+", "+request_json['USER_PINCODE'])
-                print(latitude, longitude, request_json)
-                sql = "UPDATE USERS SET USER_LATITUDE=%s, USER_LONGITUDE=%s, USER_STREET=%s, USER_CITY=%s, USER_STATE=%s, USER_COUNTRY=%s, USER_PINCODE=%s WHERE USER_EMAIL=%s"
+                #print(latitude, longitude, request_json)
+
+                mycursor = conn.cursor()
+                sql = "UPDATE USERS SET USER_LATITUDE=%s, USER_LONGITUDE=%s, USER_STREET=%s, USER_CITY=%s, USER_STATE=%s, USER_COUNTRY=%s, USER_PINCODE=%s, USER_MOBILE=%s WHERE USER_EMAIL=%s"
                 if latitude != 200:
-                    val = (latitude, longitude, request_json['USER_STREET'], request_json['USER_CITY'], request_json['USER_STATE'], request_json['USER_COUNTRY'], request_json['USER_PINCODE'], session['USER_EMAIL'])
+                    val = (latitude, longitude, request_json['USER_STREET'], request_json['USER_CITY'], request_json['USER_STATE'], request_json['USER_COUNTRY'], request_json['USER_PINCODE'], request_json['USER_MOBILE'], session['USER_EMAIL'])
+                    session['USER_LATITUDE'] = latitude
+                    session['USER_LONGITUDE'] = longitude
                 else:
-                    val = (session['USER_LATITUDE'], session['USER_LONGITUDE'], request_json['USER_STREET'], request_json['USER_CITY'], request_json['USER_STATE'], request_json['USER_COUNTRY'], request_json['USER_PINCODE'], session['USER_EMAIL'])
+                    val = (session['USER_LATITUDE'], session['USER_LONGITUDE'], request_json['USER_STREET'], request_json['USER_CITY'], request_json['USER_STATE'], request_json['USER_COUNTRY'], request_json['USER_PINCODE'], request_json['USER_MOBILE'], session['USER_EMAIL'])
+                session['USER_LATITUDE'] = request_json['USER_LATITUDE']
+                session['USER_LONGITUDE'] = request_json['USER_LONGITUDE']
+                session['USER_STREET'] = request_json['USER_STREET']
+                session['USER_CITY'] = request_json['USER_CITY']
+                session['USER_STATE'] = request_json['USER_STATE']
+                session['USER_COUNTRY'] = request_json['USER_COUNTRY']
+                session['USER_PINCODE'] = request_json['USER_PINCODE']
+                session['USER_MOBILE'] = request_json['USER_MOBILE']
                 mycursor.execute(sql, val)
                 conn.commit()
+                mycursor.close()
 
                 update_cart_count()
 
@@ -1228,16 +1264,20 @@ def updateUserCoordinates():
         try:
             if conn and "USER_EMAIL" in session:
                 request_json = request.get_json()
-                mycursor = conn.cursor()
                 if session['USER_LATITUDE'] != 200:
                     if getPointDistance((session['USER_LATITUDE'], session['USER_LONGITUDE']), (request_json['USER_LATITUDE'], request_json['USER_LONGITUDE'])) < minimum_proximity:
                         return jsonify(StatusCode = '0', Message="Within proximity") 
+                mycursor = conn.cursor()
                 street,city,state,country,zipcode=getLocationDetails(request_json['USER_LATITUDE'], request_json['USER_LONGITUDE'])
                 #print(request_json,street,city,state,country,zipcode)
-                sql = "UPDATE USERS SET USER_LATITUDE=%s, USER_LONGITUDE=%s, USER_STREET=%s, USER_CITY=%s, USER_STATE=%s, USER_COUNTRY=%s, USER_PINCODE=%s WHERE USER_EMAIL=%s"
+                if request_json['USER_REQUEST'] == 1:
+                    sql = "UPDATE USERS SET USER_LATITUDE=%s, USER_LONGITUDE=%s, USER_STREET=%s, USER_CITY=%s, USER_STATE=%s, USER_COUNTRY=%s, USER_PINCODE=%s WHERE USER_EMAIL=%s AND USER_LATITUDE=200"
+                else:
+                    sql = "UPDATE USERS SET USER_LATITUDE=%s, USER_LONGITUDE=%s, USER_STREET=%s, USER_CITY=%s, USER_STATE=%s, USER_COUNTRY=%s, USER_PINCODE=%s WHERE USER_EMAIL=%s"
                 val = (request_json['USER_LATITUDE'], request_json['USER_LONGITUDE'], street, city, state, country, zipcode, session['USER_EMAIL'])
                 mycursor.execute(sql, val)
                 conn.commit()
+                mycursor.close()
 
                 session['USER_LATITUDE'] = request_json['USER_LATITUDE']
                 session['USER_LONGITUDE'] = request_json['USER_LONGITUDE']
@@ -1264,10 +1304,48 @@ def deleteCartRow():
                 mycursor = conn.cursor()
                 mycursor.execute("DELETE FROM ORDER_SUMMARY WHERE PRODUCT_ID='"+PRODUCT_ID+"' AND USER_EMAIL='"+session['USER_EMAIL']+"'")
                 conn.commit()
-                return 'Row Deleted!'
+                mycursor.close()
+                return jsonify(StatusCode = '1', Message="Row Deleted!")
         except Exception as e:
             print(str(e))
             return jsonify(StatusCode = '0', Message="Error")
+
+
+@app.route('/updateProfile',methods = ['POST'])
+def updateProfile():
+    if request.method == "POST":
+        try:
+            if conn and "USER_EMAIL" in session:
+                request_json = request.get_json()
+                latitude, longitude = getCoordinates(request_json['USER_STREET']+", "+request_json['USER_CITY']+", "+request_json['USER_STATE']+", "+request_json['USER_COUNTRY']+", "+request_json['USER_PINCODE'])
+                #print(latitude, longitude, request_json)
+
+                mycursor = conn.cursor()
+                sql = "UPDATE USERS SET USER_LATITUDE=%s, USER_LONGITUDE=%s, USER_STREET=%s, USER_CITY=%s, USER_STATE=%s, USER_COUNTRY=%s, USER_PINCODE=%s, USER_MOBILE=%s WHERE USER_EMAIL=%s"
+                if latitude != 200:
+                    val = (latitude, longitude, request_json['USER_STREET'], request_json['USER_CITY'], request_json['USER_STATE'], request_json['USER_COUNTRY'], request_json['USER_PINCODE'], request_json['USER_MOBILE'], session['USER_EMAIL'])
+                    session['USER_LATITUDE'] = latitude
+                    session['USER_LONGITUDE'] = longitude
+                else:
+                    val = (session['USER_LATITUDE'], session['USER_LONGITUDE'], request_json['USER_STREET'], request_json['USER_CITY'], request_json['USER_STATE'], request_json['USER_COUNTRY'], request_json['USER_PINCODE'], request_json['USER_MOBILE'], session['USER_EMAIL'])
+                session['USER_LATITUDE'] = session['USER_LATITUDE']
+                session['USER_LONGITUDE'] = session['USER_LONGITUDE']
+                session['USER_STREET'] = request_json['USER_STREET']
+                session['USER_CITY'] = request_json['USER_CITY']
+                session['USER_STATE'] = request_json['USER_STATE']
+                session['USER_COUNTRY'] = request_json['USER_COUNTRY']
+                session['USER_PINCODE'] = request_json['USER_PINCODE']
+                session['USER_MOBILE'] = request_json['USER_MOBILE']
+                mycursor.execute(sql, val)
+                conn.commit()
+                mycursor.close()
+
+                return jsonify(StatusCode = '1', Message="Success")
+        except Exception as e:
+            print(str(e))
+            return jsonify(StatusCode = '0', Message="Error")
+
+
 
 
 if __name__ == '__main__':

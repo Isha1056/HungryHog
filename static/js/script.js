@@ -187,7 +187,7 @@
 	//Single Item Slider
 	if ($('.single-item-carousel').length) {
 		$('.single-item-carousel').owlCarousel({
-			loop:true,
+			loop:false,
 			margin:0,
 			nav:true,
 			smartSpeed: 700,

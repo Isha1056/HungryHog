@@ -2,193 +2,202 @@
 
 {% block title %}Snacks{% endblock %}
 
-{% block content %}        
-    <!--Main Slider-->
-      <section class="page-title" style="background-image:url(../static/images/background/10.jpg);">	
-    	<div class="auto-container">
-    		<h3>Hand-Crafted Dishes Sourced</h3>
-        	<h2>{{kitchen_name}}</h2>
-        </div>
-    </section>
-    <!--End Main Slider-->
-    
-    <section class="sect_product">
+{% block content %}
+<!--Main Slider-->
+<section class="page-title" style="background-image:url(../static/images/background/10.jpg);">
+    <div class="auto-container">
+        <h3>Hand-Crafted Dishes Sourced</h3>
+        <h2>{{kitchen_name}}</h2>
+    </div>
+</section>
+<!--End Main Slider-->
+
+<section class="sect_product">
     <div class="container">
-    <div class="row">
-    	<!-- BEGIN PRODUCTS -->
-        {% if snack|length > 0 %}
-        {% for i in snack %}
-  		<div class="col-md-3 col-sm-6">
-    		<span class="thumbnail">
-      			<img src="{{ url_for('static', filename='/images/'+i.SNACK_LOGO_FILE) }}" alt="...">
-      			<h4 id="{{ i.Kitchen_ID }}" style="text-align:center; padding:10px 0;">{{ i.SNACK_NAME }}</h4>
-      			
-      			<!--<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>-->
-                  <div class="row">
-                    <div class="col-md-12 col-sm-12">
-                        <p class="price" style="color:#F00; text-align:center;font-size:18px;">Timings: {{ i.Meal_Timings }}</p>
+        <div class="row">
+            <!-- BEGIN PRODUCTS -->
+            {% if snack|length > 0 %}
+            {% for i in snack %}
+            <div class="col-md-3 col-sm-6">
+                <span class="thumbnail">
+                    <img src="{{ url_for('static', filename='/images/'+i.SNACK_LOGO_FILE) }}" alt="...">
+                    <h4 id="{{ i.Kitchen_ID }}" style="text-align:center; padding:10px 0;">{{ i.SNACK_NAME }}</h4>
+
+                    <!--<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>-->
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <p class="price" style="color:#F00; text-align:center;font-size:18px;">Timings: {{
+                                i.Meal_Timings }}</p>
+                        </div>
+                        <div class="col-md-12 col-sm-12">
+                            <p class="price" style="color:#F00; text-align:center;font-size:18px;">Price: {{
+                                i.SNACK_PRICE }}</p>
+                        </div>
+                        {% if i.SNACK_RATING != 0 %}
+                        <div class="col-md-12 col-sm-12">
+                            <p class="price" style="color:#F00; text-align:center;font-size:18px;">Rating: {{
+                                i.SNACK_RATING }} / 5</p>
+                        </div>
+                        {% else %}
+                        <div class="col-md-12 col-sm-12">
+                            <p class="price" style="color:#F00; text-align:center;font-size:18px;">Rating: None </p>
+                        </div>
+                        {% endif %}
+
                     </div>
-      				<div class="col-md-12 col-sm-12">
-      					<p class="price" style="color:#F00; text-align:center;font-size:18px;">Price: {{ i.SNACK_PRICE }}</p>
-      				</div>
-                    {% if i.SNACK_RATING != 0 %}
-                    <div class="col-md-12 col-sm-12">
-                        <p class="price" style="color:#F00; text-align:center;font-size:18px;">Rating: {{ i.SNACK_RATING }} / 5</p>
+                    <hr class="line">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <button id="{{ i.SNACK_ID }}" class="btn btn-danger center-block order-button"
+                                style="margin-top:10px;"> Add To Cart</button>
+                        </div>
+
                     </div>
-                    {% else %}
-                    <div class="col-md-12 col-sm-12">
-                        <p class="price" style="color:#F00; text-align:center;font-size:18px;">Rating: None </p>
-                    </div>
-                    {% endif %}
-      				      				
-      			</div>
-      			<hr class="line">
-      			<div class="row">
-      				<div class="col-md-6 col-sm-6 col-xs-12">
-      					<button id="{{ i.SNACK_ID }}" class="btn btn-danger center-block order-button" style="margin-top:10px;"> Add To Cart</button>
-      				</div>
-      				
-      			</div>
-    		</span>
-  		</div>
-    	
-        {% endfor %}
-        {% elif kitchens|length > 0 %}
-        <div class="auto-container">
-        	<!--sec title one-->
-            <div class="sec-title-one">
-                <h2>Top Kitchens in your Area</h2>
-                <h4>We Create Delicous Memories</h4>
+                </span>
             </div>
-        
-        	<div class="row clearfix">
-            	<!--Opening Column-->
-            	<div class="opening-column col-md-4 col-sm-12 col-xs-12">
-                	<div class="inner-box wow slideInLeft" data-wow-delay="0ms" data-wow-duration="1500ms">
-                    	<div class="title-box">Our Goal:</div>
-                        <ul>
-                        	<li>Fulfilling your cravings,<br>Ensuring your health!</li>
-                            <li>We Deliver 24 hours a day<br>All days a week!</li>
-                            <li></li>
-                            <li><img src="../static/images/pig_waiter_img.png" alt="" style="max-width: 30%;"/></li>
-                        </ul>
-                    </div>
+
+            {% endfor %}
+            {% elif kitchens|length > 0 %}
+            <div class="auto-container">
+                <!--sec title one-->
+                <div class="sec-title-one">
+                    <h2>Top Kitchens in your Area</h2>
+                    <h4>We Create Delicous Memories</h4>
                 </div>
 
-                
-                <!--Dishes Column-->
-                <div class="dishes-column col-md-8 col-sm-12 col-xs-12">
-                	<div class="inner-box">
-                    
-                    	{% for i in kitchens %}
-                    	<div class="special-dish">
-                        	<div class="inner-content">
-                                <div class="row clearfix">
-                                
-                                    <!--Image Column-->
-                                    <div class="image-column col-md-4 col-sm-4 col-xs-12 pull-left">
-                                        <div class="inner">
-                                            <figure class="image-box">
-                                                <img src="https://picsum.photos/300/300" alt="" />
-                                                <!--Overlay Box-->
-                                                <div class="overlay-box">
-                                                    <div class="price">Order Now</div>
-                                                </div>
-                                            </figure>
+                <div class="row clearfix">
+                    <!--Opening Column-->
+                    <div class="opening-column col-md-4 col-sm-12 col-xs-12">
+                        <div class="inner-box wow slideInLeft" data-wow-delay="0ms" data-wow-duration="1500ms">
+                            <div class="title-box">Our Goal:</div>
+                            <ul>
+                                <li>Fulfilling your cravings,<br>Ensuring your health!</li>
+                                <li>We Deliver 24 hours a day<br>All days a week!</li>
+                                <li></li>
+                                <li><img src="../static/images/pig_waiter_img.png" alt="" style="max-width: 30%;" />
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    <!--Dishes Column-->
+                    <div class="dishes-column col-md-8 col-sm-12 col-xs-12">
+                        <div class="inner-box">
+
+                            {% for i in kitchens %}
+                            <div class="special-dish">
+                                <div class="inner-content">
+                                    <div class="row clearfix">
+
+                                        <!--Image Column-->
+                                        <div class="image-column col-md-4 col-sm-4 col-xs-12 pull-left">
+                                            <div class="inner">
+                                                <a href="{{url_for('snacksPageDynamic', Kitchen_ID=i.Kitchen_ID)}}">
+                                                    <figure class="image-box">
+                                                        <img src="https://picsum.photos/300/300" alt="" />
+                                                        <!--Overlay Box-->
+                                                        <div class="overlay-box">
+                                                            <div class="price">Order Now</div>
+                                                        </div>
+                                                    </figure>
+                                                </a>
+                                            </div>
                                         </div>
+
+                                        <!--Content Column-->
+                                        <div class="content-column col-md-8 col-sm-8 col-xs-12 pull-right">
+                                            <h3>{{ i.Kitchen_Name }}</h3>
+                                            {% if i.Kitchen_Ratings != 0 %}
+                                            <div class="text">Rating: {{ i.Kitchen_Ratings }} / 5</div>
+                                            {% else %}
+                                            <div class="text">Rating: None</div>
+                                            {% endif %}
+                                            <a class="read-more theme-btn"
+                                                href="{{url_for('snacksPageDynamic', Kitchen_ID=i.Kitchen_ID)}}">View
+                                                Menu</a>
+                                        </div>
+
                                     </div>
-                                
-                                    <!--Content Column-->
-                                    <div class="content-column col-md-8 col-sm-8 col-xs-12 pull-right">
-                                        <h3>{{ i.Kitchen_Name }}</h3>
-                                        {% if i.Kitchen_Ratings != 0 %}
-                                        <div class="text">Rating: {{ i.Kitchen_Ratings }} / 5</div>
-                                        {% else %}
-                                        <div class="text">Rating: None</div>
-                                        {% endif %}
-                                        <a class="read-more theme-btn" href="{{url_for('snacksPageDynamic', Kitchen_ID=i.Kitchen_ID)}}">View Menu</a>
-                                    </div>
-                                    
                                 </div>
                             </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
                     </div>
+
                 </div>
-                
             </div>
+            {% else %}
+            <div class="col-md-3 col-sm-6">
+                Nothing to show here right now...
+            </div>
+            {% endif %}
+            <!-- END PRODUCTS -->
         </div>
-        {% else %}
-        <div class="col-md-3 col-sm-6">
-            Nothing to show here right now...
-        </div>
-        {% endif %}
-  		<!-- END PRODUCTS -->
-	</div>
-    
+
     </div>
-    </section>
-    
-    
-   
-    
-    <!--Parallax Image Section-->
-    <section class="parallax-image-section" style="background-image:url(../static/images/background/1.jpg);">
-    	<div class="auto-container">
-        	<h2>Healthy, Fresh And Hot Dishes.</h2>
-            <h4>Best offers from the house chef.</h4>
-        </div>
-    </section>
-    <!--End Parallax Image Section-->
-    
-    
-    
-    
-    
-    
-    
-  
-    
-   
-    
-    <!--Testimonial Section-->
-    <section class="testimonial-section" style="background-image:url(../static/images/background/3.jpg);">
-    	<div class="auto-container">
-        	<div class="single-item-carousel">
-                {% if snack|length > 0 %}
-                {% for i in snack %}
-                    {% if i.SNACK_REVIEWS|length > 0 %}
-                    {% for j in i.SNACK_REVIEWS %}
-                <!--Testimonial Block-->
-                        <div class="testimonial-block">
-                            <div class="inner-box">
-                                <h3>{{i.SNACK_NAME}}</h3>
-                                <div class="quote-icon"><span class="flaticon-left-quote"></span></div>
-                                <div class="text">“ {{j.SNACK_RATING}}/5 ”</div>
-                                <div class="text">“ {{j.SNACK_REVIEW}} ”</div>
-                                <div class="text">“ {{j.SCHEDULE_DATE}} ”</div>
-                                <h3><span>-</span>{{j.USER_NAME}}</h3>
-                            </div>
-                        </div>
-                    {% endfor %}
-                    {% else %}
+</section>
 
-                    <div class="testimonial-block">
-                        <div class="inner-box">
-                            <div class="quote-icon"><span class="flaticon-left-quote"></span></div>
-                            <div class="text">“ No Reviews for {{i.SNACK_NAME}} yet! ”</div>
-                            <h3><span>-</span> HungryHog Team</h3>
-                        </div>
-                    </div>
 
-                    {% endif %}
-                {% endfor %}
-                {% endif %}
-                
+
+
+<!--Parallax Image Section-->
+<section class="parallax-image-section" style="background-image:url(../static/images/background/1.jpg);">
+    <div class="auto-container">
+        <h2>Healthy, Fresh And Hot Dishes.</h2>
+        <h4>Best offers from the house chef.</h4>
+    </div>
+</section>
+<!--End Parallax Image Section-->
+
+
+
+
+
+
+
+
+
+
+
+<!--Testimonial Section-->
+<section class="testimonial-section" style="background-image:url(../static/images/background/3.jpg);">
+    <div class="auto-container">
+        <div class="single-item-carousel">
+            {% if snack|length > 0 %}
+            {% for i in snack %}
+            {% if i.SNACK_REVIEWS|length > 0 %}
+            {% for j in i.SNACK_REVIEWS %}
+            <!--Testimonial Block-->
+            <div class="testimonial-block">
+                <div class="inner-box">
+                    <h3>{{i.SNACK_NAME}}</h3>
+                    <div class="quote-icon"><span class="flaticon-left-quote"></span></div>
+                    <div class="text">“ {{j.SNACK_RATING}}/5 ”</div>
+                    <div class="text">“ {{j.SNACK_REVIEW}} ”</div>
+                    <div class="text">“ {{j.SCHEDULE_DATE}} ”</div>
+                    <h3><span>-</span>{{j.USER_NAME}}</h3>
+                </div>
             </div>
+            {% endfor %}
+            {% else %}
+
+            <div class="testimonial-block">
+                <div class="inner-box">
+                    <div class="quote-icon"><span class="flaticon-left-quote"></span></div>
+                    <div class="text">“ No Reviews for {{i.SNACK_NAME}} yet! ”</div>
+                    <h3><span>-</span> HungryHog Team</h3>
+                </div>
+            </div>
+
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+
         </div>
-    </section>
-    <!--End Testimonial Section-->
+    </div>
+</section>
+<!--End Testimonial Section-->
 {% endblock %}
 
 {% block scripts %}

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>{% block title %}{% endblock %} || HungryHog </title>
     <!-- Stylesheets -->
-    <link rel="icon" href="../static/images/HungryHogLogo.png">
+    <link rel="icon" href="../static/images/HungryHogIcon.jpg" sizes="16x16 32x32" >
     <link href="../static/css/bootstrap.css" rel="stylesheet">
     <link href="../static/css/revolution-slider.css" rel="stylesheet">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -59,7 +59,8 @@
 
                             <ul>
                                 {% if 'USER_EMAIL' in session %}
-                                <li>{{session.USER_NAME}}</li>
+                                <li><a href="{{url_for('profilePage')}}">{{session.USER_NAME}}</a></li>
+                                <li><a href="javascript:;" class="use-current-location">Use Current Location</a></li>
                                 {% endif %}
                                 <li class="eng-dropdown dropdown"><a class="btn btn-default dropdown-toggle"
                                         id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
@@ -67,6 +68,7 @@
                                             class="arow-icon fa fa-angle-down"></span></a>
                                     <ul class="dropdown-menu style-one" aria-labelledby="dropdownMenu1">
                                         {% if 'USER_EMAIL' in session %}
+                                        <li><a href="{{url_for('profilePage')}}">Profile</a></li>
                                         <li><a class="logout" href="javascript:void(0);">Sign Out</a></li>
                                         {% else %}
                                         <li><a href="{{url_for('sign_inPage')}}">Sign In</a></li>
@@ -134,8 +136,8 @@
                                             <ul>
                                                 <li><a href="{{url_for('indexPage')}}">Home</a></li>
                                                 <li><a href="{{url_for('aboutPage')}}">About</a></li>
-                                                <li><a href="{{url_for('contactPage')}}">Contact</a></li>
                                                 {% if 'USER_EMAIL' in session %}
+                                                <li><a href="{{url_for('profilePage')}}">Profile</a></li>
                                                 <li><a href="{{url_for('shopping_cartPage')}}">Shopping Cart</a></li>
                                                 {% endif %}
                                                 {% if 'USER_EMAIL' in session %}
@@ -147,6 +149,7 @@
                                                 {% if 'USER_EMAIL' not in session %}
                                                 <li><a href="{{url_for('sign_inPage')}}">Sign In</a></li>
                                                 {% endif %}
+                                                <li><a href="{{url_for('contactPage')}}">Contact</a></li>
 
                                             </ul>
                                         </li>
@@ -207,8 +210,8 @@
                             <ul>
                                 <li><a href="{{url_for('indexPage')}}">Home</a></li>
                                 <li><a href="{{url_for('aboutPage')}}">About</a></li>
-                                <li><a href="{{url_for('contactPage')}}">Contact</a></li>
                                 {% if 'USER_EMAIL' in session %}
+                                <li><a href="{{url_for('profilePage')}}">Profile</a></li>
                                 <li><a href="{{url_for('shopping_cartPage')}}">Shopping Cart</a></li>
                                 {% endif %}
                                 {% if 'USER_EMAIL' in session %}
@@ -220,6 +223,7 @@
                                 {% if 'USER_EMAIL' not in session %}
                                 <li><a href="{{url_for('sign_inPage')}}">Sign In</a></li>
                                 {% endif %}
+                                <li><a href="{{url_for('contactPage')}}">Contact</a></li>
                             </ul>
                         </li>
                         <li><a href="{{url_for('snacksPage')}}">Kitchens</a></li>
@@ -315,27 +319,27 @@
                                                 <div class="post">
                                                     <figure class="post-thumb"><img
                                                             src="../static/images/resource/post-thumb-1.jpg" alt=""><a
-                                                            href="blog-single.html" class="overlay-link"><span
+                                                            href="{{url_for('snacksPageDynamic', Kitchen_ID=3005)}}" class="overlay-link"><span
                                                                 class="fa fa-link"></span></a></figure>
-                                                    <div class="desc-text"><a href="blog-single.html">Louis Burger</a>
+                                                    <div class="desc-text"><a href="{{url_for('snacksPageDynamic', Kitchen_ID=3005)}}">Louis Burger</a>
                                                     </div>
                                                     <div class="time">Burgers and Snacks</div>
                                                 </div>
                                                 <div class="post">
                                                     <figure class="post-thumb"><img
                                                             src="../static/images/resource/post-thumb-2.jpg" alt=""><a
-                                                            href="blog-single.html" class="overlay-link"><span
+                                                            href="{{url_for('snacksPageDynamic', Kitchen_ID=3004)}}" class="overlay-link"><span
                                                                 class="fa fa-link"></span></a></figure>
-                                                    <div class="desc-text"><a href="blog-single.html">Senorita
+                                                    <div class="desc-text"><a href="{{url_for('snacksPageDynamic', Kitchen_ID=3004)}}">Senorita
                                                             FoodHall</a></div>
                                                     <div class="time">Authentic Italian Food</div>
                                                 </div>
                                                 <div class="post">
                                                     <figure class="post-thumb"><img
                                                             src="../static/images/resource/post-thumb-3.jpg" alt=""><a
-                                                            href="blog-single.html" class="overlay-link"><span
+                                                            href="{{url_for('snacksPageDynamic', Kitchen_ID=3002)}}" class="overlay-link"><span
                                                                 class="fa fa-link"></span></a></figure>
-                                                    <div class="desc-text"><a href="blog-single.html">Dabba Garam</a>
+                                                    <div class="desc-text"><a href="{{url_for('snacksPageDynamic', Kitchen_ID=3002)}}">Dabba Garam</a>
                                                     </div>
                                                     <div class="time">Home Made Food</div>
                                                 </div>

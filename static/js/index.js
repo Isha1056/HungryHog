@@ -5,9 +5,10 @@ $(document).ready(function(){
         //"<br>Longitude: " + position.coords.longitude;
         var data = {
             "USER_LATITUDE": position.coords.latitude,
-            "USER_LONGITUDE": position.coords.longitude
+            "USER_LONGITUDE": position.coords.longitude,
+            "USER_REQUEST": 1
         };
-        console.log(data);
+        //console.log(data);
         $.ajax({
             type: 'post',
             url: 'http://127.0.0.1:5000/updateUserCoordinates',
@@ -15,7 +16,7 @@ $(document).ready(function(){
             contentType: "application/json; charset=utf-8",
             traditional: true,
             success: function (data) {
-              console.log(data)
+              //console.log(data)
             }
           });
     }
@@ -30,10 +31,30 @@ $(document).ready(function(){
             url: 'http://127.0.0.1:5000/logout',
             traditional: true,
             success: function (data) {
-                console.log("Logged Out!");
+                //console.log("Logged Out!");
                 window.open("http://127.0.0.1:5000/", "_self")
             }
         });
+    });
+
+    $(".use-current-location").click(function(){
+        var data = {
+            "USER_LATITUDE": position.coords.latitude,
+            "USER_LONGITUDE": position.coords.longitude,
+            "USER_REQUEST": 0
+        };
+        //console.log(data);
+        $.ajax({
+            type: 'post',
+            url: 'http://127.0.0.1:5000/updateUserCoordinates',
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            traditional: true,
+            success: function (data) {
+              //console.log(data)
+              $(".use-current-location").html("Using Current Location")
+            }
+          });
     });
 
   });
