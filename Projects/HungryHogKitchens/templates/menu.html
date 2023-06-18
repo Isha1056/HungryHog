@@ -1,0 +1,237 @@
+{%extends "base.html" %}
+
+{% block title %}Menu{% endblock %}
+
+{% block content %}
+<!--Page Title-->
+<section class="page-title" style="background-image:url(../static/images/background/10.jpg);">
+    <div class="auto-container">
+        <h3>Hand-Crafted Dishes</h3>
+        <h2>Menu</h2>
+    </div>
+</section>
+<!--Page Title-->
+
+<!--Cart Section-->
+<section class="cart-section">
+    <div class="auto-container">
+
+        <form id="">
+            <div class="row">
+                <div id="myMap" class="col-md-4 myMap">
+                    <!-- <img src="../static/images/product.jpg" class="img-responsive thumbnail" />
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d408.0799579171845!2d72.86328343730732!3d19.109513749500625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1680202549014!5m2!1sen!2sin"
+                        width="370" height="300" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe> -->
+                    <iframe
+                        src="https://maps.google.com/maps?q={{session.Kitchen_Latitude}},{{session.Kitchen_Longitude}}&z=15&output=embed"
+                        height="300" frameborder="0" style="border:0;width:100%;"></iframe>
+                </div>
+                <div class="col-md-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h5 class="panel-title"><i class="fa fa-map-marker"></i> Menu Details</h5>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="name">Full Name:</label>
+                                        <input type="text" placeholder="Full Name" value="{{session.Kitchen_Name}}"
+                                            class="form-control input-sm required kitchen-name" name="name" disabled />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="email">Email:</label>
+                                        <input type="email" placeholder="Email Address"
+                                            value="{{session.Kitchen_Email}}" class="form-control input-sm required"
+                                            name="email" disabled />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="mobile">Mobile:</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon">+91</span>
+                                            <input type="text" class="form-control input-sm required kitchen-mobile"
+                                                value="{{session.Kitchen_Number}}" placeholder="Mobile Number"
+                                                name="mobile" maxlength="10" min="10" disabled />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="type">Type:</label>
+                                        <input type="text" placeholder="Type" value="{{session.Kitchen_Type}}"
+                                            class="form-control input-sm required kitchen-type" name="type" disabled />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="open-time">Opening Time:</label>
+                                        <input type="time" placeholder="Opening Time"
+                                            value="{{session.Kitchen_Open_Time}}"
+                                            class="form-control input-sm required kitchen-open-time" name="open-time"
+                                            disabled />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="email">Closing Time:</label>
+                                        <input type="time" placeholder="Closing Time"
+                                            value="{{session.Kitchen_Close_Time}}"
+                                            class="form-control input-sm required kitchen-close-time" name="email"
+                                            disabled />
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="address">House Address:</label>
+                                        <input type="text" placeholder="Street address"
+                                            value="{{session.Kitchen_Address}}"
+                                            class="form-control input-sm required kitchen-street" name="address"
+                                            disabled />
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="">State:</label>
+                                        <input type="text" placeholder="state" value="{{session.Kitchen_State}}"
+                                            class="form-control input-sm required kitchen-state" name="state"
+                                            disabled />
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+
+                                        <label for="">City:</label>
+                                        <input type="text" placeholder="city" value="{{session.Kitchen_City}}"
+                                            class="form-control input-sm required kitchen-city" name="city" disabled />
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+
+                                        <label for="">Country:</label>
+                                        <input type="text" placeholder="country" value="{{session.Kitchen_Country}}"
+                                            class="form-control input-sm required kitchen-country" name="country"
+                                            disabled />
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="pincode">Pincode:</label>
+                                        <input type="text" placeholder="Pincode" value="{{session.Kitchen_Pincode}}"
+                                            class="form-control input-sm required kitchen-pincode" name="pincode"
+                                            disabled />
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="pincode">Rating:</label>
+                                        <input type="text" placeholder="Pincode" value="{{session.Kitchen_Ratings}}"
+                                            class="form-control input-sm required kitchen-pincode" name="pincode"
+                                            disabled />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!--Cart Outer-->
+        <div class="cart-outer" id="cart-outer">
+            <div class="table-outer" id="table-outer">
+                {% if data|length > 0 %}
+                <table class="_table">
+                    <thead>
+                        <tr>
+                            <th class="prod-column" colspan="2">PRODUCT</th>
+                            <th class="price">PRICE (in Rs.)</th>
+                            <th>MEAL TYPE</th>
+                            <th>SNACK_RATING</th>
+                            <th>DELETE</th>
+                            <th>SAVE</th>
+                            <th width="50px">
+                                <div class="action_container">
+                                    <!-- <button class="success" onclick="create_tr('table_body')">
+                                                <i class="fa fa-plus"></i>
+                                            </button> -->
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="table_body">
+                        {% for i in data %}
+                        <tr class="{{i.SNACK_ID}}">
+                            <td class="{{i.SNACK_ID}}-productID" style="display:none;">{{i.SNACK_ID}}</td>
+                            <td colspan="2" class="name">
+                                <div class="column-box">
+                                    <figure class="prod-thumb"><a href="#"><img
+                                                src="{{ url_for('static', filename='/images/'+i.SNACK_LOGO) }}"
+                                                width="150" height="150" alt="{{i.PRODUCT_LOGO}}">
+                                            <h4 class="prod-title">
+                                                <input type="text" class="{{i.SNACK_ID}}-input-name"
+                                                    value="{{i.SNACK_NAME}}"></input>
+                                            </h4>
+                                </div>
+                            </td>
+                            <td class="price"><input type="text" class="{{i.SNACK_ID}}-input-price"
+                                    value="{{i.SNACK_PRICE}}"></input></td>
+
+                            <td class="mealtype">
+                                <select class="{{i.SNACK_ID}}-input-mealtype">
+                                    {% for j in meals %}
+                                    <option value="{{j.Meal_ID}}" {% if j.Meal_ID==i.Meal_ID %}
+                                        selected {% endif %}>{{j.Meal_Type}} {{j.Meal_Timings}}</option>>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td class="rating">{{i.SNACK_RATING}}</td>
+                            <td class="save">
+                                <div class="action_container">
+                                    <button class="success {{i.SNACK_ID}} saveSnack">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td class="delete">
+                                <div class="action_container">
+                                    <button class="danger {{i.SNACK_ID}} removeSnack">
+                                        <i class="fa fa-close"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <h3>Snort! your menu is empty. Please add items in your menu!</h3>
+                {% endif %}
+
+            </div>
+            <div class="check-btns" style="margin-top: 20px; float: right;">
+                <button id="Add" class="theme-btn btn-style-three Add">Add</button>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="../static/js/menu.js"></script>
+{% endblock %}

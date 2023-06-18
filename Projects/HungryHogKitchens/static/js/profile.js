@@ -8,8 +8,7 @@ $(document).ready(function () {
     var Kitchen_State = $('.kitchen-state').val()
     var Kitchen_City = $('.kitchen-city').val()
     var Kitchen_Country = $('.kitchen-country').val()
-    var Kitchen_Address = $('.kitchen-pincode').val()
-    var Kitchen_Ratings = $('.kitchen-street').val()
+    var Kitchen_Pincode = $('.kitchen-pincode').val()
 
     $(".kitchen-name").change(function () {
         Kitchen_Name = $(this).val();
@@ -48,7 +47,7 @@ $(document).ready(function () {
     });
 
     $(".kitchen-pincode").change(function () {
-        Kitchen_Ratings = $(this).val();
+        Kitchen_Pincode = $(this).val();
     });
 
 
@@ -65,7 +64,7 @@ $(document).ready(function () {
             "Kitchen_City": Kitchen_City,
             "Kitchen_Country": Kitchen_Country,
             "Kitchen_Address": Kitchen_Address,
-            "Kitchen_Ratings": Kitchen_Ratings
+            "Kitchen_Pincode": Kitchen_Pincode
         }
 
         $.ajax({
@@ -75,8 +74,8 @@ $(document).ready(function () {
             contentType: "application/json; charset=utf-8",
             traditional: true,
             success: function (data) {
-                $(".user-button").prop('disabled', true);
-                $(".user-button").html('Updated!');
+                $(".kitchen-profile-button").prop('disabled', true);
+                $(".kitchen-profile-button").html('Updated!');
             }
         });
     });

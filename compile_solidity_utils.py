@@ -184,11 +184,11 @@ def enter_snacks():
         ('SNK0004', 'Chicken Momos', '55', 'sf', 2010, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_nonvegmomo.jpg"), 0, 0, 0),
         ('SNK0005', 'Fried Veg Momos', '50', 'akd', 2010, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_vegmomo.jpg"), 0, 0, 0),
         ('SNK0006', 'Veg Spring Rolls', '60', 'bbk', 2011, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_vegroll.jpg"), 0, 0, 0),
-        ('SNK0007', 'Golgappa', '50','lb', 2010, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_gol.jpg"), 0, 0, 0),
-        ('SNK0008', 'Noodles', '100','lb', 2015, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"), 0, 0, 0),
-        ('SNK0009', 'Kimchi', '140','lb', 2015, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"), 0, 0, 0),
-        ('SNK00010', 'Boba Tea', '100','lb', 2015, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"), 0, 0, 0),
-        ('SNK00011', 'Pizza', '400','lb', 2015, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"), 0, 0, 0)
+        ('SNK0007', 'Golgappa', '50','d2418ac039143802ed84c460fdaae214007e7dd5ce2fceda633ec8843e24e0f77aaa1fc7e9c13908ae070b56dd2a6e9ac397a6ac64a1529f2b2b4585856b1f69', 2010, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_gol.jpg"), 0, 0, 0),
+        ('SNK0008', 'Noodles', '100','d2418ac039143802ed84c460fdaae214007e7dd5ce2fceda633ec8843e24e0f77aaa1fc7e9c13908ae070b56dd2a6e9ac397a6ac64a1529f2b2b4585856b1f69', 2015, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"), 0, 0, 0),
+        ('SNK0009', 'Kimchi', '140','d2418ac039143802ed84c460fdaae214007e7dd5ce2fceda633ec8843e24e0f77aaa1fc7e9c13908ae070b56dd2a6e9ac397a6ac64a1529f2b2b4585856b1f69', 2015, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"), 0, 0, 0),
+        ('SNK00010', 'Boba Tea', '100','d2418ac039143802ed84c460fdaae214007e7dd5ce2fceda633ec8843e24e0f77aaa1fc7e9c13908ae070b56dd2a6e9ac397a6ac64a1529f2b2b4585856b1f69', 2015, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"), 0, 0, 0),
+        ('SNK00011', 'Pizza', '400','d2418ac039143802ed84c460fdaae214007e7dd5ce2fceda633ec8843e24e0f77aaa1fc7e9c13908ae070b56dd2a6e9ac397a6ac64a1529f2b2b4585856b1f69', 2015, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"), 0, 0, 0)
     )
     for i in vals:
         mycursor = conn.cursor()

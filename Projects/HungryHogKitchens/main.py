@@ -56,7 +56,7 @@ import hashlib
 
 
 
-app = Flask(__name__, template_folder = os.path.abspath('./templates'))
+app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
@@ -117,6 +117,51 @@ def getSnacks(image_name, image_data):
         # plt.savefig('./static/images/' + image_name+'.jpg')
     except Exception as e:
         print('Error: '+ str(e))
+
+def getMealData():
+    mycursor = conn.cursor()
+    mycursor.execute("SELECT * FROM Meals")
+    myresult = mycursor.fetchall()
+    #print(myresult)
+    mycursor.close()
+    result = []
+    for i in range(len(myresult)):
+        meal = {
+            "Meal_ID": myresult[i][0],
+            "Meal_Type": myresult[i][1],
+            "Meal_Timings": myresult[i][2],
+        }
+        result.append(meal)
+    return result
+
+def getSnackData():
+    mycursor = conn.cursor()
+    sql = "SELECT SNACK.SNACK_ID, SNACK.SNACK_NAME, SNACK.SNACK_PRICE, SNACK.Kitchen_ID, SNACK.Meal_ID, Meals.Meal_Type, Meals.Meal_Timings, SNACK.SNACK_LOGO, SNACK.SNACK_REVIEW_COUNT, SNACK.SNACK_REVIEW_TOTAL, SNACK.SNACK_RATING FROM SNACK LEFT JOIN Meals ON SNACK.Meal_ID = Meals.Meal_ID WHERE SNACK.Kitchen_ID=%s"
+    val = (session['Kitchen_ID'], )
+    mycursor.execute(sql, val)
+    myresult = mycursor.fetchall()
+    #print(myresult)
+    mycursor.close()
+    result = []
+    for i in range(len(myresult)):
+        snack = {
+            "SNACK_ID": myresult[i][0],
+            "SNACK_NAME": myresult[i][1],
+            "SNACK_PRICE": myresult[i][2],
+            "Kitchen_ID": myresult[i][3],
+            "Meal_ID": myresult[i][4],
+            "Meal_Type": myresult[i][5],
+            "Meal_Timings": myresult[i][6],
+            "SNACK_LOGO": myresult[i][7],
+            "SNACK_REVIEW_COUNT": myresult[i][8],
+            "SNACK_REVIEW_TOTAL": myresult[i][9],
+            "SNACK_RATING": myresult[i][10],
+        }
+
+        getSnacks(snack["SNACK_ID"], snack["SNACK_LOGO"])
+        snack["SNACK_LOGO"] = snack["SNACK_ID"]+".jpg"
+        result.append(snack)
+    return result
 
 
 
@@ -185,7 +230,7 @@ def google_auth():
     mycursor.close()
     
     mycursor = conn.cursor()
-    mycursor.execute('SELECT * FROM Kicthen WHERE Kitchen_ID="'+session["Kitchen_ID"]+'"')
+    mycursor.execute('SELECT * FROM Kitchen WHERE Kitchen_ID="'+session["Kitchen_ID"]+'"')
     myresult = mycursor.fetchall()
     mycursor.close()
     #print(myresult)
@@ -503,7 +548,7 @@ def indexPage():
 def sign_inPage():
     try:
         if "Kitchen_ID" in session:
-            redirect('/')
+            return redirect('/')
         else:
             return render_template('sign_in.html')
     except Exception as e:
@@ -533,7 +578,7 @@ def profilePage():
 def menuPage():
     try:
         if "Kitchen_ID" in session:
-            return render_template('index.html', session=session)
+            return render_template('menu.html', session=session, data=getSnackData(), meals=getMealData())
         else:
             return redirect('/sign_in')
     except Exception as e:
@@ -573,25 +618,27 @@ def UsersAuthentication():
             mycursor = conn.cursor()
 
             Kitchen_ID = hashlib.sha512((req['Kitchen_Email']+req['Kitchen_Email'].split("@")[0]).encode()).hexdigest()
-
+            session["Kitchen_ID"] = Kitchen_ID
+            session["Kitchen_Password"] = req["Kitchen_Password"]
             street,city,state,country,zipcode=getLocationDetails(req['Kitchen_Latitude'], req['Kitchen_Longitude'])
-            sql = "INSERT IGNORE INTO Kitchen VALUES (%s, %s, %s, %s, '', '', '', %s, %s, %s, %s, %s, 0, '' 0, 200, 200, 0, 0, %s);"
-            val = (Kitchen_ID, req['Kitchen_Email'], req['Kitchen_Email'].split("@")[0], req["Kitchen_Password"], street, state, city, country, zipcode, w3.eth.accounts[random.randint(0,9)], req['Kitchen_Latitude'], req['Kitchen_Longitude'])
+            sql = "INSERT IGNORE INTO Kitchen VALUES (%s, %s, %s, %s, '', '', '', %s, %s, %s, %s, %s, 0, '', 0, %s, %s, 0, 0, %s);"
+            val = (Kitchen_ID, req['Kitchen_Email'], req['Kitchen_Email'].split("@")[0], req["Kitchen_Password"], street, city, state, country, zipcode, req['Kitchen_Latitude'], req['Kitchen_Longitude'], w3.eth.accounts[random.randint(0,9)])
             mycursor.execute(sql, val)
             conn.commit()
             mycursor.close()
             
-            session['Kitchen_Email'] = req['Kitchen_ID']
-            session['Kitchen_Name'] = req['Kitchen_ID'].split("@")[0]
+            session['Kitchen_Email'] = req['Kitchen_Email']
+            session['Kitchen_Name'] = req['Kitchen_Email'].split("@")[0]
 
             mycursor = conn.cursor()
-            mycursor.execute('SELECT * FROM Kicthen WHERE Kitchen_ID="'+session["Kitchen_ID"]+'"')
+            mycursor.execute('SELECT * FROM Kitchen WHERE Kitchen_ID="'+session["Kitchen_ID"]+'"')
             myresult = mycursor.fetchall()
             mycursor.close()
 
             if len(myresult) == 0:
                 return jsonify(StatusCode = '0',ErrorMessage='Invalid User email')
 
+            session['Kitchen_Name'] = myresult[0][2]
             session['Kitchen_Type'] = myresult[0][4]
             session['Kitchen_Open_Time'] = myresult[0][5]
             session['Kitchen_Close_Time'] = myresult[0][6]
@@ -609,7 +656,7 @@ def UsersAuthentication():
             session['Kitchen_Review_Total'] = myresult[0][18]
             session['Kitchen_Private_Key'] = myresult[0][19]
 
-            return jsonify(StatusCode = '1', UserRecord=session)
+            return jsonify(StatusCode = '1', Message="Success")
     except Exception as e:
         print(str(e))
         return jsonify(StatusCode = '0', Message="Error")

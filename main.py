@@ -1033,6 +1033,7 @@ def UsersAuthentication():
                 "USER_LATITUDE" : myresult[0][10],
                 "USER_LONGITUDE" : myresult[0][11]
             }
+            session['USER_NAME'] = myresult[0][0]
             session['USER_PASSWORD'] = myresult[0][1]
             session['USER_STREET'] = myresult[0][3]
             session['USER_STATE'] = myresult[0][4]
