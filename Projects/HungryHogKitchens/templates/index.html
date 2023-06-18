@@ -1,0 +1,667 @@
+{%extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<!--Main Slider-->
+<section class="main-slider" data-start-height="520" data-slide-overlay="yes">
+
+    <div class="tp-banner-container">
+        <div class="tp-banner">
+            <ul>
+
+                <li data-transition="fade" data-slotamount="1" data-masterspeed="1000"
+                    data-thumb="../static/images/main-slider/image-1.jpg" data-saveperformance="off"
+                    data-title="Awesome Title Here">
+                    <img src="../static/images/main-slider/image-5.jpg" alt="" data-bgposition="center top"
+                        data-bgfit="cover" data-bgrepeat="no-repeat">
+
+                    <div class="tp-caption sfb sfb tp-resizeme" data-x="center" data-hoffset="0" data-y="center"
+                        data-voffset="-140" data-speed="1500" data-start="500" data-easing="easeOutExpo"
+                        data-splitin="none" data-splitout="none" data-elementdelay="0.01" data-endelementdelay="0.3"
+                        data-endspeed="1200" data-endeasing="Power4.easeIn">
+                        <figure class="content-image"><img src="../static/images/main-slider/icon-1.png" alt="">
+                        </figure>
+                    </div>
+
+                    <div class="tp-caption sfl sfb tp-resizeme" data-x="center" data-hoffset="0" data-y="center"
+                        data-voffset="-20" data-speed="1500" data-start="500" data-easing="easeOutExpo"
+                        data-splitin="none" data-splitout="none" data-elementdelay="0.01" data-endelementdelay="0.3"
+                        data-endspeed="1200" data-endeasing="Power4.easeIn">
+                        <h2>Ready To Fill Those Pork-Bellies? Setup Your Kitchen Today!</h2>
+
+                    </div>
+
+                    <div class="tp-caption sfl sfb tp-resizeme" data-x="center" data-hoffset="0" data-y="center"
+                        data-voffset="130" data-speed="1500" data-start="500" data-easing="easeOutExpo"
+                        data-splitin="none" data-splitout="none" data-elementdelay="0.01" data-endelementdelay="0.3"
+                        data-endspeed="1200" data-endeasing="Power4.easeIn"><a href="{{url_for('menuPage')}}"
+                            class="theme-btn btn-style-one">Setup Now</a></div>
+
+                </li>
+
+                <li data-transition="fade" data-slotamount="1" data-masterspeed="1000"
+                    data-thumb="../static/images/main-slider/image-2.jpg" data-saveperformance="off"
+                    data-title="Awesome Title Here">
+                    <img src="../static/images/main-slider/image-6.jpg" alt="" data-bgposition="center top"
+                        data-bgfit="cover" data-bgrepeat="no-repeat">
+
+                    <div class="tp-caption sfb sfb tp-resizeme" data-x="center" data-hoffset="0" data-y="center"
+                        data-voffset="-140" data-speed="1500" data-start="500" data-easing="easeOutExpo"
+                        data-splitin="none" data-splitout="none" data-elementdelay="0.01" data-endelementdelay="0.3"
+                        data-endspeed="1200" data-endeasing="Power4.easeIn">
+                        <figure class="content-image"><img src="../static/images/main-slider/icon-1.png" alt="">
+                        </figure>
+                    </div>
+
+                    <div class="tp-caption sfl sfb tp-resizeme" data-x="center" data-hoffset="0" data-y="center"
+                        data-voffset="-20" data-speed="1500" data-start="500" data-easing="easeOutExpo"
+                        data-splitin="none" data-splitout="none" data-elementdelay="0.01" data-endelementdelay="0.3"
+                        data-endspeed="1200" data-endeasing="Power4.easeIn">
+                        <h2>Need To Modify Your Swinedentity? Check Out The Profile Page</h2>
+                    </div>
+
+                    <div class="tp-caption sfr sfb tp-resizeme" data-x="center" data-hoffset="0" data-y="center"
+                        data-voffset="50" data-speed="1500" data-start="500" data-easing="easeOutExpo"
+                        data-splitin="none" data-splitout="none" data-elementdelay="0.01" data-endelementdelay="0.3"
+                        data-endspeed="1200" data-endeasing="Power4.easeIn">
+                        <div class="text">Change Kitchen Details Here</div>
+                    </div>
+
+                    <div class="tp-caption sfl sfb tp-resizeme" data-x="center" data-hoffset="0" data-y="center"
+                        data-voffset="130" data-speed="1500" data-start="500" data-easing="easeOutExpo"
+                        data-splitin="none" data-splitout="none" data-elementdelay="0.01" data-endelementdelay="0.3"
+                        data-endspeed="1200" data-endeasing="Power4.easeIn"><a href="{{url_for('profilePage')}}"
+                            class="theme-btn btn-style-one">Checkout Now</a></div>
+
+                </li>
+
+                <li data-transition="fade" data-slotamount="1" data-masterspeed="1000"
+                    data-thumb="../static/images/main-slider/image-3.jpg" data-saveperformance="off"
+                    data-title="Awesome Title Here">
+                    <img src="../static/images/main-slider/image-4.jpg" alt="" data-bgposition="center top"
+                        data-bgfit="cover" data-bgrepeat="no-repeat">
+
+                    <div class="tp-caption sfb sfb tp-resizeme" data-x="center" data-hoffset="30" data-y="center"
+                        data-voffset="-140" data-speed="1500" data-start="500" data-easing="easeOutExpo"
+                        data-splitin="none" data-splitout="none" data-elementdelay="0.01" data-endelementdelay="0.3"
+                        data-endspeed="1200" data-endeasing="Power4.easeIn">
+                        <figure class="content-image"><!--<img src="../static/images/main-slider/icon-2.png" alt="">-->
+                        </figure>
+                    </div>
+
+                    <div class="tp-caption sfl sfb tp-resizeme" data-x="center" data-hoffset="30" data-y="center"
+                        data-voffset="-20" data-sp eed="1500" data-start="500" data-easing="easeOutExpo"
+                        data-splitin="none" data-splitout="none" data-elementdelay="0.01" data-endelementdelay="0.3"
+                        data-endspeed="1200" data-endeasing="Power4.easeIn">
+                        <h2 style="color:rgb(255, 255, 255);"> Let Us Know About Your Experience!</h2>
+                    </div>
+
+                    <div class="tp-caption sfr sfb tp-resizeme" data-x="center" data-hoffset="30" data-y="center"
+                        data-voffset="50" data-speed="1500" data-start="500" data-easing="easeOutExpo"
+                        data-splitin="none" data-splitout="none" data-elementdelay="0.01" data-endelementdelay="0.3"
+                        data-endspeed="1200" data-endeasing="Power4.easeIn">
+                        <div class="text text-left" style="color:rgb(255, 255, 255);">Send An Oink Now!</div>
+                    </div>
+
+                    <div class="tp-caption sfl sfb tp-resizeme" data-x="center" data-hoffset="30" data-y="center"
+                        data-voffset="140" data-speed="1500" data-start="500" data-easing="easeOutExpo"
+                        data-splitin="none" data-splitout="none" data-elementdelay="0.01" data-endelementdelay="0.3"
+                        data-endspeed="1200" data-endeasing="Power4.easeIn"><a href="#"
+                            class="theme-btn btn-style-one">Contact Us</a></div>
+
+                    <div class="tp-caption sfb sfb tp-resizeme" data-x="center" data-hoffset="0" data-y="center"
+                        data-voffset="-40" data-speed="1500" data-start="500" data-easing="easeOutExpo"
+                        data-splitin="none" data-splitout="none" data-elementdelay="0.01" data-endelementdelay="0.3"
+                        data-endspeed="1200" data-endeasing="Power4.easeIn">
+                        <figure class="content-image">
+                            <!--<img src="../static/images/main-slider/content-image.png" alt="">-->
+                        </figure>
+                    </div>
+
+                </li>
+
+
+
+                <li data-transition="fade" data-slotamount="1" data-masterspeed="1000"
+                    data-thumb="../static/images/main-slider/image-3.jpg" data-saveperformance="off"
+                    data-title="Awesome Title Here">
+                    <img src="../static/images/main-slider/image-7.jpg" alt="" data-bgposition="center top"
+                        data-bgfit="cover" data-bgrepeat="no-repeat">
+
+                    <div class="tp-caption sfb sfb tp-resizeme" data-x="center" data-hoffset="30" data-y="center"
+                        data-voffset="-140" data-speed="1500" data-start="500" data-easing="easeOutExpo"
+                        data-splitin="none" data-splitout="none" data-elementdelay="0.01" data-endelementdelay="0.3"
+                        data-endspeed="1200" data-endeasing="Power4.easeIn">
+                        <figure class="content-image"><!--<img src="../static/images/main-slider/icon-2.png" alt="">-->
+                        </figure>
+                    </div>
+
+                    <div class="tp-caption sfl sfb tp-resizeme" data-x="center" data-hoffset="30" data-y="center"
+                        data-voffset="-20" data-speed="1500" data-start="500" data-easing="easeOutExpo"
+                        data-splitin="none" data-splitout="none" data-elementdelay="0.01" data-endelementdelay="0.3"
+                        data-endspeed="1200" data-endeasing="Power4.easeIn">
+                        <h2 style="color:rgb(255, 255, 255);">Get Discount on Monthly Order</h2>
+                    </div>
+
+                    <div class="tp-caption sfr sfb tp-resizeme" data-x="center" data-hoffset="30" data-y="center"
+                        data-voffset="50" data-speed="1500" data-start="500" data-easing="easeOutExpo"
+                        data-splitin="none" data-splitout="none" data-elementdelay="0.01" data-endelementdelay="0.3"
+                        data-endspeed="1200" data-endeasing="Power4.easeIn">
+                        <div class="text text-left" style="color:rgb(255, 255, 255);">We are commited to serve you
+                            better food in affordable price. </div>
+                    </div>
+
+                    <div class="tp-caption sfl sfb tp-resizeme" data-x="center" data-hoffset="30" data-y="center"
+                        data-voffset="140" data-speed="1500" data-start="500" data-easing="easeOutExpo"
+                        data-splitin="none" data-splitout="none" data-elementdelay="0.01" data-endelementdelay="0.3"
+                        data-endspeed="1200" data-endeasing="Power4.easeIn"><a href="#"
+                            class="theme-btn btn-style-one">Order Office Tiffin</a></div>
+
+                    <div class="tp-caption sfb sfb tp-resizeme" data-x="center" data-hoffset="0" data-y="center"
+                        data-voffset="-40" data-speed="1500" data-start="500" data-easing="easeOutExpo"
+                        data-splitin="none" data-splitout="none" data-elementdelay="0.01" data-endelementdelay="0.3"
+                        data-endspeed="1200" data-endeasing="Power4.easeIn">
+                        <figure class="content-image">
+                            <!--<img src="../static/images/main-slider/content-image.png" alt="">-->
+                        </figure>
+                    </div>
+
+                </li>
+
+
+            </ul>
+
+            <div class="tp-bannertimer"></div>
+        </div>
+    </div>
+</section>
+<!--End Main Slider-->
+
+<!--Restaurant Section-->
+<section class="restaurant">
+    <div class="auto-container">
+        <div class="row clearfix">
+            <!--Column-->
+            <div class="column col-md-6 col-sm-6 col-xs-12">
+                <div class="inner-box">
+                    <!--Sec Title-->
+                    <div class="sec-title">
+                        <h2>Great New Dishes Everyday!</h2>
+                        <h3>Great Things About Us</h3>
+                    </div>
+                    <!--Content-->
+                    <div class="content">
+                        <div class="text">
+                            <p>We are a team of passionate foodies who believe that everyone deserves access to healthy
+                                and flavorful meals, even if they don't have the time or energy to cook.</p>
+                            <p>At HungryHog, we understand that every person has unique dietary needs and preferences.
+                                That's why we offer a variety of meal plans to choose from, including vegetarian, vegan,
+                                and non-vegetarian options. We also cater to special dietary requirements like
+                                gluten-free, low-carb, and keto.</p>
+                            <p>We are committed to providing our customers with the best possible experience. That's why
+                                we use high-quality, eco-friendly packaging materials that keep your food fresh and hot
+                                until it reaches your doorstep. We also offer flexible delivery options to suit your
+                                schedule, so you can enjoy your meals whenever and wherever you want.</p>
+                            <p>Our customers love HungryHog tiffin delivery service for its great food and customer
+                                eservice.</p>
+                        </div>
+                        <a href="#" class="read-more theme-btn btn-style-one">Read More</a>
+                    </div>
+
+                </div>
+            </div>
+
+            <!--Corousel Column-->
+            <div class="corousel-column col-md-6 col-sm-6 col-xs-12">
+                <div class="carousel-outer wow fadeInRight" data-wow-delay="0ms" data-wow-duration="1500ms">
+                    <!--Single Item Carousel-->
+                    <div class="single-item-carousel">
+                        <div class="slide">
+                            <img style="width:80%" src="../static/images/resource/slide-1.svg" alt="" />
+                        </div>
+                        <div class="slide">
+                            <img style="width:80%" src="../static/images/resource/slide-1.svg" alt="" />
+                        </div>
+                        <div class="slide">
+                            <img style="width:80%" src="../static/images/resource/slide-1.svg" alt="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!--End Restaurant Section-->
+
+
+<section class="delicous-section" style="background-image:url(../static/images/background/2.jpg);">
+    <div class="container">
+        <div class="sec-title-one" style="margin-bottom:30px;">
+            <h2>Our Corporate Meal Plan</h2>
+        </div>
+        <div>
+
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs navtab_tab" role="tablist">
+                <li role="presentation" class="active"><a href="#veg" aria-controls="veg" role="tab"
+                        data-toggle="tab">Veg</a></li>
+                <li role="presentation"><a href="#nonveg" aria-controls="nonveg" role="tab"
+                        data-toggle="tab">Non-Veg</a></li>
+                <li role="presentation"><a href="#alternate" aria-controls="alternate" role="tab"
+                        data-toggle="tab">Alternate</a></li>
+
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="veg">
+
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+
+                            <h1><img src="../static/images/vegmini.jpg"></h1>
+                            <h2><a href="#" class="read-more theme-btn btn-style-one">Order Now</a></h2>
+
+
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <h1><img src="../static/images/vegstandard.jpg"></h1>
+                            <h2><a href="#" class="read-more theme-btn btn-style-one">Order Now</a></h2>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="nonveg">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+
+                            <h1><img src="../static/images/nonvegmenu2.jpg"></h1>
+                            <h2><a href="#" class="read-more theme-btn btn-style-one">Order Now</a></h2>
+
+
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <h1><img src="../static/images/nonvegmenu1.jpg"></h1>
+                            <h2><a href="#" class="read-more theme-btn btn-style-one">Order Now</a></h2>
+                        </div>
+                    </div>
+
+                </div>
+                <div role="tabpanel" class="tab-pane" id="alternate">
+
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+
+                            <h1><img src="../static/images/alternatemenu2.jpg"></h1>
+                            <h2><a href="#" class="read-more theme-btn btn-style-one">Order Now</a></h2>
+
+
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <h1><img src="../static/images/alternatemenu1.jpg"></h1>
+                            <h2><a href="#" class="read-more theme-btn btn-style-one">Order Now</a></h2>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+</section>
+
+
+<!--Services Section-->
+<section class="services-section">
+
+    <div class="auto-container">
+        <!--sec title one-->
+        <div class="sec-title-one">
+            <h2>Why Us</h2>
+            <h4>We Create Delicous Memories</h4>
+        </div>
+
+        <div class="row clearfix">
+            <!--Services Block-->
+            <div class="services-block col-md-4 col-sm-6 col-xs-12">
+                <div class="inner-box">
+                    <!--Icon Box-->
+                    <div class="icon-box wow zoomInStable" data-wow-delay="0ms" data-wow-duration="1500ms">
+                        <img src="../static/images/resource/icon1.png" alt="" />
+                    </div>
+                    <h3><a href="#">Home made food</a></h3>
+                    <!--<div class="text">Vivamus sed fermentum tellus. Donec quis elit sapien. Aliquam commodo tortor nisi, nec varius mi finibus at.  ut ullamcorper volutpat lectusu</div>
+                        <a class="read-more" href="blog-single.html">Read More</a>-->
+                </div>
+            </div>
+
+            <!--Services Block-->
+            <div class="services-block col-md-4 col-sm-6 col-xs-12">
+                <div class="inner-box">
+                    <!--Icon Box-->
+                    <div class="icon-box wow zoomInStable" data-wow-delay="500ms" data-wow-duration="1500ms">
+                        <img src="../static/images/resource/icon2.png" alt="" />
+                    </div>
+                    <h3><a href="#">Daily Menu Change</a></h3>
+                    <!-- <div class="text">Vivamus sed fermentum tellus. Donec quis elit sapien. Aliquam commodo tortor nisi, nec varius mi finibus at.  ut ullamcorper volutpat lectusu</div>
+                        <a class="read-more" href="blog-single.html">Read More</a>-->
+                </div>
+            </div>
+
+            <!--Services Block-->
+            <div class="services-block col-md-4 col-sm-6 col-xs-12">
+                <div class="inner-box">
+                    <!--Icon Box-->
+                    <div class="icon-box wow zoomInStable" data-wow-delay="1000ms" data-wow-duration="1500ms">
+                        <img src="../static/images/resource/icon3.png" alt="" />
+                    </div>
+                    <h3><a href="#">Easy Ordering</a></h3>
+                    <!--<div class="text">Vivamus sed fermentum tellus. Donec quis elit sapien. Aliquam commodo tortor nisi, nec varius mi finibus at.  ut ullamcorper volutpat lectusu</div>
+                        <a class="read-more" href="blog-single.html">Read More</a>-->
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row clearfix">
+            <!--Services Block-->
+            <div class="services-block col-md-4 col-sm-6 col-xs-12">
+                <div class="inner-box">
+                    <!--Icon Box-->
+                    <div class="icon-box wow zoomInStable" data-wow-delay="0ms" data-wow-duration="1500ms">
+                        <img src="../static/images/resource/icon4.png" alt="" />
+                    </div>
+                    <h3><a href="#"> Easy Cancellation</a></h3>
+                    <!--<div class="text">Vivamus sed fermentum tellus. Donec quis elit sapien. Aliquam commodo tortor nisi, nec varius mi finibus at.  ut ullamcorper volutpat lectusu</div>
+                        <a class="read-more" href="blog-single.html">Read More</a>-->
+                </div>
+            </div>
+
+            <!--Services Block-->
+            <div class="services-block col-md-4 col-sm-6 col-xs-12">
+                <div class="inner-box">
+                    <!--Icon Box-->
+                    <div class="icon-box wow zoomInStable" data-wow-delay="500ms" data-wow-duration="1500ms">
+                        <img src="../static/images/resource/icon5.png" alt="" />
+                    </div>
+                    <h3><a href="#">Discount Offer/coupons</a></h3>
+                    <!--<div class="text">Vivamus sed fermentum tellus. Donec quis elit sapien. Aliquam commodo tortor nisi, nec varius mi finibus at.  ut ullamcorper volutpat lectusu</div>
+                        <a class="read-more" href="blog-single.html">Read More</a>-->
+                </div>
+            </div>
+
+            <!--Services Block-->
+            <div class="services-block col-md-4 col-sm-6 col-xs-12">
+                <div class="inner-box">
+                    <!--Icon Box-->
+                    <div class="icon-box wow zoomInStable" data-wow-delay="1000ms" data-wow-duration="1500ms">
+                        <img src="../static/images/resource/icon6.png" alt="" />
+                    </div>
+                    <h3><a href="#">Unique Recipes</a></h3>
+                    <!-- <div class="text">Vivamus sed fermentum tellus. Donec quis elit sapien. Aliquam commodo tortor nisi, nec varius mi finibus at.  ut ullamcorper volutpat lectusu</div>
+                        <a class="read-more" href="blog-single.html">Read More</a>-->
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</section>
+<!--Services Section-->
+
+
+<!--Parallax Image Section-->
+<section class="parallax-image-section" style="background-image:url(../static/images/background/1.jpg);">
+    <div class="auto-container">
+        <h2>Healthy, Fresh And Hot Dishes.</h2>
+        <h4>Best offers from your trusted Kitchens</h4>
+    </div>
+</section>
+<!--End Parallax Image Section-->
+
+
+
+<!--Special Dishes Section-->
+
+<!--Gallery Carousel-->
+<section class="gallery-carousel">
+    	<div class="three-item-corousel">
+        	<div class="gallery-item">
+            	<div class="inner-box">
+                	<a href="blog-single.html">
+                        <div class="image-box">
+                            <img src="../static/images/gallery/1.jpg" alt="" />
+                            <div class="title-box">Masala Spice</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+          
+            <div class="gallery-item">
+            	<div class="inner-box">
+                	<a href="blog-single.html">
+                        <div class="image-box">
+                            <img src="../static/images/gallery/2.jpg" alt="" />
+                            <div class="title-box">Masala Spiced Chickpeas</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+           
+            <div class="gallery-item">
+            	<div class="inner-box">
+                	<a href="blog-single.html">
+                        <div class="image-box">
+                            <img src="../static/images/gallery/3.jpg" alt="" />
+                            <div class="title-box">Masala Spiced Chickpeas</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            
+            <div class="gallery-item">
+            	<div class="inner-box">
+                	<a href="blog-single.html">
+                        <div class="image-box">
+                            <img src="../static/images/gallery/1.jpg" alt="" />
+                            <div class="title-box">Masala Spiced Chickpeas</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            
+            <div class="gallery-item">
+            	<div class="inner-box">
+                	<a href="blog-single.html">
+                        <div class="image-box">
+                            <img src="../static/images/gallery/2.jpg" alt="" />
+                            <div class="title-box">Masala Spiced Chickpeas</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            
+            <div class="gallery-item">
+            	<div class="inner-box">
+                	<a href="blog-single.html">
+                        <div class="image-box">
+                            <img src="../static/images/gallery/3.jpg" alt="" />
+                            <div class="title-box">Masala Spiced Chickpeas</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+<!--End Gallery Carousel-->
+
+<!--chefs Team-->
+<section class="chefs-section">
+        <div class="auto-container">
+        	<div class="sec-title-one">
+            	<h2>Our Delicacies</h2>
+                <h4>Meet Our Passionate Creators</h4>
+            </div>
+            <div class="row clearfix">
+            	<div class="three-item-corousel">
+                    
+                    <div class="chef-member">
+                        <div class="inner-box">
+                            
+                            <div class="image-box">
+                                
+                                <figure class="image">
+                                    <img src="../static/images/resource/chef-1.jpg" alt="" />
+                                </figure>
+                                
+                                <div class="overlay-box">
+                                    <div class="inner">
+                                       
+                                        <ul class="social-icon-one">
+                                            <li><a class="fa fa-facebook" href="#"></a></li>
+                                            <li><a class="fa fa-twitter" href="#"></a></li>
+                                            <li><a class="fa fa-linkedin" href="#"></a></li>
+                                            <li><a class="fa fa-instagram" href="#"></a></li>
+                                            <li><a class="fa fa-vimeo-square" href="#"></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="lower-content">
+                                <h3>Isha Gupta</h3>
+                                <div class="designation">Master Chef & Founder</div>
+                            </div>
+                        </div>
+                    </div>
+                
+                	
+                    <div class="chef-member">
+                        <div class="inner-box">
+                            
+                            <div class="image-box">
+                                
+                                <figure class="image">
+                                    <img src="../static/images/resource/chef-2.jpg" alt="" />
+                                </figure>
+                                
+                                <div class="overlay-box">
+                                    <div class="inner">
+                                        
+                                        <ul class="social-icon-one">
+                                            <li><a class="fa fa-facebook" href="#"></a></li>
+                                            <li><a class="fa fa-twitter" href="#"></a></li>
+                                            <li><a class="fa fa-linkedin" href="#"></a></li>
+                                            <li><a class="fa fa-instagram" href="#"></a></li>
+                                            <li><a class="fa fa-vimeo-square" href="#"></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="lower-content">
+                                <h3>Angad Singh Kataria</h3>
+                                <div class="designation">Chief Cook</div>
+                            </div>
+                        </div>
+                    </div>
+                
+                	
+                    <div class="chef-member">
+                        <div class="inner-box">
+                            
+                            <div class="image-box">
+                                
+                                <figure class="image">
+                                    <img src="../static/images/resource/chef-3.jpg" alt="" />
+                                </figure>
+                                
+                                <div class="overlay-box">
+                                    <div class="inner">
+                                        
+                                        <ul class="social-icon-one">
+                                            <li><a class="fa fa-facebook" href="#"></a></li>
+                                            <li><a class="fa fa-twitter" href="#"></a></li>
+                                            <li><a class="fa fa-linkedin" href="#"></a></li>
+                                            <li><a class="fa fa-instagram" href="#"></a></li>
+                                            <li><a class="fa fa-vimeo-square" href="#"></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="lower-content">
+                                <h3>Rishabh Bhatia</h3>
+                                <div class="designation">Cook</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+<!--End chefs Team-->
+
+<!--Testimonial Section-->
+<section class="testimonial-section" style="background-image:url(../static/images/background/3.jpg);">
+    <div class="auto-container">
+        <div class="single-item-carousel">
+
+            <!--Testimonial Block-->
+            <div class="testimonial-block">
+                <div class="inner-box">
+                    <div class="quote-icon"><i class="fa fa-2x fa-quote-right" aria-hidden="true"></i>
+                    </div>
+                    <div class="text">“ We enjoy sharing the projects and posts we make just as much as we enjoy
+                        creating them. consectetur adipiscing elit, sed do eiusmod tempor incididunt Sit back & take a
+                        moment to browse through some of our recent completed work.”</div>
+                    <h3><span>-</span> Angad Singh Kataria,</h3>
+                </div>
+            </div>
+
+            <!--Testimonial Block-->
+            <div class="testimonial-block">
+                <div class="inner-box">
+                    <div class="quote-icon"><i class="fa fa-2x fa-quote-right" aria-hidden="true"></i>
+                    </div>
+                    <div class="text">“ We enjoy sharing the projects and posts we make just as much as we enjoy
+                        creating them. consectetur adipiscing elit, sed do eiusmod tempor incididunt Sit back & take a
+                        moment to browse through some of our recent completed work.”</div>
+                    <h3><span>-</span> Isha Gupta,</h3>
+                </div>
+            </div>
+
+            <!--Testimonial Block-->
+            <div class="testimonial-block">
+                <div class="inner-box">
+                    <div class="quote-icon"><i class="fa fa-2x fa-quote-right" aria-hidden="true"></i>
+                    </div>
+                    <div class="text">“ We enjoy sharing the projects and posts we make just as much as we enjoy
+                        creating them. consectetur adipiscing elit, sed do eiusmod tempor incididunt Sit back & take a
+                        moment to browse through some of our recent completed work.”</div>
+                    <h3><span>-</span> Rishabh Bhatia,</h3>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!--End Testimonial Section-->
+{% endblock %}

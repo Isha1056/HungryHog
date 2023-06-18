@@ -179,16 +179,16 @@ def enter_snacks():
     )
 
     vals = (
-        ('SNK0002', 'Fried Chicken Momos', '60', 3002, 2010, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_frynonvegmomo.jpg"), 0, 0, 0),
-        ('SNK0003', 'Veg Chowmein', '65', 3003, 2012, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"), 0, 0, 0),
-        ('SNK0004', 'Chicken Momos', '55', 3004, 2010, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_nonvegmomo.jpg"), 0, 0, 0),
-        ('SNK0005', 'Fried Veg Momos', '50', 3005, 2010, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_vegmomo.jpg"), 0, 0, 0),
-        ('SNK0006', 'Veg Spring Rolls', '60', 3006, 2011, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_vegroll.jpg"), 0, 0, 0),
-        ('SNK0007', 'Golgappa', '50',3005, 2010, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_gol.jpg"), 0, 0, 0),
-        ('SNK0008', 'Noodles', '100',3005, 2015, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"), 0, 0, 0),
-        ('SNK0009', 'Kimchi', '140',3005, 2015, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"), 0, 0, 0),
-        ('SNK00010', 'Boba Tea', '100',3005, 2015, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"), 0, 0, 0),
-        ('SNK00011', 'Pizza', '400',3005, 2015, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"), 0, 0, 0)
+        ('SNK0002', 'Fried Chicken Momos', '60', 'dg', 2010, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_frynonvegmomo.jpg"), 0, 0, 0),
+        ('SNK0003', 'Veg Chowmein', '65', 'hrhk', 2012, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"), 0, 0, 0),
+        ('SNK0004', 'Chicken Momos', '55', 'sf', 2010, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_nonvegmomo.jpg"), 0, 0, 0),
+        ('SNK0005', 'Fried Veg Momos', '50', 'akd', 2010, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_vegmomo.jpg"), 0, 0, 0),
+        ('SNK0006', 'Veg Spring Rolls', '60', 'bbk', 2011, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_vegroll.jpg"), 0, 0, 0),
+        ('SNK0007', 'Golgappa', '50','lb', 2010, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_gol.jpg"), 0, 0, 0),
+        ('SNK0008', 'Noodles', '100','lb', 2015, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"), 0, 0, 0),
+        ('SNK0009', 'Kimchi', '140','lb', 2015, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"), 0, 0, 0),
+        ('SNK00010', 'Boba Tea', '100','lb', 2015, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"), 0, 0, 0),
+        ('SNK00011', 'Pizza', '400','lb', 2015, convertToBinaryData("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_chommeen.jpg"), 0, 0, 0)
     )
     for i in vals:
         mycursor = conn.cursor()

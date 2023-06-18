@@ -47,22 +47,27 @@ CREATE TABLE Meals (
 	PRIMARY KEY (Meal_ID)
 );
 CREATE TABLE Kitchen (
-    Kitchen_ID numeric NOT NULL,
+    Kitchen_ID varchar(255) NOT NULL,
+    Kitchen_Email varchar(255) NOT NULL,
     Kitchen_Name varchar(255),
+    Kitchen_Password varchar(255),
     Kitchen_Type varchar(255),
-    Kitchen_open_time varchar(255),
-    Kitchen_Close_time varchar(255),
+    Kitchen_Open_Time varchar(255),
+    Kitchen_Close_Time varchar(255),
 	Kitchen_Address varchar(255),
+    Kitchen_City varchar(255),
+    Kitchen_State varchar(255),
+    Kitchen_Country varchar(255),
+    Kitchen_Pincode varchar(255),
     Kitchen_Ratings FLOAT,
     Kitchen_Number varchar(255),
     Popularity varchar(255),
-    Meal_ID numeric Not Null,
     Kitchen_Latitude FLOAT,
     Kitchen_Longitude FLOAT,
     Kitchen_Review_Count numeric Not Null,
     Kitchen_Review_Total numeric Not Null,
-	PRIMARY KEY (Kitchen_ID),
-    FOREIGN KEY (Meal_ID) REFERENCES Meals(Meal_ID)
+    Kitchen_Private_Key varchar(255),
+	PRIMARY KEY (Kitchen_ID)
 );
 CREATE TABLE Delivery_Partner (
     Delivery_Partner_ID varchar(255) NOT NULL,
@@ -98,7 +103,7 @@ CREATE TABLE Lunch_Box_Order (
     USER_EMAIL varchar(255) NOT NULL,
 	Payment_ID varchar(255) NOT NULL,
     Delivery_ID varchar(255) NOT NULL,
-    Kitchen_ID numeric NOT NULL,
+    Kitchen_ID varchar(255) NOT NULL,
 	PRIMARY KEY (Kitchen_ID),
     FOREIGN KEY (USER_EMAIL) REFERENCES USERS(USER_EMAIL),
     FOREIGN KEY (Payment_ID) REFERENCES Payment(Payment_ID),
@@ -109,7 +114,7 @@ CREATE TABLE SNACK (
     SNACK_ID varchar(255) NOT NULL,
     SNACK_NAME varchar(255),
     SNACK_PRICE varchar(255),
-    Kitchen_ID numeric Not Null,
+    Kitchen_ID varchar(255) Not Null,
 	Meal_ID numeric Not Null,
     SNACK_LOGO BLOB,
     SNACK_REVIEW_COUNT numeric Not Null,
@@ -124,7 +129,7 @@ CREATE TABLE ORDER_SUMMARY (
     PRODUCT_NAME varchar(255),
     PRODUCT_PRICE varchar(255),
     PRODUCT_LOGO BLOB,
-    Kitchen_ID numeric Not Null,
+    Kitchen_ID varchar(255) Not Null,
     SCHEDULE_TIME varchar(255),
     TOTAL_AMOUNT numeric,
     QUANTITY numeric,
@@ -180,18 +185,18 @@ INSERT INTO Payment VALUES ('PAY4001', 'Debit Card', '450', 'Completed');
 select * from Payment;
 
 
-INSERT INTO Kitchen VALUES (3001, 'Angad Ka Dhaba', '', '8:00', '23:59', 'Andheri Railway station, Mumbai', 0, '2222222222', 'High', 2012, 19.150206863545474, 72.82677495588325, 0, 0);
-INSERT INTO Kitchen VALUES (3002, 'Dabba Garam', '', '9:00', '23:59', 'Chakala Metro, Mumbai', 0, '2822222222', 'Medium', 2010, 19.16145883073272, 72.99882270411405, 0, 0);
-INSERT INTO Kitchen VALUES (3003, 'Hare Rama Hare Krishna', '', '8:00', '23:59', 'Western Express Highway metro, Mumbai', 0, '2822222222', 'Very High', 2012, 19.1613777552713, 72.99081899238811, 0, 0);
-INSERT INTO Kitchen VALUES (3004, 'Senorita FoodHall', '', '10:00', '23:59', 'Khar West, Mumbai', 0, '2822222222', 'Very High', 2010, 19.161641250375165, 72.99167729927562, 0, 0);
-INSERT INTO Kitchen VALUES (3005, 'Louis Burger', '', '11:00', '23:59', 'Andher West, Mumbai', 0, '2822222222', 'Very High', 2010, 19.163080331589306, 72.99189187599751, 0, 0);
-INSERT INTO Kitchen VALUES (3006, 'Bikaner Breakfast House', '', '7:00', '23:59', 'Versova, Mumbai', 0, '2822222288', 'High', 2011, 28.663662204748466, 77.10031119068194, 0, 0);
+INSERT INTO Kitchen VALUES ('akd','akd@gmail.com', 'Angad Ka Dhaba', 'pass@123', '', '8:00', '23:59', 'Andheri Railway station, Mumbai', 'Mumbai', 'Maharashtra', 'India', '400053', 0, '2222222222', 'High', 19.150206863545474, 72.82677495588325, 0, 0, 'abc123456');
+INSERT INTO Kitchen VALUES ('dg', 'dg@gmail.com', 'Dabba Garam', 'pass@123', '', '9:00', '23:59', 'Chakala Metro, Mumbai', 'Mumbai', 'Maharashtra', 'India', '400053', 0, '2822222222', 'Medium', 19.16145883073272, 72.99882270411405, 0, 0, 'abc123456');
+INSERT INTO Kitchen VALUES ('hrhk', 'hrhk@gmail.com', 'Hare Rama Hare Krishna', 'pass@123', '', '8:00', '23:59', 'Western Express Highway metro, Mumbai', 'Mumbai', 'Maharashtra', 'India', '400053', 0, '2822222222', 'Very High', 19.1613777552713, 72.99081899238811, 0, 0, 'abc123456');
+INSERT INTO Kitchen VALUES ('sf', 'sf@gmail.com', 'Senorita FoodHall',  'pass@123', '', '10:00', '23:59', 'Khar West, Mumbai', 'Mumbai', 'Maharashtra', 'India', '400053', 0, '2822222222', 'Very High', 19.161641250375165, 72.99167729927562, 0, 0, 'abc123456');
+INSERT INTO Kitchen VALUES ('lb', 'lb@gmail.com', 'Louis Burger', 'pass@123', '', '11:00', '23:59', 'Andher West, Mumbai', 'Mumbai', 'Maharashtra', 'India', '400053', 0, '2822222222', 'Very High', 19.163080331589306, 72.99189187599751, 0, 0, 'abc123456');
+INSERT INTO Kitchen VALUES ('bbk', 'bbk@gmail.com', 'Bikaner Breakfast House', 'pass@123', '', '7:00', '23:59', 'Rohini, Delhi', 'Delhi', 'Delhi', 'India', '110039', 0, '2822222288', 'High', 28.663662204748466, 77.10031119068194, 0, 0, 'abc123456');
 select * from Kitchen;
 
 
 
-INSERT INTO Lunch_Box_Order VALUES ('LBO2020', '', 'Large', 'Bule', 'xyz@gmail.com', 'PAY4000', 'DLM2010', 3001);
-INSERT INTO Lunch_Box_Order VALUES ('LBO2021', '', 'Large', 'Green', 'abc@gmail.com', 'PAY4001', 'DLM2011', 3002);
+INSERT INTO Lunch_Box_Order VALUES ('LBO2020', '', 'Large', 'Bule', 'xyz@gmail.com', 'PAY4000', 'DLM2010', 'lb');
+INSERT INTO Lunch_Box_Order VALUES ('LBO2021', '', 'Large', 'Green', 'abc@gmail.com', 'PAY4001', 'DLM2011', 'bbk');
 select * from Lunch_Box_Order;
 /*
 INSERT INTO SNACK VALUES ('SNK0001', 'Veg Momos', '45', 3001, 2012, load_file("/mnt/c/Users/angad/OneDrive/Documents/GitHub/HungryHog/static/images/snacks_vegmomo.jpg"));

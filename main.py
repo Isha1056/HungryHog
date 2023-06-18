@@ -664,18 +664,22 @@ def indexPage():
         for i in range(min(5, len(myresult))):
             kitchen = {
                 "Kitchen_ID" : myresult[i][0],
-                "Kitchen_Name" : myresult[i][1],
-                "Kitchen_Type": myresult[i][2],
-                "Kitchen_open_time": myresult[i][3],
-                "Kitchen_Close_time": myresult[i][4],
-                "Kitchen_Address": myresult[i][5],
-                "Kitchen_Ratings" : myresult[i][6],
-                "Kitchen_Number": myresult[i][7],
-                "Popularity": myresult[i][8],
-                "Meal_ID": myresult[i][9],
-                "Kitchen_Latitude": myresult[i][10],
-                "Kitchen_Longitude": myresult[i][11],
-            }
+                "Kitchen_Email" : myresult[i][1],
+                "Kitchen_Name" : myresult[i][2],
+                "Kitchen_Password": myresult[i][3],
+                "Kitchen_Type": myresult[i][4],
+                "Kitchen_open_time": myresult[i][5],
+                "Kitchen_Close_time": myresult[i][6],
+                "Kitchen_Address": myresult[i][7],
+                "Kitchen_City": myresult[i][8],
+                "Kitchen_State": myresult[i][9],
+                "Kitchen_Country": myresult[i][10],
+                "Kitchen_Pincode": myresult[i][11],
+                "Kitchen_Ratings" : myresult[i][12],
+                "Kitchen_Number": myresult[i][13],
+                "Popularity": myresult[i][14],
+                "Kitchen_Latitude": myresult[i][15],
+                "Kitchen_Longitude": myresult[i][16],            }
             if 'USER_LATITUDE' in session and session['USER_LATITUDE'] !=200:
                 if getPointDistance((session['USER_LATITUDE'], session['USER_LONGITUDE']), (kitchen['Kitchen_Latitude'], kitchen['Kitchen_Longitude'])) < proximity_km:
                     l.append(kitchen)
@@ -786,17 +790,22 @@ def snacksPage():
         for i in range(len(myresult)):
             kitchen = {
                 "Kitchen_ID" : myresult[i][0],
-                "Kitchen_Name" : myresult[i][1],
-                "Kitchen_Type": myresult[i][2],
-                "Kitchen_open_time": myresult[i][3],
-                "Kitchen_Close_time": myresult[i][4],
-                "Kitchen_Address": myresult[i][5],
-                "Kitchen_Ratings" : myresult[i][6],
-                "Kitchen_Number": myresult[i][7],
-                "Popularity": myresult[i][8],
-                "Meal_ID": myresult[i][9],
-                "Kitchen_Latitude": myresult[i][10],
-                "Kitchen_Longitude": myresult[i][11],
+                "Kitchen_Email" : myresult[i][1],
+                "Kitchen_Name" : myresult[i][2],
+                "Kitchen_Password": myresult[i][3],
+                "Kitchen_Type": myresult[i][4],
+                "Kitchen_open_time": myresult[i][5],
+                "Kitchen_Close_time": myresult[i][6],
+                "Kitchen_Address": myresult[i][7],
+                "Kitchen_City": myresult[i][8],
+                "Kitchen_State": myresult[i][9],
+                "Kitchen_Country": myresult[i][10],
+                "Kitchen_Pincode": myresult[i][11],
+                "Kitchen_Ratings" : myresult[i][12],
+                "Kitchen_Number": myresult[i][13],
+                "Popularity": myresult[i][14],
+                "Kitchen_Latitude": myresult[i][15],
+                "Kitchen_Longitude": myresult[i][16],
             }
 
             if 'USER_LATITUDE' in session and session['USER_LATITUDE'] !=200:
@@ -813,7 +822,7 @@ def snacksPage():
 @app.route('/snacks/<string:Kitchen_ID>')
 def snacksPageDynamic(Kitchen_ID):
     if conn and "USER_EMAIL" in session:
-        mycursor = conn.cursor()
+        mycursor = conn.cursor(buffered=True)
         mycursor.execute("select SNACK.SNACK_ID, SNACK.SNACK_NAME, SNACK.SNACK_PRICE, SNACK.Kitchen_ID, Kitchen.Kitchen_Name, SNACK.Meal_ID, SNACK.SNACK_LOGO, Meals.Meal_Type, Meals.Meal_Timings, Kitchen.Kitchen_Latitude, Kitchen.Kitchen_Longitude, SNACK.SNACK_RATING FROM SNACK LEFT JOIN Kitchen ON SNACK.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON SNACK.Meal_ID = Meals.Meal_ID WHERE Kitchen.Kitchen_ID=%s", (Kitchen_ID,))
         myresult = mycursor.fetchall()
         mycursor.close()
@@ -893,6 +902,7 @@ def admin_delivery_partnersPage():
 ##############################################################################################################################################################
 # API ROUTES 
 ##############################################################################################################################################################
+
 
 
 @app.route('/CheckServer')
@@ -1104,15 +1114,22 @@ def getKitchens():
                 for i in range(len(myresult)):
                     KitchenRecord = {
                         "Kitchen_ID" : myresult[i][0],
-                        "Kitchen_Name" : myresult[i][1],
-                        "Kitchen_Type" : myresult[i][2],
-                        "Kitchen_open_time" : myresult[i][3],
-                        "Kitchen_Close_time": myresult[i][4],
-                        "Kitchen_Address" : myresult[i][5],
-                        "Kitchen_Ratings" : myresult[i][6],
-                        "Kitchen_Number" : myresult[i][7],
-                        "Popularity" : myresult[i][8],
-                        "Meal_ID" : myresult[i][9],
+                        "Kitchen_Email" : myresult[i][1],
+                        "Kitchen_Name" : myresult[i][2],
+                        "Kitchen_Password": myresult[i][3],
+                        "Kitchen_Type": myresult[i][4],
+                        "Kitchen_open_time": myresult[i][5],
+                        "Kitchen_Close_time": myresult[i][6],
+                        "Kitchen_Address": myresult[i][7],
+                        "Kitchen_City": myresult[i][8],
+                        "Kitchen_State": myresult[i][9],
+                        "Kitchen_Country": myresult[i][10],
+                        "Kitchen_Pincode": myresult[i][11],
+                        "Kitchen_Ratings" : myresult[i][12],
+                        "Kitchen_Number": myresult[i][13],
+                        "Popularity": myresult[i][14],
+                        "Kitchen_Latitude": myresult[i][15],
+                        "Kitchen_Longitude": myresult[i][16],
                     }
                     KitchensList.append(KitchenRecord)
                 
@@ -1340,8 +1357,8 @@ def updateProfile():
                     session['USER_LONGITUDE'] = longitude
                 else:
                     val = (session['USER_LATITUDE'], session['USER_LONGITUDE'], request_json['USER_STREET'], request_json['USER_CITY'], request_json['USER_STATE'], request_json['USER_COUNTRY'], request_json['USER_PINCODE'], request_json['USER_MOBILE'], session['USER_EMAIL'])
-                session['USER_LATITUDE'] = session['USER_LATITUDE']
-                session['USER_LONGITUDE'] = session['USER_LONGITUDE']
+                    session['USER_LATITUDE'] = session['USER_LATITUDE']
+                    session['USER_LONGITUDE'] = session['USER_LONGITUDE']
                 session['USER_STREET'] = request_json['USER_STREET']
                 session['USER_CITY'] = request_json['USER_CITY']
                 session['USER_STATE'] = request_json['USER_STATE']
