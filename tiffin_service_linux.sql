@@ -72,11 +72,13 @@ CREATE TABLE Kitchen (
 CREATE TABLE Delivery_Partner (
     Delivery_Partner_ID varchar(255) NOT NULL,
     Delivery_Partner_Name varchar(255),
-    Delivery_Partner_Type varchar(255),
-    Delivery_Partner_Vehical varchar(255),
+    Delivery_Partner_Email varchar(255) NOT NULL,
+    Delivery_Partner_Password varchar(255),
     Delivery_Partner_Number varchar(255),
-	Delivery_Partner_Ratings varchar(255),
-    Vaccination_Status varchar(255),
+    Delivery_Partner_Latitude FLOAT,
+    Delivery_Partner_Longitude FLOAT,
+    Delivery_Partner_Ratings varchar(255),
+    Delivery_Partner_Private_Key varchar(255),
 	PRIMARY KEY (Delivery_Partner_ID)
 );
 CREATE TABLE Delivery_Management (
@@ -172,8 +174,8 @@ UPDATE Meals SET Meal_Timings = '11:00-16:00' where Meal_ID='2010';
 UPDATE Meals SET Meal_Timings = '08:00-11:00' where Meal_ID='2011';
 select * from Meals;
 
-INSERT INTO Delivery_Partner VALUES ('DLP1010', 'Ram Kumar', '', 'KTM Bike', '33333333333', '4', '1');
-INSERT INTO Delivery_Partner VALUES ('DLP1011', 'Kapil Shrama', '', 'Jupiter Scooter', '33333333338', '3.5', '2');
+INSERT INTO Delivery_Partner VALUES ('DLP1010', 'Ram Kumar', 'rk@gmail.com', 'pass@123', '', 200, 200, 0, '');
+INSERT INTO Delivery_Partner VALUES ('DLP1011', 'Kapil Sharma', 'ks@gmail.com', 'pass@123', '', 200, 200, 0, '');
 select * from Delivery_Partner;
 
 INSERT INTO Delivery_Management VALUES('DLM2010', 'DLP1010','1:00', '', 'Yes');

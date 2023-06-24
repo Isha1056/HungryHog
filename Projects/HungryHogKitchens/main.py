@@ -225,7 +225,7 @@ def google_auth():
 
     mycursor = conn.cursor()
     sql = "INSERT IGNORE INTO Kitchen VALUES (%s, %s, %s, %s, '', '', '', '', '', '', '', '', 0, '' 0, 200, 200, 0, 0, %s);"
-    val = (session['Kitchen_Name'], session['Kitchen_Email'], session['Kitchen_ID'], session['Kitchen_Password'], w3.eth.accounts[random.randint(0,9)])
+    val = (session['Kitchen_ID'], session['Kitchen_Email'], session['Kitchen_Name'], session['Kitchen_Password'], w3.eth.accounts[random.randint(0,9)])
     mycursor.execute(sql, val)
     conn.commit()
     mycursor.close()
@@ -676,7 +676,7 @@ def updateKitchenCoordinates():
                 street,city,state,country,zipcode=getLocationDetails(request_json['Kitchen_Latitude'], request_json['Kitchen_Longitude'])
                 #print(request_json,street,city,state,country,zipcode)
                 if request_json['Kitchen_Request'] == 1:
-                    sql = "UPDATE USERS SET Kitchen_Latitude=%s, Kitchen_Longitude=%s, Kitchen_Address=%s, Kitchen_City=%s, Kitchen_State=%s, Kitchen_Country=%s, Kitchen_Pincode=%s WHERE Kitchen_ID=%s AND Kitchen_Latitude=200"
+                    sql = "UPDATE Kitchen SET Kitchen_Latitude=%s, Kitchen_Longitude=%s, Kitchen_Address=%s, Kitchen_City=%s, Kitchen_State=%s, Kitchen_Country=%s, Kitchen_Pincode=%s WHERE Kitchen_ID=%s AND Kitchen_Latitude=200"
                     if session['Kitchen_Latitude'] == 200:
                         session['Kitchen_Latitude'] = request_json['Kitchen_Latitude']
                         session['Kitchen_Longitude'] = request_json['Kitchen_Longitude']
@@ -686,7 +686,7 @@ def updateKitchenCoordinates():
                         session['Kitchen_Country'] = country
                         session['Kitchen_Pincode'] = zipcode
                 else:
-                    sql = "UPDATE USERS SET Kitchen_Latitude=%s, Kitchen_Longitude=%s, Kitchen_Address=%s, Kitchen_City=%s, Kitchen_State=%s, Kitchen_Country=%s, Kitchen_Pincode=%s WHERE Kitchen_ID=%s"
+                    sql = "UPDATE Kitchen SET Kitchen_Latitude=%s, Kitchen_Longitude=%s, Kitchen_Address=%s, Kitchen_City=%s, Kitchen_State=%s, Kitchen_Country=%s, Kitchen_Pincode=%s WHERE Kitchen_ID=%s"
                     session['Kitchen_Latitude'] = request_json['Kitchen_Latitude']
                     session['Kitchen_Longitude'] = request_json['Kitchen_Longitude']
                     session['Kitchen_Address'] = street
@@ -712,15 +712,16 @@ def updateProfile():
                 request_json = request.get_json()
                 latitude, longitude = getCoordinates(request_json['Kitchen_Address']+", "+request_json['Kitchen_City']+", "+request_json['Kitchen_State']+", "+request_json['Kitchen_Country']+", "+request_json['Kitchen_Pincode'])
                 mycursor = conn.cursor()
-                sql = "UPDATE Kitchen SET Kitchen_Latitude=%s, Kitchen_Longitude=%s, Kitchen_Address=%s, Kitchen_City=%s, Kitchen_State=%s, Kitchen_Country=%s, Kitchen_Pincode=%s, Kitchen_Number=%s, Kitchen_Type=%s, Kitchen_Open_Time=%s, Kitchen_Close_Time=%s WHERE Kitchen_ID=%s"
+                sql = "UPDATE Kitchen SET Kitchen_Latitude=%s, Kitchen_Longitude=%s, Kitchen_Address=%s, Kitchen_City=%s, Kitchen_State=%s, Kitchen_Country=%s, Kitchen_Pincode=%s, Kitchen_Number=%s, Kitchen_Type=%s, Kitchen_Open_Time=%s, Kitchen_Close_Time=%s, Kitchen_Name=%s, WHERE Kitchen_ID=%s"
                 if latitude != 200:
-                    val = (latitude, longitude, request_json['Kitchen_Address'], request_json['Kitchen_City'], request_json['Kitchen_State'], request_json['Kitchen_Country'], request_json['Kitchen_Pincode'], request_json['Kitchen_Number'], request_json['Kitchen_Type'], request_json['Kitchen_Open_Time'], request_json['Kitchen_Close_Time'], session['Kitchen_ID'])
+                    val = (latitude, longitude, request_json['Kitchen_Address'], request_json['Kitchen_City'], request_json['Kitchen_State'], request_json['Kitchen_Country'], request_json['Kitchen_Pincode'], request_json['Kitchen_Number'], request_json['Kitchen_Type'], request_json['Kitchen_Open_Time'], request_json['Kitchen_Close_Time'], request_json['Kitchen_Name'], session['Kitchen_ID'])
                     session['Kitchen_Latitude'] = latitude
                     session['Kitchen_Longitude'] = longitude
                 else:
-                    val = (session['Kitchen_Latitude'], session['Kitchen_Longitude'], request_json['Kitchen_Address'], request_json['Kitchen_City'], request_json['Kitchen_State'], request_json['Kitchen_Country'], request_json['Kitchen_Pincode'], request_json['Kitchen_Number'], request_json['Kitchen_Type'], request_json['Kitchen_Open_Time'], request_json['Kitchen_Close_Time'], session['Kitchen_ID'])
+                    val = (session['Kitchen_Latitude'], session['Kitchen_Longitude'], request_json['Kitchen_Address'], request_json['Kitchen_City'], request_json['Kitchen_State'], request_json['Kitchen_Country'], request_json['Kitchen_Pincode'], request_json['Kitchen_Number'], request_json['Kitchen_Type'], request_json['Kitchen_Open_Time'], request_json['Kitchen_Close_Time'], request_json['Kitchen_Name'], session['Kitchen_ID'])
                     session['Kitchen_Latitude'] = session['Kitchen_Latitude']
                     session['Kitchen_Longitude'] = session['Kitchen_Longitude']
+                session['Kitchen_Name'] = request_json['Kitchen_Name']
                 session['Kitchen_Address'] = request_json['Kitchen_Address']
                 session['Kitchen_City'] = request_json['Kitchen_City']
                 session['Kitchen_State'] = request_json['Kitchen_State']
