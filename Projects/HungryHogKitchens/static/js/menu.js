@@ -1,48 +1,88 @@
-$(document).ready(function() {
-    $("body").on("click", ".Add", function () {
-        $('.table_body').append(
-            `
-            <tr class="{{i.SNACK_ID}}">
-                <td class="productID" style="display:none;"></td>
-                <td colspan="2" class="name">
-                    <div class="column-box">
-                        <figure class="prod-thumb"><a href="#"><img
-                                    src="{{ url_for('static', filename='/images/AddImage.svg') }}"
-                                    width="150" height="150" alt="">
-                                <h4 class="prod-title">
-                                    <input type="text" class="input-name"
-                                        value=""></input>
-                                </h4>
-                    </div>
-                </td>
-                <td class="price"><input type="text" class="input-price"
-                        value=""></input></td>
+File.prototype.convertToBase64 = function (callback) {
+    var reader = new FileReader();
+    reader.onloadend = function (e) {
+        console.log(e.target.result)
+        callback(e.target.result, e.target.error);
+    };
+    reader.readAsDataURL(this);
+};
 
-                <td class="mealtype">
-                    <select class="input-mealtype">
-                        <option value="">Select Meal Type...</option>
-                        {% for j in meals %}
-                        <option value="{{j.Meal_ID}}">{{j.Meal_Type}} {{j.Meal_Timings}}</option>>
-                        {% endfor %}
-                    </select>
-                </td>
-                <td class="rating">0.0</td>
-                <td class="save">
-                    <div class="action_container">
-                        <button class="success saveSnack">
-                            <i class="fa fa-pencil-square-o"></i>
-                        </button>
-                    </div>
-                </td>
-                <td class="delete">
-                    <div class="action_container">
-                        <button class="danger removeSnack">
-                            <i class="fa fa-close"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            `
-        );
+$(document).ready(function () {
+
+    $("body").on("click", ".saveSnack", function () {
+
+        var form_data = new FormData();
+        form_data.append('SNACK_LOGO', $(this).closest('tr').find('.input-image').get(0).files[0]);
+        form_data.append('SNACK_NAME', $(this).closest('tr').find('.input-name').val());
+        form_data.append('SNACK_PRICE', $(this).closest('tr').find('.input-price').val());
+        form_data.append('Meal_ID', $(this).closest('tr').find('.input-mealtype').val());
+        x = $(this);
+        $.ajax({
+            type: 'POST',
+            url: 'http://127.0.0.1:5001/SaveSnack',
+            data: form_data,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (data) {
+                console.log("Snack saved!");
+                x.closest('tr').attr('class', data["SNACK_ID"]);
+            },
+        });
     });
+
+
+    $("body").on("click", ".updateSnack", function () {
+        var form_data = new FormData();
+        form_data.append('SNACK_ID', $(this).closest('tr').attr('class'));
+        form_data.append('SNACK_LOGO', $(this).closest('tr').find('.input-image').get(0).files[0]);
+        form_data.append('SNACK_NAME', $(this).closest('tr').find('.input-name').val());
+        form_data.append('SNACK_PRICE', $(this).closest('tr').find('.input-price').val());
+        form_data.append('Meal_ID', $(this).closest('tr').find('.input-mealtype').val());
+        x = $(this);
+        $.ajax({
+            type: 'POST',
+            url: 'http://127.0.0.1:5001/UpdateSnack',
+            data: form_data,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (data) {
+                console.log("Snack saved!");
+                x.closest('tr').attr('class', data["SNACK_ID"]);
+            },
+        });
+    });
+
+
+    $("body").on('change', ".input-image", function () {
+        var image_object_url = URL.createObjectURL($(this).get(0).files[0]);
+        $(this).closest('tr').find('.snack-image').attr('src', image_object_url).show();
+    });
+
+
+    $("body").on("click", ".removeSnack", function () {
+        var SNACK_ID = $(this).closest('tr').attr('class');
+        if (typeof SNACK_ID !== "undefined") {
+
+            var postData = {
+                "SNACK_ID": SNACK_ID
+            }
+            x = $(this)
+            $.ajax({
+                type: 'post',
+                url: 'http://127.0.0.1:5001/RemoveSnack',
+                data: JSON.stringify(postData),
+                contentType: "application/json; charset=utf-8",
+                traditional: true,
+                success: function (data) {
+                    x.closest('tr').remove();
+                }
+            });
+        }
+        else {
+            $(this).closest('tr').remove();
+        }
+    });
+
 });

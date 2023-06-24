@@ -173,43 +173,45 @@
                         </tr>
                     </thead>
 
-                    <tbody id="table_body">
+                    <tbody id="table_body" class="menu-body">
                         {% for i in data %}
                         <tr class="{{i.SNACK_ID}}">
-                            <td class="{{i.SNACK_ID}}-productID" style="display:none;">{{i.SNACK_ID}}</td>
                             <td colspan="2" class="name">
                                 <div class="column-box">
-                                    <figure class="prod-thumb"><a href="#"><img
-                                                src="{{ url_for('static', filename='/images/'+i.SNACK_LOGO) }}"
-                                                width="150" height="150" alt="{{i.PRODUCT_LOGO}}">
-                                            <h4 class="prod-title">
-                                                <input type="text" class="{{i.SNACK_ID}}-input-name"
-                                                    value="{{i.SNACK_NAME}}"></input>
-                                            </h4>
+                                    <figure class="prod-thumb">
+                                        <input type="file" class="input-image" accept="image/*">
+                                        <img class="snack-image" src="{{ url_for('static', filename='/images/'+i.SNACK_LOGO) }}" width="150"
+                                            height="150" alt="{{i.PRODUCT_LOGO}}">
+                                        </input>
+                                    </figure>
+                                    <h4 class="prod-title">
+                                        <input type="text" class="input-name"
+                                            value="{{i.SNACK_NAME}}"></input>
+                                    </h4>
                                 </div>
                             </td>
-                            <td class="price"><input type="text" class="{{i.SNACK_ID}}-input-price"
+                            <td class="price"><input type="text" class="input-price"
                                     value="{{i.SNACK_PRICE}}"></input></td>
 
                             <td class="mealtype">
-                                <select class="{{i.SNACK_ID}}-input-mealtype">
+                                <select class="input-mealtype">
                                     {% for j in meals %}
-                                    <option value="{{j.Meal_ID}}" {% if j.Meal_ID==i.Meal_ID %}
-                                        selected {% endif %}>{{j.Meal_Type}} {{j.Meal_Timings}}</option>>
+                                    <option value="{{j.Meal_ID}}" {% if j.Meal_ID==i.Meal_ID %} selected {% endif %}>
+                                        {{j.Meal_Type}} {{j.Meal_Timings}}</option>>
                                     {% endfor %}
                                 </select>
                             </td>
                             <td class="rating">{{i.SNACK_RATING}}</td>
                             <td class="save">
                                 <div class="action_container">
-                                    <button class="success {{i.SNACK_ID}} saveSnack">
+                                    <button class="success updateSnack">
                                         <i class="fa fa-pencil-square-o"></i>
                                     </button>
                                 </div>
                             </td>
                             <td class="delete">
                                 <div class="action_container">
-                                    <button class="danger {{i.SNACK_ID}} removeSnack">
+                                    <button class="danger removeSnack">
                                         <i class="fa fa-close"></i>
                                     </button>
                                 </div>
@@ -234,4 +236,54 @@
 
 {% block scripts %}
 <script src="../static/js/menu.js"></script>
+<script>
+    $(document).ready(function () {
+        $("body").on("click", "#Add", function () {
+            console.log("add")
+            $('.menu-body tr:last').after(`<tr>
+                <td colspan="2" class="name">
+                    <div class="column-box">
+                        <figure class="prod-thumb">
+                            <input type="file" class="input-image" accept="image/*">
+                            <img class="snack-image"
+                                    src="{{ url_for('static', filename='/images/AddImage.svg') }}"
+                                    width="150" height="150" alt="">
+                            </input>
+                            </figure>
+                                <h4 class="prod-title">
+                                    <input type="text" class="input-name"
+                                        value=""></input>
+                                </h4>
+                    </div>
+                </td>
+                <td class="price"><input type="text" class="input-price"
+                        value=""></input></td>
+
+                <td class="mealtype">
+                    <select class="input-mealtype">
+                        <option value="">Select Meal Type...</option>
+                        {% for j in meals %}
+                        <option value="{{j.Meal_ID}}">{{j.Meal_Type}} {{j.Meal_Timings}}</option>>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td class="rating">0.0</td>
+                <td class="save">
+                    <div class="action_container">
+                        <button class="success saveSnack">
+                            <i class="fa fa-pencil-square-o"></i>
+                        </button>
+                    </div>
+                </td>
+                <td class="delete">
+                    <div class="action_container">
+                        <button class="danger removeSnack">
+                            <i class="fa fa-close"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>`);
+        });
+    });
+</script>
 {% endblock %}

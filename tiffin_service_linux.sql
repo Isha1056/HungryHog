@@ -116,7 +116,7 @@ CREATE TABLE SNACK (
     SNACK_PRICE varchar(255),
     Kitchen_ID varchar(255) Not Null,
 	Meal_ID numeric Not Null,
-    SNACK_LOGO BLOB,
+    SNACK_LOGO LONGBLOB,
     SNACK_REVIEW_COUNT numeric Not Null,
     SNACK_REVIEW_TOTAL numeric Not Null,
     SNACK_RATING FLOAT Not Null,

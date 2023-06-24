@@ -6,7 +6,7 @@ function showPosition(position) {
     var data = {
         "Kitchen_Latitude": position.coords.latitude,
         "Kitchen_Longitude": position.coords.longitude,
-        "Kitchen_Request": USER_REQUEST
+        "Kitchen_Request": Kitchen_Request
     };
     //console.log(data);
     $.ajax({

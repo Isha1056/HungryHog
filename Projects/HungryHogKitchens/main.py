@@ -47,6 +47,7 @@ from geopy.geocoders import Nominatim
 from geopy.distance import great_circle
  
 import hashlib
+import base64
 
 
 
@@ -662,8 +663,8 @@ def UsersAuthentication():
         return jsonify(StatusCode = '0', Message="Error")
 
 
-@app.route('/updateUserCoordinates',methods = ['POST'])
-def updateUserCoordinates():
+@app.route('/updateKitchenCoordinates',methods = ['POST'])
+def updateKitchenCoordinates():
     if request.method == "POST":
         try:
             if conn and "Kitchen_ID" in session:
@@ -710,8 +711,6 @@ def updateProfile():
             if conn and "Kitchen_ID" in session:
                 request_json = request.get_json()
                 latitude, longitude = getCoordinates(request_json['Kitchen_Address']+", "+request_json['Kitchen_City']+", "+request_json['Kitchen_State']+", "+request_json['Kitchen_Country']+", "+request_json['Kitchen_Pincode'])
-                #print(latitude, longitude, request_json)
-
                 mycursor = conn.cursor()
                 sql = "UPDATE Kitchen SET Kitchen_Latitude=%s, Kitchen_Longitude=%s, Kitchen_Address=%s, Kitchen_City=%s, Kitchen_State=%s, Kitchen_Country=%s, Kitchen_Pincode=%s, Kitchen_Number=%s, Kitchen_Type=%s, Kitchen_Open_Time=%s, Kitchen_Close_Time=%s WHERE Kitchen_ID=%s"
                 if latitude != 200:
@@ -738,6 +737,60 @@ def updateProfile():
         except Exception as e:
             print(str(e))
             return jsonify(StatusCode = '0', Message="Error")
+
+@app.route('/RemoveSnack',methods = ['POST'])
+def RemoveSnack():
+    if request.method == "POST":
+        try:
+            if conn and "Kitchen_ID" in session:
+                request_json = request.get_json()
+                mycursor = conn.cursor()
+                sql = "DELETE FROM SNACK WHERE SNACK_ID=%s"
+                val = (request_json["SNACK_ID"],)
+                mycursor.execute(sql, val)
+                conn.commit()
+                mycursor.close()
+                return jsonify(StatusCode = '1', Message="Success")
+        except Exception as e:
+            print(str(e))
+            return jsonify(StatusCode = '0', Message="Error")
+
+@app.route('/SaveSnack',methods = ['POST'])
+def SaveSnack():
+    if request.method == "POST":
+        try:
+            if conn and "Kitchen_ID" in session:
+                snack_id = hashlib.sha512((request.form.get("SNACK_NAME")+session["Kitchen_ID"]).encode()).hexdigest()
+                request.files.get("SNACK_LOGO").save('./static/images/'+snack_id+'.jpg')
+                mycursor = conn.cursor()
+                sql = "INSERT INTO SNACK VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                val = (snack_id, request.form.get("SNACK_NAME"), request.form.get("SNACK_PRICE"), session["Kitchen_ID"], request.form.get("Meal_ID"), convertToBinaryData("./static/images/"+snack_id+".jpg"), 0, 0, 0)
+                mycursor.execute(sql, val)
+                conn.commit()
+                mycursor.close()
+                return jsonify(StatusCode = '1', Message="Success", SNACK_ID=snack_id)
+        except Exception as e:
+            print(str(e))
+            return jsonify(StatusCode = '0', Message="Error", SNACK_ID="")
+
+
+@app.route('/UpdateSnack',methods = ['POST'])
+def UpdateSnack():
+    if request.method == "POST":
+        try:
+            if conn and "Kitchen_ID" in session:
+                snack_id = hashlib.sha512((request.form.get("SNACK_NAME")+session["Kitchen_ID"]).encode()).hexdigest()
+                request.files.get("SNACK_LOGO").save('./static/images/'+snack_id+'.jpg')
+                mycursor = conn.cursor()
+                sql = "UPDATE SNACK SET SNACK_ID=%s, SNACK_NAME=%s, SNACK_PRICE=%s, Meal_ID=%s, SNACK_LOGO=%s WHERE SNACK_ID=%s"
+                val = (snack_id, request.form.get("SNACK_NAME"), request.form.get("SNACK_PRICE"), request.form.get("Meal_ID"), convertToBinaryData("./static/images/"+snack_id+".jpg"), request.form.get("SNACK_ID"))
+                mycursor.execute(sql, val)
+                conn.commit()
+                mycursor.close()
+                return jsonify(StatusCode = '1', Message="Success", SNACK_ID=snack_id)
+        except Exception as e:
+            print(str(e))
+            return jsonify(StatusCode = '0', Message="Error", SNACK_ID=request.form.get("SNACK_ID"))
 
 
 @app.route('/logout',methods = ['GET']) 
