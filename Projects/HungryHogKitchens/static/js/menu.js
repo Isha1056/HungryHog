@@ -10,48 +10,72 @@ File.prototype.convertToBase64 = function (callback) {
 $(document).ready(function () {
 
     $("body").on("click", ".saveSnack", function () {
-
-        var form_data = new FormData();
-        form_data.append('SNACK_LOGO', $(this).closest('tr').find('.input-image').get(0).files[0]);
-        form_data.append('SNACK_NAME', $(this).closest('tr').find('.input-name').val());
-        form_data.append('SNACK_PRICE', $(this).closest('tr').find('.input-price').val());
-        form_data.append('Meal_ID', $(this).closest('tr').find('.input-mealtype').val());
-        x = $(this);
-        $.ajax({
-            type: 'POST',
-            url: 'http://127.0.0.1:5001/SaveSnack',
-            data: form_data,
-            contentType: false,
-            cache: false,
-            processData: false,
-            success: function (data) {
-                console.log("Snack saved!");
-                x.closest('tr').attr('class', data["SNACK_ID"]);
-            },
-        });
+        if ($(this).closest('tr').find('.input-image').get(0).files.length == 0) {
+            $(this).closest('tr').find('.input-image').css('border', '3px solid red');
+        } else if ($(this).closest('tr').find('.input-name').val() == "") {
+            $(this).closest('tr').find('.input-name').css('border', '3px solid red');
+        } else if ($(this).closest('tr').find('.input-price').val() == "") {
+            $(this).closest('tr').find('.input-price').css('border', '3px solid red');
+        } else if ($(this).closest('tr').find('.input-mealtype').val() == "") {
+            $(this).closest('tr').find('.input-mealtype').css('border', '3px solid red');
+        } else {
+            var form_data = new FormData();
+            form_data.append('SNACK_LOGO', $(this).closest('tr').find('.input-image').get(0).files[0]);
+            form_data.append('SNACK_NAME', $(this).closest('tr').find('.input-name').val());
+            form_data.append('SNACK_PRICE', $(this).closest('tr').find('.input-price').val());
+            form_data.append('Meal_ID', $(this).closest('tr').find('.input-mealtype').val());
+            x = $(this);
+            x.attr('disabled', true);
+            $.ajax({
+                type: 'POST',
+                url: 'http://127.0.0.1:5001/SaveSnack',
+                data: form_data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (data) {
+                    console.log("Snack saved!");
+                    x.closest('tr').attr('class', data["SNACK_ID"]);
+                    x.removeAttr("disabled");
+                },
+            });
+        }
     });
 
 
     $("body").on("click", ".updateSnack", function () {
-        var form_data = new FormData();
-        form_data.append('SNACK_ID', $(this).closest('tr').attr('class'));
-        form_data.append('SNACK_LOGO', $(this).closest('tr').find('.input-image').get(0).files[0]);
-        form_data.append('SNACK_NAME', $(this).closest('tr').find('.input-name').val());
-        form_data.append('SNACK_PRICE', $(this).closest('tr').find('.input-price').val());
-        form_data.append('Meal_ID', $(this).closest('tr').find('.input-mealtype').val());
-        x = $(this);
-        $.ajax({
-            type: 'POST',
-            url: 'http://127.0.0.1:5001/UpdateSnack',
-            data: form_data,
-            contentType: false,
-            cache: false,
-            processData: false,
-            success: function (data) {
-                console.log("Snack saved!");
-                x.closest('tr').attr('class', data["SNACK_ID"]);
-            },
-        });
+        if ($(this).closest('tr').find('.input-image').get(0).files.length == 0) {
+            $(this).closest('tr').find('.input-image').css('border', '3px solid red');
+        } else if ($(this).closest('tr').find('.input-name').val() == "") {
+            $(this).closest('tr').find('.input-name').css('border', '3px solid red');
+        } else if ($(this).closest('tr').find('.input-price').val() == "") {
+            $(this).closest('tr').find('.input-price').css('border', '3px solid red');
+        } else if ($(this).closest('tr').find('.input-mealtype').val() == "") {
+            $(this).closest('tr').find('.input-mealtype').css('border', '3px solid red');
+        } else {
+
+            var form_data = new FormData();
+            form_data.append('SNACK_ID', $(this).closest('tr').attr('class'));
+            form_data.append('SNACK_LOGO', $(this).closest('tr').find('.input-image').get(0).files[0]);
+            form_data.append('SNACK_NAME', $(this).closest('tr').find('.input-name').val());
+            form_data.append('SNACK_PRICE', $(this).closest('tr').find('.input-price').val());
+            form_data.append('Meal_ID', $(this).closest('tr').find('.input-mealtype').val());
+            x = $(this);
+            x.attr('disabled', true);
+            $.ajax({
+                type: 'POST',
+                url: 'http://127.0.0.1:5001/UpdateSnack',
+                data: form_data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (data) {
+                    console.log("Snack saved!");
+                    x.closest('tr').attr('class', data["SNACK_ID"]);
+                    x.removeAttr("disabled");
+                },
+            });
+        }
     });
 
 
