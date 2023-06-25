@@ -27,7 +27,7 @@ $(document).ready(function () {
       "USER_EMAIL": email,
       "USER_PASSWORD": password,
       "USER_LATITUDE": latitude,
-      "USER_LONGITUTDE": longitude
+      "USER_LONGITUDE": longitude
     };
 
     $.ajax({
