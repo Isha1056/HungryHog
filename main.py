@@ -1051,7 +1051,7 @@ def UsersAuthentication():
             mycursor.close()
             session['CART_COUNT'] = myresult[0][0]
 
-            return redirect('/')
+            return jsonify(StatusCode = '1', UserRecord=user_record)
     except Exception as e:
         print(str(e))
         return jsonify(StatusCode = '0', Message="Error")
