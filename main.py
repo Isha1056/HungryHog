@@ -122,8 +122,8 @@ def getSnacks(image_name, image_data):
 
 def GetCart():
     if conn:
-        mycursor = conn.cursor()
-        mycursor.execute("Select ORDER_SUMMARY.PRODUCT_ID, ORDER_SUMMARY.PRODUCT_NAME, ORDER_SUMMARY.QUANTITY, ORDER_SUMMARY.PRODUCT_PRICE, ORDER_SUMMARY.PRODUCT_LOGO, ORDER_SUMMARY.Kitchen_ID, ORDER_SUMMARY.SCHEDULE_TIME, ORDER_SUMMARY.TOTAL_AMOUNT, ORDER_SUMMARY.Meal_ID, ORDER_SUMMARY.USER_EMAIL, ORDER_SUMMARY.IS_COMPLETE, Meals.Meal_Timings, Meals.Meal_Type, Kitchen.Kitchen_Name FROM ORDER_SUMMARY LEFT JOIN Kitchen ON ORDER_SUMMARY.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON ORDER_SUMMARY.Meal_ID = Meals.Meal_ID WHERE ORDER_SUMMARY.USER_EMAIL=%s AND ORDER_SUMMARY.IS_COMPLETE=0;", (session['USER_EMAIL'], ))
+        mycursor = conn.cursor(buffered=True)
+        mycursor.execute("Select ORDER_SUMMARY.PRODUCT_ID, ORDER_SUMMARY.PRODUCT_NAME, ORDER_SUMMARY.QUANTITY, ORDER_SUMMARY.PRODUCT_PRICE, ORDER_SUMMARY.PRODUCT_LOGO, ORDER_SUMMARY.Kitchen_ID, ORDER_SUMMARY.SCHEDULE_TIME, ORDER_SUMMARY.TOTAL_AMOUNT, ORDER_SUMMARY.Meal_ID, ORDER_SUMMARY.USER_EMAIL, ORDER_SUMMARY.IS_COMPLETE, Meals.Meal_Timings, Meals.Meal_Type, Kitchen.Kitchen_Name, ORDER_SUMMARY.PRODUCT_ADDRESS, ORDER_SUMMARY.PRODUCT_CITY, ORDER_SUMMARY.PRODUCT_STATE, ORDER_SUMMARY.PRODUCT_COUNTRY, ORDER_SUMMARY.PRODUCT_PINCODE, ORDER_SUMMARY.PRODUCT_LATITUDE, ORDER_SUMMARY.PRODUCT_LONGITUDE FROM ORDER_SUMMARY LEFT JOIN Kitchen ON ORDER_SUMMARY.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON ORDER_SUMMARY.Meal_ID = Meals.Meal_ID WHERE ORDER_SUMMARY.USER_EMAIL=%s AND ORDER_SUMMARY.IS_COMPLETE=0;", (session['USER_EMAIL'], ))
         myresult = mycursor.fetchall()
         #print(myresult)
         mycursor.close()
@@ -144,7 +144,14 @@ def GetCart():
                     "IS_COMPLETE": myresult[i][10],
                     "Meal_Timings": myresult[i][11],
                     "Meal_Type": myresult[i][12],
-                    "Kitchen_Name" : myresult[i][13]
+                    "Kitchen_Name" : myresult[i][13],
+                    "PRODUCT_ADDRESS": myresult[i][14],
+                    "PRODUCT_CITY": myresult[i][15],
+                    "PRODUCT_STATE": myresult[i][16],
+                    "PRODUCT_COUNTRY": myresult[i][17],
+                    "PRODUCT_PINCODE": myresult[i][18],
+                    "PRODUCT_LATITUDE": myresult[i][19],
+                    "PRODUCT_LONGITUDE": myresult[i][20],
                 }
             getSnacks(ShoppingCartRecord["PRODUCT_ID"], ShoppingCartRecord["PRODUCT_LOGO"])
             ShoppingCartRecord["PRODUCT_LOGO"] = ShoppingCartRecord["PRODUCT_ID"]+".jpg"
@@ -154,8 +161,8 @@ def GetCart():
 
 def GetOrderNowData():
     if conn:
-        mycursor = conn.cursor()
-        mycursor.execute("Select ORDER_SUMMARY.PRODUCT_ID, ORDER_SUMMARY.PRODUCT_NAME, ORDER_SUMMARY.QUANTITY, ORDER_SUMMARY.PRODUCT_PRICE, ORDER_SUMMARY.PRODUCT_LOGO, ORDER_SUMMARY.Kitchen_ID, ORDER_SUMMARY.SCHEDULE_TIME, ORDER_SUMMARY.TOTAL_AMOUNT, ORDER_SUMMARY.Meal_ID, ORDER_SUMMARY.USER_EMAIL, ORDER_SUMMARY.IS_COMPLETE, Meals.Meal_Timings, Meals.Meal_Type, Kitchen.Kitchen_Name FROM ORDER_SUMMARY LEFT JOIN Kitchen ON ORDER_SUMMARY.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON ORDER_SUMMARY.Meal_ID = Meals.Meal_ID WHERE ORDER_SUMMARY.USER_EMAIL='"+session['USER_EMAIL']+"' AND ORDER_SUMMARY.IS_COMPLETE=1;")
+        mycursor = conn.cursor(buffered=True)
+        mycursor.execute("Select ORDER_SUMMARY.PRODUCT_ID, ORDER_SUMMARY.PRODUCT_NAME, ORDER_SUMMARY.QUANTITY, ORDER_SUMMARY.PRODUCT_PRICE, ORDER_SUMMARY.PRODUCT_LOGO, ORDER_SUMMARY.Kitchen_ID, ORDER_SUMMARY.SCHEDULE_TIME, ORDER_SUMMARY.TOTAL_AMOUNT, ORDER_SUMMARY.Meal_ID, ORDER_SUMMARY.USER_EMAIL, ORDER_SUMMARY.IS_COMPLETE, Meals.Meal_Timings, Meals.Meal_Type, Kitchen.Kitchen_Name, ORDER_SUMMARY.PRODUCT_ADDRESS, ORDER_SUMMARY.PRODUCT_CITY, ORDER_SUMMARY.PRODUCT_STATE, ORDER_SUMMARY.PRODUCT_COUNTRY, ORDER_SUMMARY.PRODUCT_PINCODE, ORDER_SUMMARY.PRODUCT_LATITUDE, ORDER_SUMMARY.PRODUCT_LONGITUDE FROM ORDER_SUMMARY LEFT JOIN Kitchen ON ORDER_SUMMARY.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON ORDER_SUMMARY.Meal_ID = Meals.Meal_ID WHERE ORDER_SUMMARY.USER_EMAIL='"+session['USER_EMAIL']+"' AND ORDER_SUMMARY.IS_COMPLETE=1;")
         myresult = mycursor.fetchall()
         mycursor.close()
         #print(myresult)
@@ -179,7 +186,14 @@ def GetOrderNowData():
                     "IS_COMPLETE": myresult[i][10],
                     "Meal_Timings": myresult[i][11],
                     "Meal_Type": myresult[i][12],
-                    "Kitchen_Name" : myresult[i][13]
+                    "Kitchen_Name" : myresult[i][13],
+                    "PRODUCT_ADDRESS": myresult[i][14],
+                    "PRODUCT_CITY": myresult[i][15],
+                    "PRODUCT_STATE": myresult[i][16],
+                    "PRODUCT_COUNTRY": myresult[i][17],
+                    "PRODUCT_PINCODE": myresult[i][18],
+                    "PRODUCT_LATITUDE": myresult[i][19],
+                    "PRODUCT_LONGITUDE": myresult[i][20]
                 }
             getSnacks(GetOrderNowRecord["PRODUCT_ID"], GetOrderNowRecord["PRODUCT_LOGO"])
             GetOrderNowRecord["PRODUCT_LOGO"] = GetOrderNowRecord["PRODUCT_ID"]+".jpg"
@@ -245,14 +259,14 @@ def google_auth():
     session['USER_NAME'] = token['userinfo']['name']
     session['USER_PASSWORD'] = hashlib.sha512((session['USER_EMAIL']+session['USER_NAME']).encode()).hexdigest()
 
-    mycursor = conn.cursor()
+    mycursor = conn.cursor(buffered=True)
     sql = "INSERT IGNORE INTO USERS VALUES (%s, %s, %s, '', '', '', '', '', '', %s, 200, 200);"
     val = (session['USER_NAME'], session['USER_PASSWORD'], session['USER_EMAIL'], w3.eth.accounts[random.randint(0,9)])
     mycursor.execute(sql, val)
     conn.commit()
     mycursor.close()
     
-    mycursor = conn.cursor()
+    mycursor = conn.cursor(buffered=True)
     mycursor.execute('SELECT * FROM USERS WHERE USER_EMAIL="'+session["USER_EMAIL"]+'"')
     myresult = mycursor.fetchall()
     mycursor.close()
@@ -267,7 +281,7 @@ def google_auth():
     session['USER_LATITUDE'] = myresult[0][10]
     session['USER_LONGITUDE'] = myresult[0][11]
 
-    mycursor = conn.cursor()
+    mycursor = conn.cursor(buffered=True)
     mycursor.execute('SELECT COUNT(*) FROM ORDER_SUMMARY WHERE USER_EMAIL="'+session["USER_EMAIL"]+'" AND IS_COMPLETE=0')
     myresult = mycursor.fetchall()
     mycursor.close()
@@ -656,7 +670,7 @@ def generate_image(prompt):
 @app.route('/')
 def indexPage():
     if conn:
-        mycursor = conn.cursor()
+        mycursor = conn.cursor(buffered=True)
         mycursor.execute("select * from Kitchen order by Kitchen_Ratings desc")
         myresult = mycursor.fetchall()
         mycursor.close()
@@ -782,7 +796,7 @@ def sign_inPage():
 @app.route('/snacks')
 def snacksPage():
     if conn:
-        mycursor = conn.cursor()
+        mycursor = conn.cursor(buffered=True)
         mycursor.execute("select * from Kitchen order by Kitchen_Ratings desc")
         myresult = mycursor.fetchall()
         mycursor.close()
@@ -917,7 +931,7 @@ def getUsers():
   if request.method == 'GET':
     try:
         if conn:
-            mycursor = conn.cursor()
+            mycursor = conn.cursor(buffered=True)
             mycursor.execute("SELECT * FROM USERS")
             myresult = mycursor.fetchall()
             mycursor.close()
@@ -934,7 +948,7 @@ def getUsers():
 def update_cart_count():
     try:
         if "USER_EMAIL" in session:
-            mycursor = conn.cursor()
+            mycursor = conn.cursor(buffered=True)
             mycursor.execute('SELECT COUNT(*) FROM ORDER_SUMMARY WHERE USER_EMAIL=%s AND IS_COMPLETE=0', (session["USER_EMAIL"], ))
             myresult = mycursor.fetchall()
             mycursor.close()
@@ -1001,7 +1015,7 @@ def UsersAuthentication():
         req = request.get_json()
     try:
         if conn:
-            mycursor = conn.cursor()
+            mycursor = conn.cursor(buffered=True)
             street,city,state,country,zipcode=getLocationDetails(req['USER_LATITUDE'], req['USER_LONGITUDE'])
             sql = "INSERT IGNORE INTO USERS VALUES (%s, %s, %s, %s, %s, %s, %s, %s, '', %s, %s, %s);"
             val = (req['USER_EMAIL'].split("@")[0], req["USER_PASSWORD"], req['USER_EMAIL'], street, state, city, country, zipcode, w3.eth.accounts[random.randint(0,9)], req['USER_LATITUDE'], req['USER_LONGITUDE'])
@@ -1013,7 +1027,7 @@ def UsersAuthentication():
             session['USER_NAME'] = req['USER_EMAIL'].split("@")[0]
 
 
-            mycursor = conn.cursor()
+            mycursor = conn.cursor(buffered=True)
             mycursor.execute('SELECT * FROM USERS WHERE USER_EMAIL="'+req["USER_EMAIL"]+'"')
             myresult = mycursor.fetchall()
             mycursor.close()
@@ -1045,7 +1059,7 @@ def UsersAuthentication():
             session['USER_LATITUDE'] = myresult[0][10]
             session['USER_LONGITUDE'] = myresult[0][11]
 
-            mycursor = conn.cursor()
+            mycursor = conn.cursor(buffered=True)
             mycursor.execute('SELECT COUNT(*) FROM ORDER_SUMMARY WHERE USER_EMAIL="'+session["USER_EMAIL"]+'" AND IS_COMPLETE=0')
             myresult = mycursor.fetchall()
             mycursor.close()
@@ -1065,14 +1079,14 @@ def ReviewSubmit():
             #print(req)
             transaction(session['USER_PRIVATE_KEY'], session['USER_EMAIL'], session['USER_NAME'], req['SNACK_ID'], req['SNACK_REVIEW'], req['SCHEDULE_TIME'], int(req['SNACK_RATING']))
             
-            mycursor = conn.cursor()
+            mycursor = conn.cursor(buffered=True)
             sql = "UPDATE SNACK SET SNACK_REVIEW_COUNT=SNACK_REVIEW_COUNT+1, SNACK_REVIEW_TOTAL=SNACK_REVIEW_TOTAL+%s, SNACK_RATING=ROUND((SNACK_REVIEW_TOTAL+%s)/(SNACK_REVIEW_COUNT+1), 2) WHERE SNACK_ID=%s"
             val = (int(req['SNACK_RATING']), int(req['SNACK_RATING']), req['SNACK_ID'])
             mycursor.execute(sql, val)
             conn.commit()
             mycursor.close()
 
-            mycursor = conn.cursor()
+            mycursor = conn.cursor(buffered=True)
             sql = "UPDATE Kitchen SET Kitchen_Review_Count=Kitchen_Review_Count+1, Kitchen_Review_Total=Kitchen_Review_Total+%s, Kitchen_Ratings=ROUND((Kitchen_Review_Total+%s)/(Kitchen_Review_Count+1), 2) WHERE Kitchen_ID=%s"
             val = (int(req['SNACK_RATING']), int(req['SNACK_RATING']), req['Kitchen_ID'])
             mycursor.execute(sql, val)
@@ -1105,7 +1119,7 @@ def getKitchens():
     if request.method == 'GET':
         try:
             if conn:
-                mycursor = conn.cursor()
+                mycursor = conn.cursor(buffered=True)
                 mycursor.execute('select * from Kitchen;')
                 myresult = mycursor.fetchall()
                 mycursor.close()
@@ -1146,7 +1160,7 @@ def showMyLunchBoxOrders():
         req = request.get_json()
         try:
             if conn:
-                mycursor = conn.cursor()
+                mycursor = conn.cursor(buffered=True)
                 mycursor.execute("select Lunch_Box_Order.Lunch_Box_Order_ID, Lunch_Box_Order.Lunch_Box_Type, Lunch_Box_Order.Lunch_Box_Size, Lunch_Box_Order.Lunch_Box_color_pref, Payment.Payment_type, Payment.Payment_Amt, Payment.Payment_Status, Kitchen.Kitchen_ID, Kitchen.Kitchen_Name, Delivery_Management.Delivery_Timings, Delivery_Management.Door_Step_Delivery FROM Lunch_Box_Order LEFT JOIN Kitchen ON Lunch_Box_Order.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Payment ON Lunch_Box_Order.Payment_ID = Payment.Payment_ID LEFT JOIN Delivery_Management ON Lunch_Box_Order.Delivery_ID = Delivery_Management.Delivery_ID Where Lunch_Box_Order.User_EMAIL='"+session('USER_EMAIL')+"'")
                 myresult = mycursor.fetchall()
                 #print(myresult)
@@ -1178,8 +1192,8 @@ def Shoping_cart():
     if request.method == 'GET':
         try:
             if conn:
-                mycursor = conn.cursor()
-                mycursor.execute("Select ORDER_SUMMARY.PRODUCT_ID, ORDER_SUMMARY.PRODUCT_NAME, ORDER_SUMMARY.QUANTITY, ORDER_SUMMARY.PRODUCT_PRICE, ORDER_SUMMARY.PRODUCT_LOGO, ORDER_SUMMARY.Kitchen_ID, ORDER_SUMMARY.SCHEDULE_TIME, ORDER_SUMMARY.TOTAL_AMOUNT, ORDER_SUMMARY.Meal_ID, ORDER_SUMMARY.USER_EMAIL, ORDER_SUMMARY.IS_COMPLETE, Meals.Meal_Timings, Meals.Meal_Type, Kitchen.Kitchen_Name FROM ORDER_SUMMARY LEFT JOIN Kitchen ON ORDER_SUMMARY.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON ORDER_SUMMARY.Meal_ID = Meals.Meal_ID WHERE ORDER_SUMMARY.USER_EMAIL='"+session['USER_EMAIL']+"' AND ORDER_SUMMARY.IS_COMPLETE=0;")
+                mycursor = conn.cursor(buffered=True)
+                mycursor.execute("Select ORDER_SUMMARY.PRODUCT_ID, ORDER_SUMMARY.PRODUCT_NAME, ORDER_SUMMARY.QUANTITY, ORDER_SUMMARY.PRODUCT_PRICE, ORDER_SUMMARY.PRODUCT_LOGO, ORDER_SUMMARY.Kitchen_ID, ORDER_SUMMARY.SCHEDULE_TIME, ORDER_SUMMARY.TOTAL_AMOUNT, ORDER_SUMMARY.Meal_ID, ORDER_SUMMARY.USER_EMAIL, ORDER_SUMMARY.IS_COMPLETE, Meals.Meal_Timings, Meals.Meal_Type, Kitchen.Kitchen_Name, ORDER_SUMMARY.PRODUCT_ADDRESS, ORDER_SUMMARY.PRODUCT_CITY, ORDER_SUMMARY.PRODUCT_STATE, ORDER_SUMMARY.PRODUCT_COUNTRY, ORDER_SUMMARY.PRODUCT_PINCODE, ORDER_SUMMARY.PRODUCT_LATITUDE, ORDER_SUMMARY.PRODUCT_LONGITUDE FROM ORDER_SUMMARY LEFT JOIN Kitchen ON ORDER_SUMMARY.Kitchen_ID = Kitchen.Kitchen_ID LEFT JOIN Meals ON ORDER_SUMMARY.Meal_ID = Meals.Meal_ID WHERE ORDER_SUMMARY.USER_EMAIL='"+session['USER_EMAIL']+"' AND ORDER_SUMMARY.IS_COMPLETE=0;")
                 myresult = mycursor.fetchall()
                 mycursor.close()
                 #print(myresult)
@@ -1201,7 +1215,14 @@ def Shoping_cart():
                         "Meal_Timings": myresult[i][11],
                         "Meal_Type": myresult[i][12],
                         "Kitchen_Name" : myresult[i][13],
-                        "PAYMENT_ID": myresult[i][14]
+                        "PAYMENT_ID": myresult[i][14],
+                        "PRODUCT_ADDRESS": myresult[i][15],
+                        "PRODUCT_CITY": myresult[i][16],
+                        "PRODUCT_STATE": myresult[i][17],
+                        "PRODUCT_COUNTRY": myresult[i][18],
+                        "PRODUCT_PINCODE": myresult[i][19],
+                        "PRODUCT_LATITUDE": myresult[i][20],
+                        "PRODUCT_LONGITUDE": myresult[i][21]
                     }
                     getSnacks(ShoppingCartRecord["PRODUCT_ID"], ShoppingCartRecord["PRODUCT_LOGO"])
                     ShoppingCartRecord["PRODUCT_LOGO"] = ShoppingCartRecord["PRODUCT_ID"]+".jpg"
@@ -1218,8 +1239,8 @@ def Shoping_cart():
                 request_json = request.get_json()
                 snack_id = request_json.get("SNACK_ID")
                 #print(snack_id)
-                mycursor = conn.cursor()
-                sql = "INSERT INTO ORDER_SUMMARY SELECT SNACK_ID, SNACK_NAME, SNACK_PRICE, SNACK_LOGO, Kitchen_ID, %s, SNACK_PRICE, 1, Meal_ID,%s, %s, %s FROM SNACK WHERE SNACK_ID=%s AND NOT EXISTS(SELECT NULL FROM ORDER_SUMMARY WHERE PRODUCT_ID=%s AND USER_EMAIL=%s AND IS_COMPLETE=0)"
+                mycursor = conn.cursor(buffered=True)
+                sql = "INSERT INTO ORDER_SUMMARY SELECT SNACK_ID, SNACK_NAME, SNACK_PRICE, SNACK_LOGO, Kitchen_ID, %s, SNACK_PRICE, 1, Meal_ID,%s, %s, %s, '', '', '', '', '', 200, 200 FROM SNACK WHERE SNACK_ID=%s AND NOT EXISTS(SELECT NULL FROM ORDER_SUMMARY WHERE PRODUCT_ID=%s AND USER_EMAIL=%s AND IS_COMPLETE=0)"
                 val = (datetime.now().strftime("%m/%d/%Y, %H:%M:%S"), session['USER_EMAIL'],'', 0, snack_id, snack_id, session['USER_EMAIL'])
                 mycursor.execute(sql, val)
                 conn.commit()
@@ -1236,22 +1257,25 @@ def UpdateOrderHistory():
     if request.method == 'POST':
         try:
             if conn:
-                mycursor = conn.cursor()
+                mycursor = conn.cursor(buffered=True)
                 request_json = request.get_json()
                 PAYMENT_ID = request_json['PAYMENT_ID']
                 IS_COMPLETE = request_json['IS_COMPLETE']
                 PRODUCT_LIST = request_json['PRODUCT_LIST']
+                latitude, longitude = getCoordinates(request_json['USER_STREET']+", "+request_json['USER_CITY']+", "+request_json['USER_STATE']+", "+request_json['USER_COUNTRY']+", "+request_json['USER_PINCODE'])
                 #print(PRODUCT_LIST)
                 for i in PRODUCT_LIST:
-                    sql = "UPDATE ORDER_SUMMARY SET QUANTITY = %s, TOTAL_AMOUNT = %s, SCHEDULE_TIME = %s, PAYMENT_ID = %s, IS_COMPLETE = %s WHERE PRODUCT_ID = %s AND USER_EMAIL=%s AND PAYMENT_ID=%s"
-                    val = (i['QUANTITY'], i['TOTAL_AMOUNT'], i['SCHEDULE_TIME'], PAYMENT_ID, IS_COMPLETE,  i['PRODUCT_ID'], session['USER_EMAIL'], '')
+                    sql = "UPDATE ORDER_SUMMARY SET QUANTITY = %s, TOTAL_AMOUNT = %s, SCHEDULE_TIME = %s, PAYMENT_ID = %s, IS_COMPLETE = %s, PRODUCT_ADDRESS=%s, PRODUCT_CITY=%s, PRODUCT_STATE=%s, PRODUCT_COUNTRY=%s, PRODUCT_PINCODE=%s, PRODUCT_LATITUDE=%s, PRODUCT_LONGITUDE=%s WHERE PRODUCT_ID = %s AND USER_EMAIL=%s AND PAYMENT_ID=%s"
+                    if latitude!=200:
+                        val = (i['QUANTITY'], i['TOTAL_AMOUNT'], i['SCHEDULE_TIME'], PAYMENT_ID, IS_COMPLETE, request_json['USER_STREET'], request_json['USER_CITY'], request_json['USER_STATE'], request_json['USER_COUNTRY'], request_json['USER_PINCODE'], latitude, longitude, i['PRODUCT_ID'], session['USER_EMAIL'], '')
+                    else:
+                        val = (i['QUANTITY'], i['TOTAL_AMOUNT'], i['SCHEDULE_TIME'], PAYMENT_ID, IS_COMPLETE, request_json['USER_STREET'], request_json['USER_CITY'], request_json['USER_STATE'], request_json['USER_COUNTRY'], request_json['USER_PINCODE'], session["USER_LATITUDE"], session["USER_LONGITUDE"], i['PRODUCT_ID'], session['USER_EMAIL'], '')
                     mycursor.execute(sql, val)
                     conn.commit()
                 mycursor.close()
-                latitude, longitude = getCoordinates(request_json['USER_STREET']+", "+request_json['USER_CITY']+", "+request_json['USER_STATE']+", "+request_json['USER_COUNTRY']+", "+request_json['USER_PINCODE'])
                 #print(latitude, longitude, request_json)
 
-                mycursor = conn.cursor()
+                mycursor = conn.cursor(buffered=True)
                 sql = "UPDATE USERS SET USER_LATITUDE=%s, USER_LONGITUDE=%s, USER_STREET=%s, USER_CITY=%s, USER_STATE=%s, USER_COUNTRY=%s, USER_PINCODE=%s, USER_MOBILE=%s WHERE USER_EMAIL=%s"
                 if latitude != 200:
                     val = (latitude, longitude, request_json['USER_STREET'], request_json['USER_CITY'], request_json['USER_STATE'], request_json['USER_COUNTRY'], request_json['USER_PINCODE'], request_json['USER_MOBILE'], session['USER_EMAIL'])
@@ -1288,7 +1312,7 @@ def updateUserCoordinates():
                 if session['USER_LATITUDE'] != 200:
                     if getPointDistance((session['USER_LATITUDE'], session['USER_LONGITUDE']), (request_json['USER_LATITUDE'], request_json['USER_LONGITUDE'])) < minimum_proximity:
                         return jsonify(StatusCode = '0', Message="Within proximity") 
-                mycursor = conn.cursor()
+                mycursor = conn.cursor(buffered=True)
                 street,city,state,country,zipcode=getLocationDetails(request_json['USER_LATITUDE'], request_json['USER_LONGITUDE'])
                 #print(request_json,street,city,state,country,zipcode)
                 if request_json['USER_REQUEST'] == 1:
@@ -1331,7 +1355,7 @@ def deleteCartRow():
                 request_json = request.get_json()
                 PRODUCT_ID = request_json.get("PRODUCT_ID")
                 #print("PRODUCT_ID: ", PRODUCT_ID)
-                mycursor = conn.cursor()
+                mycursor = conn.cursor(buffered=True)
                 mycursor.execute("DELETE FROM ORDER_SUMMARY WHERE PRODUCT_ID='"+PRODUCT_ID+"' AND USER_EMAIL='"+session['USER_EMAIL']+"'")
                 conn.commit()
                 mycursor.close()
@@ -1350,7 +1374,7 @@ def updateProfile():
                 latitude, longitude = getCoordinates(request_json['USER_STREET']+", "+request_json['USER_CITY']+", "+request_json['USER_STATE']+", "+request_json['USER_COUNTRY']+", "+request_json['USER_PINCODE'])
                 #print(latitude, longitude, request_json)
 
-                mycursor = conn.cursor()
+                mycursor = conn.cursor(buffered=True)
                 sql = "UPDATE USERS SET USER_LATITUDE=%s, USER_LONGITUDE=%s, USER_STREET=%s, USER_CITY=%s, USER_STATE=%s, USER_COUNTRY=%s, USER_PINCODE=%s, USER_MOBILE=%s WHERE USER_EMAIL=%s"
                 if latitude != 200:
                     val = (latitude, longitude, request_json['USER_STREET'], request_json['USER_CITY'], request_json['USER_STATE'], request_json['USER_COUNTRY'], request_json['USER_PINCODE'], request_json['USER_MOBILE'], session['USER_EMAIL'])

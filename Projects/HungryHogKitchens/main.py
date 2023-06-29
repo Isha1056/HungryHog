@@ -120,7 +120,7 @@ def getSnacks(image_name, image_data):
         print('Error: '+ str(e))
 
 def getMealData():
-    mycursor = conn.cursor()
+    mycursor = conn.cursor(buffered=True)
     mycursor.execute("SELECT * FROM Meals")
     myresult = mycursor.fetchall()
     #print(myresult)
@@ -136,7 +136,7 @@ def getMealData():
     return result
 
 def getSnackData():
-    mycursor = conn.cursor()
+    mycursor = conn.cursor(buffered=True)
     sql = "SELECT SNACK.SNACK_ID, SNACK.SNACK_NAME, SNACK.SNACK_PRICE, SNACK.Kitchen_ID, SNACK.Meal_ID, Meals.Meal_Type, Meals.Meal_Timings, SNACK.SNACK_LOGO, SNACK.SNACK_REVIEW_COUNT, SNACK.SNACK_REVIEW_TOTAL, SNACK.SNACK_RATING FROM SNACK LEFT JOIN Meals ON SNACK.Meal_ID = Meals.Meal_ID WHERE SNACK.Kitchen_ID=%s"
     val = (session['Kitchen_ID'], )
     mycursor.execute(sql, val)
@@ -223,14 +223,14 @@ def google_auth():
     session['Kitchen_Password'] = hashlib.sha512((session['Kitchen_Email']+session['Kitchen_Name']).encode()).hexdigest()
     session['Kitchen_ID'] = hashlib.sha512((session['Kitchen_Email']+session['Kitchen_Password']).encode()).hexdigest()
 
-    mycursor = conn.cursor()
+    mycursor = conn.cursor(buffered=True)
     sql = "INSERT IGNORE INTO Kitchen VALUES (%s, %s, %s, %s, '', '', '', '', '', '', '', '', 0, '' 0, 200, 200, 0, 0, %s);"
     val = (session['Kitchen_ID'], session['Kitchen_Email'], session['Kitchen_Name'], session['Kitchen_Password'], w3.eth.accounts[random.randint(0,9)])
     mycursor.execute(sql, val)
     conn.commit()
     mycursor.close()
     
-    mycursor = conn.cursor()
+    mycursor = conn.cursor(buffered=True)
     mycursor.execute('SELECT * FROM Kitchen WHERE Kitchen_ID="'+session["Kitchen_ID"]+'"')
     myresult = mycursor.fetchall()
     mycursor.close()
@@ -616,7 +616,7 @@ def UsersAuthentication():
         req = request.get_json()
     try:
         if conn:
-            mycursor = conn.cursor()
+            mycursor = conn.cursor(buffered=True)
 
             Kitchen_ID = hashlib.sha512((req['Kitchen_Email']+req['Kitchen_Email'].split("@")[0]).encode()).hexdigest()
             session["Kitchen_ID"] = Kitchen_ID
@@ -631,7 +631,7 @@ def UsersAuthentication():
             session['Kitchen_Email'] = req['Kitchen_Email']
             session['Kitchen_Name'] = req['Kitchen_Email'].split("@")[0]
 
-            mycursor = conn.cursor()
+            mycursor = conn.cursor(buffered=True)
             mycursor.execute('SELECT * FROM Kitchen WHERE Kitchen_ID="'+session["Kitchen_ID"]+'"')
             myresult = mycursor.fetchall()
             mycursor.close()
@@ -672,7 +672,7 @@ def updateKitchenCoordinates():
                 if session['Kitchen_Latitude'] != 200:
                     if getPointDistance((session['Kitchen_Latitude'], session['Kitchen_Longitude']), (request_json['Kitchen_Latitude'], request_json['Kitchen_Longitude'])) < minimum_proximity:
                         return jsonify(StatusCode = '0', Message="Within proximity") 
-                mycursor = conn.cursor()
+                mycursor = conn.cursor(buffered=True)
                 street,city,state,country,zipcode=getLocationDetails(request_json['Kitchen_Latitude'], request_json['Kitchen_Longitude'])
                 #print(request_json,street,city,state,country,zipcode)
                 if request_json['Kitchen_Request'] == 1:
@@ -711,7 +711,7 @@ def updateProfile():
             if conn and "Kitchen_ID" in session:
                 request_json = request.get_json()
                 latitude, longitude = getCoordinates(request_json['Kitchen_Address']+", "+request_json['Kitchen_City']+", "+request_json['Kitchen_State']+", "+request_json['Kitchen_Country']+", "+request_json['Kitchen_Pincode'])
-                mycursor = conn.cursor()
+                mycursor = conn.cursor(buffered=True)
                 sql = "UPDATE Kitchen SET Kitchen_Latitude=%s, Kitchen_Longitude=%s, Kitchen_Address=%s, Kitchen_City=%s, Kitchen_State=%s, Kitchen_Country=%s, Kitchen_Pincode=%s, Kitchen_Number=%s, Kitchen_Type=%s, Kitchen_Open_Time=%s, Kitchen_Close_Time=%s, Kitchen_Name=%s, WHERE Kitchen_ID=%s"
                 if latitude != 200:
                     val = (latitude, longitude, request_json['Kitchen_Address'], request_json['Kitchen_City'], request_json['Kitchen_State'], request_json['Kitchen_Country'], request_json['Kitchen_Pincode'], request_json['Kitchen_Number'], request_json['Kitchen_Type'], request_json['Kitchen_Open_Time'], request_json['Kitchen_Close_Time'], request_json['Kitchen_Name'], session['Kitchen_ID'])
@@ -745,7 +745,7 @@ def RemoveSnack():
         try:
             if conn and "Kitchen_ID" in session:
                 request_json = request.get_json()
-                mycursor = conn.cursor()
+                mycursor = conn.cursor(buffered=True)
                 sql = "DELETE FROM SNACK WHERE SNACK_ID=%s"
                 val = (request_json["SNACK_ID"],)
                 mycursor.execute(sql, val)
@@ -763,7 +763,7 @@ def SaveSnack():
             if conn and "Kitchen_ID" in session:
                 snack_id = hashlib.sha512((request.form.get("SNACK_NAME")+session["Kitchen_ID"]).encode()).hexdigest()
                 request.files.get("SNACK_LOGO").save('./static/images/'+snack_id+'.jpg')
-                mycursor = conn.cursor()
+                mycursor = conn.cursor(buffered=True)
                 sql = "INSERT INTO SNACK VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
                 val = (snack_id, request.form.get("SNACK_NAME"), request.form.get("SNACK_PRICE"), session["Kitchen_ID"], request.form.get("Meal_ID"), convertToBinaryData("./static/images/"+snack_id+".jpg"), 0, 0, 0)
                 mycursor.execute(sql, val)
@@ -782,7 +782,7 @@ def UpdateSnack():
             if conn and "Kitchen_ID" in session:
                 snack_id = hashlib.sha512((request.form.get("SNACK_NAME")+session["Kitchen_ID"]).encode()).hexdigest()
                 request.files.get("SNACK_LOGO").save('./static/images/'+snack_id+'.jpg')
-                mycursor = conn.cursor()
+                mycursor = conn.cursor(buffered=True)
                 sql = "UPDATE SNACK SET SNACK_ID=%s, SNACK_NAME=%s, SNACK_PRICE=%s, Meal_ID=%s, SNACK_LOGO=%s WHERE SNACK_ID=%s"
                 val = (snack_id, request.form.get("SNACK_NAME"), request.form.get("SNACK_PRICE"), request.form.get("Meal_ID"), convertToBinaryData("./static/images/"+snack_id+".jpg"), request.form.get("SNACK_ID"))
                 mycursor.execute(sql, val)

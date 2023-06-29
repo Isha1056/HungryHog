@@ -221,7 +221,35 @@
                     </tbody>
                 </table>
                 {% else %}
-                <h3>Snort! your menu is empty. Please add items in your menu!</h3>
+
+                <table class="_table">
+                    <thead>
+                        <tr>
+                            <th class="prod-column" colspan="2">PRODUCT</th>
+                            <th class="price">PRICE (in Rs.)</th>
+                            <th>MEAL TYPE</th>
+                            <th>SNACK_RATING</th>
+                            <th>DELETE</th>
+                            <th>SAVE</th>
+                            <th width="50px">
+                                <div class="action_container">
+                                    <!-- <button class="success" onclick="create_tr('table_body')">
+                                                <i class="fa fa-plus"></i>
+                                            </button> -->
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="table_body" class="menu-body">
+                        <tr class="empty-table">
+                            <td colspan="7">
+                                <h3>Snort! your menu is empty. Please add items in your menu!</h3>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                
                 {% endif %}
 
             </div>
@@ -239,8 +267,10 @@
 <script>
     $(document).ready(function () {
         $("body").on("click", "#Add", function () {
-            console.log("add")
-            $('.menu-body tr:last').after(`<tr>
+
+            $(".empty-table").remove();
+
+            $('.menu-body').append(`<tr>
                 <td colspan="2" class="name">
                     <div class="column-box">
                         <figure class="prod-thumb">

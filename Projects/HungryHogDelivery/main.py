@@ -169,14 +169,14 @@ def google_auth():
     session['Delivery_Partner_Password'] = hashlib.sha512((session['Delivery_Partner_Email']+session['Delivery_Partner_Name']).encode()).hexdigest()
     session['Delivery_Partner_ID'] = hashlib.sha512((session['Delivery_Partner_Email']+session['Delivery_Partner_Password']).encode()).hexdigest()
 
-    mycursor = conn.cursor()
+    mycursor = conn.cursor(buffered=True)
     sql = "INSERT IGNORE INTO Delivery_Partner VALUES (%s, %s, %s, %s, '', 200, 200, 0, %s)"
     val = (session['Delivery_Partner_ID'], session['Delivery_Partner_Name'], session['Delivery_Partner_Email'], session['Delivery_Partner_Password'], w3.eth.accounts[random.randint(0,9)])
     mycursor.execute(sql, val)
     conn.commit()
     mycursor.close()
     
-    mycursor = conn.cursor()
+    mycursor = conn.cursor(buffered=True)
     mycursor.execute('SELECT * FROM Kitchen WHERE Delivery_Partner_ID="'+session["Delivery_Partner_ID"]+'"')
     myresult = mycursor.fetchall()
     mycursor.close()
@@ -552,7 +552,7 @@ def UsersAuthentication():
         req = request.get_json()
     try:
         if conn:
-            mycursor = conn.cursor()
+            mycursor = conn.cursor(buffered=True)
 
             Delivery_Partner_ID = hashlib.sha512((req['Delivery_Partner_Email']+req['Delivery_Partner_Email'].split("@")[0]).encode()).hexdigest()
             session["Delivery_Partner_ID"] = Delivery_Partner_ID
@@ -566,7 +566,7 @@ def UsersAuthentication():
             session['Delivery_Partner_Email'] = req['Delivery_Partner_Email']
             session['Delivery_Partner_Name'] = req['Delivery_Partner_Email'].split("@")[0]
 
-            mycursor = conn.cursor()
+            mycursor = conn.cursor(buffered=True)
             mycursor.execute('SELECT * FROM Delivery_Partner WHERE Delivery_Partner_ID="'+session["Delivery_Partner_ID"]+'"')
             myresult = mycursor.fetchall()
             mycursor.close()
@@ -592,7 +592,7 @@ def updateProfile():
         try:
             if conn and "Delivery_Partner_ID" in session:
                 request_json = request.get_json()
-                mycursor = conn.cursor()
+                mycursor = conn.cursor(buffered=True)
                 sql = "UPDATE Delivery_Partner SET Delivery_Partner_Number=%s WHERE Delivery_Partner_ID=%s"
                 val = (request_json['Delivery_Partner_Number'],)
                 session['Delivery_Partner_Number'] = request_json['Delivery_Partner_Number']
@@ -613,7 +613,7 @@ def updateCoordinates():
                 if session['Delivery_Partner_Latitude'] != 200:
                     if getPointDistance((session['Delivery_Partner_Latitude'], session['Delivery_Partner_Longitude']), (request_json['Delivery_Partner_Latitude'], request_json['Delivery_Partner_Longitude'])) < minimum_proximity:
                         return jsonify(StatusCode = '0', Message="Within proximity") 
-                mycursor = conn.cursor()
+                mycursor = conn.cursor(buffered=True)
                 sql = "UPDATE Delivery_Partner SET Delivery_Partner_Latitude=%s, Delivery_Partner_Longitude=%s WHERE Delivery_Partner_ID=%s"
                 val = (request_json['Delivery_Partner_Latitude'], request_json['Delivery_Partner_Longitude'], session['Delivery_Partner_ID'])
                 mycursor.execute(sql, val)
